@@ -143,13 +143,13 @@ function SidBar() {
             >
               Data
             </Typography>
-             {/* <Item
+             <Item
               title="ALL USERS "
               to="/allusers"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
+            />
             <Item
               title="ADD USER"
               to="/adduser"

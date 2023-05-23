@@ -18,4 +18,22 @@ export const addUser =(reqObj)=>async dispatch => {
 }
 
 
+export const allUsers =(reqObj) => async dispatch=>{
+    try {
+        const response = await axios.get('/api/user/allUsers')
+          
+       console.log("response: " , response.data);
+
+    }catch(error){
+        console.log(error);
+    }
+}
+
+// export const allUsers = () => {
+//     return axios.get('/api/user/allUsers')
+//     .then(response => response.data)
+//     .catch(error => {
+//         throw error;
+//     });
+// };
 

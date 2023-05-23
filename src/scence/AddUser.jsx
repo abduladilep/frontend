@@ -313,7 +313,7 @@ function AddUser() {
                 label="GivenAmount"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                Value={values.GivenAmount}
+                value={values.GivenAmount}
                 name="GivenAmount"
                 error={!!touched.GivenAmount && !!errors.GivenAmount}
                 helperText={touched.GivenAmount && errors.GivenAmount}
@@ -395,7 +395,7 @@ function AddUser() {
                     variant="filled"
                     type="Date"
                     label="COLLECTION STARTING DATE"
-                    Value={Date}
+                    value={Date}
                     onBlur={handleBlur}
                     format="yyyy,MM,dd"
                     // onChange={handleDate}
@@ -480,7 +480,7 @@ function AddUser() {
                     variant="filled"
                     type="date"
                     label="Collection End Date"
-                    Value={endDate}
+                    value={endDate}
                     onBlur={handleBlur}
                     //   onChange={field.onChange}
                     onChange={(event) => {
@@ -570,7 +570,7 @@ function AddUser() {
                 ) : (
                   <Box
                     component="img"
-                    src="/default-avatar.jpg"
+                    // src="/default-avatar.jpg"
                     sx={{ width: 100, height: 100 }}
                   />
                 )}
