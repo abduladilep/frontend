@@ -22,9 +22,21 @@ export const allUsers =(reqObj) => async dispatch=>{
     try {
         const response = await axios.get('/api/user/allUsers')
           
-       console.log("response: " , response.data);
+    //    console.log("response: " , response.data);
+
+       dispatch({type:"GET_ALL_USERS",payload:response.data})
+
 
     }catch(error){
+        console.log(error);
+    }
+}
+
+export const collectionList=(reqObj)=> async dispatch=>{
+    try {
+        const response= await axios.get('/api/user/collectionList',reqObj);
+        
+    } catch (error) {
         console.log(error);
     }
 }
