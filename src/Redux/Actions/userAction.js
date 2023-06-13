@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import {message} from 'antd'
 
 
 export const addUser =(reqObj)=>async dispatch => {
@@ -32,14 +33,14 @@ export const allUsers =(reqObj) => async dispatch=>{
     }
 }
 
-export const collectionList=(reqObj)=> async dispatch=>{
-    try {
-        const response= await axios.get('/api/user/collectionList',reqObj);
+// export const collectionList=(reqObj)=> async dispatch=>{
+//     try {
+//         const response= await axios.get('/api/user/collectionList',reqObj);
         
-    } catch (error) {
-        console.log(error);
-    }
-}
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 // export const allUsers = () => {
 //     return axios.get('/api/user/allUsers')
@@ -48,4 +49,17 @@ export const collectionList=(reqObj)=> async dispatch=>{
 //         throw error;
 //     });
 // };
+
+// Pay API 
+
+export const handlePaymentRequest =(reqObj)=>async dispatch=>{
+    const paymentResponse = await axios.post("/api/user/pay",reqObj)
+    console.log("paymentResponse",paymentResponse);
+    message.success(paymentResponse.data);
+    message.error(paymentResponse.data);
+    
+
+
+
+}
 

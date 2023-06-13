@@ -38,27 +38,58 @@ function CollectedReport() {
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
-  let Collected = [];
+  
 
   useEffect(() => {
     dispatch(allUsers());
   }, []);
 
   useEffect(() => {
+    const Collected = [];
     if (ALLUSERS) { 
       const collectedUsers = ALLUSERS.filter((user) => user.Collected);
-
-      collectedUsers.map((user) => {
+      collectedUsers.forEach((user) => {
         console.log(user, "is the user...");
-        user?.Collected.map((value) => {
+        user?.Collected.forEach((value) => {
           console.log(value, "is the value from mpl...");
+          const userDetails={
+            ...user,
+            amount: value.amount,
+            date: value.date,
+          }
 
-          Collected.push(value);
+          Collected.push(userDetails);
         });
       });
     }
     setData(Collected);
   }, [ALLUSERS]);
+
+  
+
+  // useEffect(() => {
+  //   if (ALLUSERS && Array.isArray(ALLUSERS)) {
+  //     const collectedData = [];
+  
+  //     ALLUSERS.forEach((user) => {
+  //       if (user.Collected && Array.isArray(user.Collected)) {
+  //         user.Collected.forEach((collectedItem) => {
+  //           const userDetails = {
+  //             ...user,
+  //             amount: collectedItem.amount
+  //           };
+  //           collectedData.push(userDetails);
+  //           console.log(userDetails, "is the user's details");
+  //         });
+  //       }
+  //     });
+  
+  //     console.log(collectedData, "array");
+  //     setData(collectedData);
+  //   }
+  // }, [ALLUSERS]);
+  
+  
 
   // useEffect(() => {
   //   if (ALLUSERS) {
@@ -74,27 +105,28 @@ function CollectedReport() {
   //   }
   // }, [ALLUSERS]);
 
-
-
+  
   console.log(data, "collected report");
-
+  
   const useCustomers = (page, rowsPerPage) => {
     console.log(data, "pageeeee");
     return useMemo(() => {
       return applyPagination(data, page, rowsPerPage);
     }, [data, page, rowsPerPage]);
   };
-
+  
   const useCustomerIds = (customers) => {
     return useMemo(() => {
       return customers.map((customer) => customer.id);
     }, [customers]);
   };
-
+  
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  
   const customers = useCustomers(page, rowsPerPage);
+
+  // console.log(customers.id,"uuuuuuu");
   //   const customersIds = useCustomerIds(customers);
 
   const theme = useTheme();
@@ -179,13 +211,15 @@ function CollectedReport() {
                       {/* </Avatar> */}
                       <Typography variant="subtitle2">
                         {moment(customer.date).format("DD/MM/YYYY")}{" "}
+                        {/* {customer.date} */}
+                        
                       </Typography>
                     </Stack>
                   </TableCell>
                   <TableCell>{customer.Name}</TableCell>
                   <TableCell>{customer.MobileNo}</TableCell>
                   <TableCell>{customer.amount}</TableCell>
-                  <TableCell>{customer.remining}</TableCell>
+                  <TableCell>{customer.TotalAmountCopy}</TableCell>
                   <TableCell>
                     <Typography
                     // color={colors.palette.grey[200]}

@@ -193,6 +193,13 @@ function SidBar() {
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Account "
+              to="/account"
+              icon={<HelpOutlineOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
              {/* <Item
               title="Form "
               to="/form"
