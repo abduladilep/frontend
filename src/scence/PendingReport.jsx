@@ -47,10 +47,10 @@ function CollectedReport() {
   useEffect(() => {
     const Collected = [];
     if (ALLUSERS) { 
-      const collectedUsers = ALLUSERS.filter((user) => user.Collected);
+      const collectedUsers = ALLUSERS.filter((user) => user.Pending);
       collectedUsers.forEach((user) => {
         console.log(user, "is the user...");
-        user?.Collected.forEach((value) => {
+        user?.Pending.forEach((value) => {
           console.log(value, "is the value from mpl...");
           const userDetails={
             ...user,

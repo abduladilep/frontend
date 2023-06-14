@@ -39,7 +39,7 @@ function App() {
         <Route path="/collectedReport" element={<CollectedReport></CollectedReport>}/>
         <Route path="/pendingReport" element={<PendingReport></PendingReport>}/>
         <Route path="/allUsers" element={<AllUsers></AllUsers>}/>
-        <Route path="/account" element={<Account></Account>}/>
+        <Route path="/account/:customerId" element={<Account></Account>}/>
         {/* <Route path="/addStaff" element={<AddStaff></AddStaff>}/> */}
         {/* <Route path="/form" element={<Form/>}/> */}
         </Routes>

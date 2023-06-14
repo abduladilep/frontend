@@ -8,8 +8,11 @@ import {
     CardActions,
     CardContent,
     Divider,
-    Typography
+    Typography,
+    useTheme
   } from '@mui/material';
+  import { tokens } from "../theme";
+
   
   const user = {
     avatar: '/assets/avatars/avatar-anika-visser.png',
@@ -20,41 +23,47 @@ import {
     timezone: 'GTM-7'
   };
   
-  export const AccountProfile = () => (
-    <Card>
+  export function AccountProfile({data}){
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    
+   
+  return (
+    <Card  style={{ backgroundColor: colors.primary[500] }} >  
       <CardContent>
         <Box
           sx={{
+    
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'column'
           }}
         >
           <Avatar
-            src={user.avatar}
+            src={data.IdProof}
             sx={{
-              height: 80,
+              height: 100,
               mb: 2,
               width: 80
             }}
           />
           <Typography
             gutterBottom
-            variant="h5"
+            variant="h3"
           >
-            {user.name}
+            {data.Name}
           </Typography>
           <Typography
             color="text.secondary"
             variant="body2"
           >
-            {user.city} {user.country}
+            {data.Address} 
           </Typography>
           <Typography
             color="text.secondary"
             variant="body2"
           >
-            {user.timezone}
+            {data.MobileNo}
           </Typography>
         </Box>
       </CardContent>
@@ -68,5 +77,6 @@ import {
         </Button>
       </CardActions>
     </Card>
-  );
+  )
+        };
   

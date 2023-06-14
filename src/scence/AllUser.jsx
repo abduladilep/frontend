@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
+import { Link } from 'react-router-dom'
 
 import {
   Box,
@@ -66,7 +67,7 @@ function AllUsers() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const customers = useCustomers(page, rowsPerPage);
-  //   const customersIds = useCustomerIds(customers);
+    const customersIds = useCustomerIds(customers);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -142,7 +143,7 @@ function AllUsers() {
               // const createdAt = toDate(customer.createdAt);
               // const formattedDate = format(createdAt, 'dd/MM/yyyy')
               return ( 
-                <TableRow key={customer.id} hover>
+                <TableRow key={customer._id} hover>
                   <TableCell>
                     <Stack alignItems="center" direction="row" spacing={2}>
                       {/* <Avatar src={customer.avatar}> */}
@@ -162,7 +163,8 @@ function AllUsers() {
                     // color={colors.palette.grey[200]}
                     >
                       <Button type="submit" color="secondary">
-                        More Details
+                     <Link to={`/account/${customer._id}`}>
+                        More Details</Link>
                       </Button>
                     </Typography>
 

@@ -3,15 +3,52 @@ import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/
 // import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { AccountProfile } from '../Account/AccountProfile';
 import{AccountTransaction} from '../Account/AccountTransaction';
+import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useCallback, useEffect,  } from "react";
+import { allUsers } from "../Redux/Actions/userAction";
 
-const Account = () => (
+
+
+
+const Account = () =>{
+  let { customerId } = useParams()
+  const[data,setData] = useState([])
+
+  console.log(customerId,"dfsagdasgfd");
+  const { ALLUSERS } = useSelector((state) => state.users);
+
+  const dispatch = useDispatch();
+
+
+
+  useEffect(() => {
+    if (ALLUSERS.length === 0) {
+
+     dispatch(allUsers())
+
+    } else {
+
+      setData(ALLUSERS.find(o => o._id === customerId));
+    }
+
+  }, [ALLUSERS]);
+  
+  console.log(data,"dattttttt================>");
+
+
+
+
+return (
+  
+    
   <>
     {/* <Head>
       <title>
         Account | Devias Kit
       </title>
     </Head> */}
-    <Box
+    <Box 
       component="main"
       sx={{
         flexGrow: 1,
@@ -26,7 +63,8 @@ const Account = () => (
             </Typography>
           </div>
           <div>
-            <Grid
+            
+            <Grid 
               container
               spacing={3}
             >
@@ -35,14 +73,14 @@ const Account = () => (
                 md={6}
                 lg={4}
               >
-                <AccountProfile />
+                <AccountProfile data={data}  />
               </Grid>
               <Grid
                 xs={12}
                 md={6}
                 lg={8}
               >
-                <AccountTransaction/>
+                <AccountTransaction data={data}/>
               </Grid>
             </Grid>
           </div>
@@ -51,6 +89,7 @@ const Account = () => (
     </Box>
   </>
 );
+    }
 
 // Page.getLayout = (page) => (
 //   <DashboardLayout>

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import {
   Box,
+  useTheme,
   Button,
   Card,
   CardActions,
@@ -8,9 +9,11 @@ import {
   CardHeader,
   Divider,
   TextField,
+  Typography,
   Unstable_Grid2 as Grid
 } from '@mui/material';
 
+import { tokens } from "../theme";
 const states = [
   {
     value: 'alabama',
@@ -30,7 +33,11 @@ const states = [
   }
 ];
 
-export const AccountTransaction = () => {
+export const AccountTransaction = ({data}) => {
+  const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+   
+
   const [values, setValues] = useState({
     firstName: 'Anika',
     lastName: 'Visser',
@@ -63,7 +70,7 @@ export const AccountTransaction = () => {
       noValidate
       onSubmit={handleSubmit}
     >
-      <Card>
+      <Card   style={{ backgroundColor: colors.primary[500]}}>
         <CardHeader
           subheader="The information can be edited"
           title="Profile"
@@ -72,21 +79,23 @@ export const AccountTransaction = () => {
           <Box sx={{ m: -1.5 }}>
             <Grid
               container
-              spacing={3}
+              spacing={4}
             >
               <Grid
                 xs={12}
                 md={6}
               >
-                <TextField
-                  fullWidth
-                  helperText="Please specify the first name"
-                  label="First name"
-                  name="firstName"
-                  onChange={handleChange}
-                  required
-                  value={values.firstName}
-                />
+                <Box>
+
+               <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+              >
+              Data
+            </Typography>
+                
+              </Box>
               </Grid>
               <Grid
                 xs={12}
