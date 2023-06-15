@@ -53,8 +53,8 @@ function CollectedReport() {
         user?.Collected.forEach((value) => {
           console.log(value, "is the value from mpl...");
           const userDetails={
-            ...user,
-            amount: value.amount,
+            ...user,  
+            amount: value.amount,      
             date: value.date,
           }
 
@@ -109,7 +109,7 @@ function CollectedReport() {
   console.log(data, "collected report");
   
   const useCustomers = (page, rowsPerPage) => {
-    console.log(data, "pageeeee");
+    console.log(data,  "pageeeee");
     return useMemo(() => {
       return applyPagination(data, page, rowsPerPage);
     }, [data, page, rowsPerPage]);

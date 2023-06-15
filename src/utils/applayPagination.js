@@ -1,5 +1,3 @@
-export function applyPagination(data, page, rowsPerPage) {
-   
-    return data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-   
-  }
+export function applyPagination(collected, page, rowsPerPage) { 
+  return collected.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+}

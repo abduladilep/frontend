@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState,useEffect } from 'react';
 import {
   Box,
   useTheme,
@@ -14,62 +14,38 @@ import {
 } from '@mui/material';
 
 import { tokens } from "../theme";
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  },
-  {
-    value: 'los-angeles',
-    label: 'Los Angeles'
-  }
-];
+
 
 export const AccountTransaction = ({data}) => {
   const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    
+    const[pending,setPending] = useState()
+    const[collected,setCollected] = useState()
+    
+    useEffect(() => {
+   if(data && data.Collected) {
+    //  let sumOfColected =0
+
+    const sumOfColected= data.Collected.reduce((sum,element) => {
+    console.log(element.amount);
+     return sum + parseFloat(element.amount)
+    },0)
+    
+      setCollected(sumOfColected)
+  
+
+    
+   }
+   
+  }, [data]);
+
    
 
-  const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'los-angeles',
-    country: 'USA'
-  });
 
-  const handleChange = useCallback(
-    (event) => {
-      setValues((prevState) => ({
-        ...prevState,
-        [event.target.name]: event.target.value
-      }));
-    },
-    []
-  );
-
-  const handleSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-    },
-    []
-  );
 
   return (
-    <form
-      autoComplete="off"
-      noValidate
-      onSubmit={handleSubmit}
-    >
+   
       <Card   style={{ backgroundColor: colors.primary[500]}}>
         <CardHeader
           subheader="The information can be edited"
@@ -92,7 +68,7 @@ export const AccountTransaction = ({data}) => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-              Data
+             {data.TotalAmount}
             </Typography>
                 
               </Box>
@@ -101,77 +77,81 @@ export const AccountTransaction = ({data}) => {
                 xs={12}
                 md={6}
               >
-                <TextField
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={values.lastName}
-                />
+                <Box>
+
+               <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+              >
+             {data.GivenAmount}
+            </Typography>
+                
+              </Box>
               </Grid>
               <Grid
                 xs={12}
                 md={6}
               >
-                <TextField
-                  fullWidth
-                  label="Email Address"
-                  name="email"
-                  onChange={handleChange}
-                  required
-                  value={values.email}
-                />
+                <Box>
+
+               <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+              >
+            {data.InterestAmount}
+            </Typography>
+                
+              </Box>
               </Grid>
               <Grid
                 xs={12}
                 md={6}
               >
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  onChange={handleChange}
-                  type="number"
-                  value={values.phone}
-                />
+                <Box>
+
+               <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+              >
+         remaining:{}
+            </Typography>
+                
+              </Box>
               </Grid>
               <Grid
                 xs={12}
                 md={6}
               >
-                <TextField
-                  fullWidth
-                  label="Country"
-                  name="country"
-                  onChange={handleChange}
-                  required
-                  value={values.country}
-                />
+                <Box>
+
+               <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+              >
+           total collected: {collected}
+            </Typography>
+                
+              </Box>
               </Grid>
               <Grid
                 xs={12}
                 md={6}
               >
-                <TextField
-                  fullWidth
-                  label="Select State"
-                  name="state"
-                  onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.state}
-                >
-                  {states.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
+                <Box>
+
+               <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+              >
+             aa
+            </Typography>
+                
+              </Box>
               </Grid>
             </Grid>
           </Box>
@@ -183,6 +163,6 @@ export const AccountTransaction = ({data}) => {
           </Button>
         </CardActions>
       </Card>
-    </form>
+    
   );
 };

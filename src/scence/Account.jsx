@@ -3,6 +3,7 @@ import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/
 // import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { AccountProfile } from '../Account/AccountProfile';
 import{AccountTransaction} from '../Account/AccountTransaction';
+import{Transactions} from '../Account/Transactions';
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useCallback, useEffect,  } from "react";
@@ -34,7 +35,7 @@ const Account = () =>{
 
   }, [ALLUSERS]);
   
-  console.log(data,"dattttttt================>");
+  // console.log(data,"dattttttt================>");
 
 
 
@@ -86,6 +87,22 @@ return (
           </div>
         </Stack>
       </Container>
+    </Box>
+    <Box>
+    <Grid 
+              // container
+              spacing={3}
+            >
+              
+              <Grid
+                xs={12}
+                md={6}
+                lg={4}
+              >
+                <Transactions data={data}/>
+              </Grid>
+            </Grid>
+
     </Box>
   </>
 );
