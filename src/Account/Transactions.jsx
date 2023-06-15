@@ -15,7 +15,6 @@ import {
 import { tokens } from "../theme";
 import { applyPagination } from "../utils/applayPagination";
 import {
-
   Table,
   TableBody,
   TableCell,
@@ -24,156 +23,115 @@ import {
   TableRow,
 } from "@mui/material";
 
-export const Transactions = ({data}) => {
-
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
+export const Transactions = ({ data }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
 
   const [collected, setCollected] = useState([]);
-//   useEffect(() => {
-//     let trans = [];
-//     let pendingValues = [];
-//     let collectedValues = [];
-  
-//     if (data.Collected && data.Pending) {
-//       data.Pending.forEach((pending) => {
-//         pendingValues.push(pending);
-//         data.Collected.forEach((collected) => {
-//             collectedValues.push(collected);
-//             if (moment(pending.date).format("DD/MM/YYYY") === moment(collected.date).format("DD/MM/YYYY") ) {
 
-//             const detail = {
-//               pendingamount: pending.amount,
-//               pendingdate: pending.date,
-//               collectedamount: collected.amount,
-//               collecteddate: collected.date
-//             };
+  useEffect(() => {
+    let trans = [];
+    let pendingValues = [];
+    let collectedValues = [];
+    let TotalAmountHistory = [];
 
-//             trans.push(detail);
-//         }
-//     });
-//     console.log(trans,"transseess");
-// });
-//     } else if (data.Pending) {
-//       pendingValues = data.Pending;
-//     } else if (data.Collected) {
-//       collectedValues = data.Collected;
-//     }
-  
-//     // Print combined values
-//     trans.forEach((detail, index) => {
-//       console.log(`Detail ${index}:`);
-//       console.log('Pending:', detail.pendingamount, detail.pendingdate);
-//       console.log('Collected:', detail.collectedamount, detail.collecteddate);
-//     });
-  
-//     // Print pending values
-//     pendingValues.forEach((pending, index) => {
-//       console.log(`Pending ${index}:`);
-//       console.log('Pending:', pending.amount, pending.date);
-//     });
-  
-//     // Print collected values
-//     collectedValues.forEach((collected, index) => {
-//       console.log(`Collected ${index}:`);
-//       console.log('Collected:', collected.amount, collected.date);
-//     });
-//   }, [data]);
-  useEffect(() =>{
-      let trans = [];
-let pendingValues = [];
-let collectedValues = [];
-let TotalAmountHistory=[]
+    // data.TotalAmountHistory.forEach((val)=>{
+    //     TotalAmountHistory
 
-// data.TotalAmountHistory.forEach((val)=>{
-//     TotalAmountHistory
+    // })
 
-// })
+    if (data.Collected && data.Pending) {
+      data.Pending.forEach((pending) => {
+        const matchingCollected = data.Collected.find((collected) =>
+          moment(pending.date).isSame(collected.date, "day")
+        );
 
+        console.log(matchingCollected, "matchhhhh");
 
-if (data.Collected && data.Pending) {
-  data.Pending.forEach((pending) => {
+        if (matchingCollected) {
+          if (trans.some((detail) => detail.pendingdate === pending.date)) {
+            return; // Skip mapping pending value if there is already a match in 'trans'
+          }
 
-    const matchingCollected = data.Collected.find((collected) =>
-      moment(pending.date).isSame(collected.date, 'day')
-    );
-
-    console.log(matchingCollected,"matchhhhh");
-
-    if (matchingCollected) {
-      if (trans.some((detail) => detail.pendingdate === pending.date)) {
-        return; // Skip mapping pending value if there is already a match in 'trans'
-      }
-
-      trans.push({
-        pendingAmount: pending.pendingAmount,
-        // pendingdate: pending.date,
-        amount: matchingCollected.amount,
-        date: matchingCollected.date
+          trans.push({
+            pendingAmount: pending.pendingAmount,
+            // pendingdate: pending.date,
+            amount: matchingCollected.amount,
+            date: matchingCollected.date,
+          });
+        } else {
+          pendingValues.push(pending);
+          // collectedValues.push(collected);
+        }
       });
-    } else {
-        pendingValues.push(pending);
-        // collectedValues.push(collected);
+
+      collectedValues = data.Collected.filter(
+        (collected) =>
+          !trans.some((detail) => moment(detail.date).isSame(collected.date))
+      );
+    } else if (data.Pending) {
+      pendingValues.push(...data.Pending);
+    } else if (data.Collected) {
+      collectedValues.push(...data.Collected);
     }
-  });
 
-  collectedValues = data.Collected.filter((collected) =>
-    !trans.some((detail) => moment(detail.date).isSame(collected.date))
+    console.log("trannnns", trans);
+    console.log(pendingValues, "pendingValues");
+    console.log(collectedValues, "collectevalues");
+    // console.log(data.Collected,"collectevaluetttts");
+// const newarr=[];
 
-  );
-} else if (data.Pending) {
-  pendingValues.push(...data.Pending);
-} else if (data.Collected) {
-  collectedValues.push(...data.Collected);
-}
+// const match = trans.concat(collectedValues.concat(pendingValues));
 
-console.log("trannnns",trans);
-console.log(pendingValues,"pendingValues");
-console.log(collectedValues,"collectevalues");
-// console.log(data.Collected,"collectevaluetttts");
+//     match.map((val)=>{
+//         data.TotalAmountHistory.map((valval)=>{
+//           const newobj={
+//             ...val,
+//             reming: valval
+//            }
 
+//        newarr.push(newobj)
+//     })
 
-
-const match=trans.concat(collectedValues.concat(pendingValues))
-
-console.log(match,"concat");
-setCollected(match)
-// // Print combined values
-// trans.forEach((detail, index) => {
-//   console.log(`Detail ${index}:`);
-//   console.log('Pending:', detail.pendingamount, detail.pendingdate);
-//   console.log('Collected:', detail.collectedamount, detail.collecteddate);
-// });
-
-// // Print pending values
-// pendingValues.forEach((pending, index) => {
-//   console.log(`Pending ${index}:`);
-//   console.log('Pending:', pending.pendingamount, pending.pendingdate);
-// });
-
-// // Print collected values
-// collectedValues.forEach((collected, index) => {
-//   console.log(`Collected ${index}:`);
-//   console.log('Collected:', collected.collectedamount, collected.collecteddate);
-// });
-
-},[data])
+//     })
+//      console.log(newarr,"totalamounthistory");
 
 
-
-console.log(collected,"lllllllllllllllllllllll");
+//     // const newmatch=match.map((val) =>
+//     //   data.TotalAmountHistory.map((d) => {
+//     //     return { ...val, d };
+//     //   })
+//     // );
 
 
 
 
+//     console.log(match, "concat");
+
+//     setCollected(match);
+   
+//   }, [data]);
 
 
+const match = trans.concat(collectedValues.concat(pendingValues));
 
+console.log("match", match);
 
+// Combine TotalAmountHistory with each element in match
+const combinedData = match.map((element, index) => ({
+  ...element,
+  reming: data.TotalAmountHistory[index % data.TotalAmountHistory.length],
+}));
 
+console.log("combinedData", combinedData);
 
-const useCustomers = (page, rowsPerPage) => {
+setCollected(combinedData);
+}, [data]);
+
+  console.log(collected, "lllllllllllllllllllllll");
+
+  const useCustomers = (page, rowsPerPage) => {
     // console.log(collected, "pageeeee");
     return useMemo(() => {
       return applyPagination(collected, page, rowsPerPage);
@@ -192,8 +150,7 @@ const useCustomers = (page, rowsPerPage) => {
   const customers = useCustomers(page, rowsPerPage);
 
   const customersIds = useCustomerIds(customers);
-//   console.log(customersIds, "sgdsghvgiiis");
-
+  //   console.log(customersIds, "sgdsghvgiiis");
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -209,13 +166,10 @@ const useCustomers = (page, rowsPerPage) => {
         <Table>
           <TableHead>
             <TableRow>
-             
               <TableCell>Date</TableCell>
               <TableCell>Collected</TableCell>
               <TableCell>Pending</TableCell>
               <TableCell>Remaing</TableCell>
-              
-              
             </TableRow>
           </TableHead>
           <TableBody>
@@ -229,11 +183,11 @@ const useCustomers = (page, rowsPerPage) => {
                       </Typography>
                     </Stack>
                   </TableCell>
-                  <TableCell>{customer.amount}</TableCell>
-                  <TableCell>{customer.pendingAmount}</TableCell>
-                  <TableCell>{}</TableCell>
-                 
-                 
+                  <TableCell>{customer.amount ? customer.amount : 0}</TableCell>
+                  <TableCell>
+                    {customer.pendingAmount ? customer.pendingAmount : 0}
+                  </TableCell>
+                  <TableCell>{customer.reming}</TableCell>
                 </TableRow>
               );
             })}
@@ -256,4 +210,4 @@ const useCustomers = (page, rowsPerPage) => {
     </Box>
   );
 };
-// }
+

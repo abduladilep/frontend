@@ -66,45 +66,6 @@ function CollectedReport() {
   }, [ALLUSERS]);
 
   
-
-  // useEffect(() => {
-  //   if (ALLUSERS && Array.isArray(ALLUSERS)) {
-  //     const collectedData = [];
-  
-  //     ALLUSERS.forEach((user) => {
-  //       if (user.Collected && Array.isArray(user.Collected)) {
-  //         user.Collected.forEach((collectedItem) => {
-  //           const userDetails = {
-  //             ...user,
-  //             amount: collectedItem.amount
-  //           };
-  //           collectedData.push(userDetails);
-  //           console.log(userDetails, "is the user's details");
-  //         });
-  //       }
-  //     });
-  
-  //     console.log(collectedData, "array");
-  //     setData(collectedData);
-  //   }
-  // }, [ALLUSERS]);
-  
-  
-
-  // useEffect(() => {
-  //   if (ALLUSERS) {
-  //     const collectedData = [];
-  //     ALLUSERS.forEach((user) => {
-  //       if (user.Collected) {
-  //         user.Collected.forEach((value) => {
-  //           collectedData.push(value);
-  //         });
-  //       }
-  //     });
-  //     setData(collectedData);
-  //   }
-  // }, [ALLUSERS]);
-
   
   console.log(data, "collected report");
   

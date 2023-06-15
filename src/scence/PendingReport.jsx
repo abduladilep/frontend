@@ -54,7 +54,7 @@ function CollectedReport() {
           console.log(value, "is the value from mpl...");
           const userDetails={
             ...user,
-            amount: value.amount,
+            amount: value.pendingAmount,
             date: value.date,
           }
 
