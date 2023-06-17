@@ -31,20 +31,38 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import { collectionList } from "../Redux/Actions/userAction";
+
 
 function CollectionReport() {
 
 
   const dispatch=useDispatch()
+  const{COLLECTIONS}=useSelector((state)=>state.collection)
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const collectionList = async () => {
-      const response = await axios.get("/api/user/collectionList");
-      setData(response.data.todayDates);
-    };
-    collectionList();
-  }, []);
+//   useEffect(() => {
+//     const collectionList = async () => {
+//       const response = await axios.get("/api/user/collectionList");
+//       setData(response.data.todayDates);
+// console.log(response,"resspoooooooooooooooo");
+
+//     };
+//     collectionList();
+//   }, []);
+
+useEffect(() => {
+  dispatch(collectionList())
+}, [])
+
+useEffect(() => {
+  setData(COLLECTIONS)
+
+}, [COLLECTIONS])
+
+
+
+
   console.log(data, "collecbbbbtion");
 
   const useCustomers = (page, rowsPerPage) => {
@@ -104,6 +122,7 @@ function CollectionReport() {
   const handleOk = (values) => {
     console.log(values, "handle  ");
     dispatch(handlePaymentRequest(values));
+    
     
     setIsModalOpen(false);
   };
@@ -190,7 +209,7 @@ function CollectionReport() {
                   <TableCell>{customer.Address}</TableCell>
                   <TableCell>{customer.MobileNo}</TableCell>
                   <TableCell>{customer.CollectionAmount}</TableCell>
-                  <TableCell>{customer.CollectionAmount}</TableCell>
+                  {/* <TableCell>{customer.CollectionAmount}</TableCell> */}
                   <TableCell>
                     <Typography color={colors.grey[100]}>
                       <Button

@@ -31,6 +31,7 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import axios from "axios";
 
 function CollectedReport() {
   const { ALLUSERS } = useSelector((state) => state.users);
@@ -44,7 +45,20 @@ function CollectedReport() {
     dispatch(allUsers());
   }, []);
 
+  
   useEffect(() => {
+    const collectionList = async () => {
+      const response = await axios.get("/api/user/collectionList");
+      // setData(response.data.todayDates);
+    };
+    collectionList();
+  }, []);
+
+
+  useEffect(() => {
+
+
+
     const Collected = [];
     if (ALLUSERS) { 
       const collectedUsers = ALLUSERS.filter((user) => user.Pending);
@@ -52,13 +66,17 @@ function CollectedReport() {
         console.log(user, "is the user...");
         user?.Pending.forEach((value) => {
           console.log(value, "is the value from mpl...");
+        if(value.pendingAmount<=0){
+          console.log("vha");
+        } else {
           const userDetails={
             ...user,
             amount: value.pendingAmount,
             date: value.date,
           }
-
           Collected.push(userDetails);
+          }
+
         });
       });
     }

@@ -23,22 +23,22 @@ export const AccountTransaction = ({data}) => {
     const[pending,setPending] = useState()
     const[collected,setCollected] = useState()
     
-    useEffect(() => {
-   if(data && data.Collected) {
-    //  let sumOfColected =0
+  //   useEffect(() => {
+  //  if(data && data.Collected) {
+  //   //  let sumOfColected =0
 
-    const sumOfColected= data.Collected.reduce((sum,element) => {
-    console.log(element.amount);
-     return sum + parseFloat(element.amount)
-    },0)
+  //   const sumOfColected= data.Collected.reduce((sum,element) => {
+  //   console.log(element.amount);
+  //    return sum + parseFloat(element.amount)
+  //   },0)
     
-      setCollected(sumOfColected)
+  //     setCollected(sumOfColected)
   
 
     
-   }
+  //  }
    
-  }, [data]);
+  // }, [data]);
 
    
 
@@ -100,7 +100,7 @@ export const AccountTransaction = ({data}) => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-            {data.InterestAmount}
+           total interst: {data.InterestAmount}
             </Typography>
                 
               </Box>
@@ -116,7 +116,7 @@ export const AccountTransaction = ({data}) => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-         remaining:{}
+         total profit:{data.TotalProfit}
             </Typography>
                 
               </Box>
@@ -132,7 +132,7 @@ export const AccountTransaction = ({data}) => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-           total collected: {collected}
+           total collected: {data.TotalCollected}
             </Typography>
                 
               </Box>
@@ -148,7 +148,7 @@ export const AccountTransaction = ({data}) => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-             aa
+             total pending:{data.TotalPendingAmount}
             </Typography>
                 
               </Box>

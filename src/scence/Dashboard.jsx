@@ -13,15 +13,18 @@ import {
 } from "@mui/material";
 import { tokens } from "../theme";
 import { useMode } from "../theme";
+import moment from "moment";
 
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import CurrencyDollarIcon from "@heroicons/react/24/solid/CurrencyDollarIcon";
-import BanknotesIcon  from "@heroicons/react/24/solid/BanknotesIcon";
+import BanknotesIcon from "@heroicons/react/24/solid/BanknotesIcon";
 
-import React from "react";
-
-
-
+import React, { useEffect, useState } from "react";
+import Overview from "./components/overview";
+import { useDispatch, useSelector } from "react-redux";
+import { allUsers } from "../Redux/Actions/userAction";
+import AllUsers from "./AllUser";
+import { collectionList } from "../Redux/Actions/userAction";
 
 // const styles = {
 //   card: {
@@ -34,10 +37,171 @@ function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const [overview, setOverview] = useState({
+    InvestmentAmount: "",
+    InterestAmount:"",
+    TotalAmount: "",
+    TotalProfit: "",
+    TotalCollected: "",
+    TotalPending: "",
+    TodayProfit:"",
+    TodayCollected: "",
+    TodayPending: "",
+  });
+
+
+  const{COLLECTIONS}=useSelector((state)=>state.collection)
+
+  const { ALLUSERS } = useSelector((state) => state.users);
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(collectionList())
+  }, [])
+
+  useEffect(() => {
+    dispatch(allUsers());
+  }, []);
+
+
+  useEffect(() => {
+    if (ALLUSERS) {
+      const {
+        sumGivenAmount,
+        sumTotalProfit,
+        sumTotalCollected,
+        sumTotalAmount,
+        sumIntrestAmount,
+        sumTotalPendingAmount,
+      } = ALLUSERS.reduce(
+        (totals, user) => {
+          totals.sumGivenAmount += parseFloat(user.GivenAmount);
+          totals.sumIntrestAmount += parseFloat(user.InterestAmount);
+          totals.sumTotalAmount += parseFloat(user.TotalAmount);
+          totals.sumTotalPendingAmount += parseFloat(user.TotalPendingAmount);
+
+
+          if (user.TotalProfit && !isNaN(user.TotalProfit)) {
+            totals.sumTotalProfit += parseFloat(user.TotalProfit);
+          }
+          if (user.TotalCollected && !isNaN(user.TotalCollected)) {
+            totals.sumTotalCollected += parseFloat(user.TotalCollected);
+          }
+          return totals;
+        },
+        {
+          sumGivenAmount: 0,
+          sumTotalProfit: 0,
+          sumTotalCollected: 0,
+          sumTotalAmount: 0,
+          sumIntrestAmount: 0,
+          sumTotalPendingAmount:0,
+        }
+
+
+
+      );
+      
+const currentDate = new Date();
+
+const todayprofit = ALLUSERS.filter((user) => user.TodayProfit  );
+const todaycollected =ALLUSERS.filter((user) => user.Collected );
+const todaypending =ALLUSERS.filter((user) => user.Pending );
+
+   
+let profitSum = 0;
+let collectedSum = 0;
+let pendingSum = 0;
+
+todayprofit.forEach((user) => {
+  user?.TodayProfit.forEach((profit) => {
+    console.log(profit,"profittt"); // Log the value of the 'profit' array
+  const profitDate=new Date(profit.date)
+    console.log(profitDate,"sgdashd");
+    if (moment(profitDate).format("DD/MM/YYYY")===moment(currentDate).format("DD/MM/YYYY") ) {
+ 
+      if (typeof  parseFloat(profit.Profit) === 'number') {
+        console.log("number");
+        profitSum += parseFloat(profit.Profit);
+        
+      }
+    }
+  });
+ 
+});
+const todayProfit= profitSum
+
+todaycollected.forEach((user) => {
+  user?.Collected.forEach((collected) => {
+    console.log(collected,"collected"); // Log the value of the 'profit' array
+  const collectedDate=new Date(collected.date)
+    console.log(collectedDate,"cooooooooooooooo");
+    if (moment(collectedDate).format("DD/MM/YYYY")===moment(currentDate).format("DD/MM/YYYY") ) {
+ 
+      if (typeof parseFloat(collected.amount) === 'number') {
+        console.log("number");
+        collectedSum += parseFloat(collected.amount);
+        
+      }
+    }
+  });
+ 
+});
+  const todayCollected= collectedSum
+
+
+
+  todaypending.forEach((user) => {
+    user?.Pending.forEach((pending) => {
+    const pendingDate=new Date(pending.date)
+      if (moment(pendingDate).format("DD/MM/YYYY")===moment(currentDate).format("DD/MM/YYYY") ) {
+   
+        if (typeof parseFloat(pending.pendingAmount) === 'number') {
+          pendingSum += parseFloat(pending.pendingAmount);
+          
+        }
+      }
+    });
+   
+  });
+ const todayPending =pendingSum
+
+
+console.log(collectedSum,"date"); // Log the value of 'currentDate'
+console.log(profitSum, "popopoooo"); // Log the value of 'prosum'
+
+console.log(typeof tdy,"typeeeeeeeeeeeeintrest");
+
+
+
+setOverview({
+  InvestmentAmount: sumGivenAmount,
+  InterestAmount:sumIntrestAmount,
+  TotalAmount: sumTotalAmount,
+  TotalProfit: sumTotalProfit,
+  TotalCollected: sumTotalCollected,
+  TodayProfit:todayProfit,
+  TodayCollected:todayCollected,
+  TotalPending: sumTotalPendingAmount,
+  TodayPending:todayPending,
+        
+        
+        
+      })
+      // console.log(typeof todayprofit,"tyrr");
+      console.log("sumTotalAmount", sumTotalAmount);
+      console.log("sumGivenAmount", sumGivenAmount);
+      console.log("sumTotalProfit", sumTotalProfit);
+
+      console.log("sumTotalCollected", sumTotalCollected);
+      console.log("sumIntrestAmount", sumIntrestAmount);
+    }
+  }, [ALLUSERS]);
+
   return (
-    
     <Box m="20px">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between">
         {/* <Header title="Dashboard" subtitle="Dashboard"/> */}
         <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
           Dashboard
@@ -65,131 +229,11 @@ function Dashboard() {
         }}
       >
         <Container maxWidth="xl">
-          <Grid container spacing={8}>
-            <Grid xs={12} sm={6} lg={3}>
-              <Card style={{ backgroundColor: colors.primary[400] }}>
-                <CardContent>
-                  <Stack
-                    alignItems="flex-start"
-                    direction="row"
-                    justifyContent="space-between"
-                    spacing={-2}
-                  >
-                    <Stack spacing={1}>
-                      <Typography color="text.secondary" variant="overline">
-                        total Investment
-                      </Typography>
-                      {/* <Stack spacing={1}  mt="50px" > */}
-                      <Typography variant="h1"> $223485656</Typography>
-                      {/* </Stack> */}
-                    </Stack>
-                    <Stack alignItems="flex-end">
-                      <Avatar
-                        sx={{
-                          backgroundColor: "error.main",
-                          height: 56,
-                          width: 56,
-                        }}
-                      >
-                        <SvgIcon>
-                          <CurrencyDollarIcon />
-                        </SvgIcon>
-                      </Avatar>
-                    </Stack>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid xs={12} sm={6} lg={3}>
-              <Card style={{ backgroundColor: colors.primary[400] }}>
-                <CardContent>
-                  <Stack
-                    alignItems="flex-start"
-                    direction="row"
-                    justifyContent="space-between"
-                    spacing={2}
-                  >
-                    <Stack spacing={1}>
-                      <Typography color="text.secondary" variant="overline">
-                       Today collection
-                      </Typography>
-                      <Typography variant="h1">$233434</Typography>
-                    </Stack>
-                    <Avatar
-                      sx={{
-                        backgroundColor: "",
-                        height: 60,
-                        width: 56,
-                      }}
-                    >
-                      <SvgIcon>
-                        <BanknotesIcon  className="text-gray-500" />
-                      </SvgIcon>
-                    </Avatar>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid xs={12} sm={6} lg={3}>
-              <Card style={{ backgroundColor: colors.primary[400] }}>
-                <CardContent>
-                  <Stack
-                    alignItems="flex-start"
-                    direction="row"
-                    justifyContent="space-between"
-                    spacing={2}
-                  >
-                    <Stack spacing={1}>
-                      <Typography color="text.secondary" variant="overline">
-                        total Investment
-                      </Typography>
-                      <Typography variant="h1">$233434</Typography>
-                    </Stack>
-                    <Avatar
-                      sx={{
-                        backgroundColor: "error.main",
-                        height: 60,
-                        width: 56,
-                      }}
-                    >
-                      <SvgIcon>
-                        <CurrencyDollarIcon />
-                      </SvgIcon>
-                    </Avatar>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid xs={12} sm={6} lg={3}>
-              <Card style={{ backgroundColor: colors.primary[400] }}>
-                <CardContent>
-                  <Stack
-                    alignItems="flex-start"
-                    direction="row"
-                    justifyContent="space-between"
-                    // spacing={3}
-                  >
-                    <Stack spacing={1}>
-                      <Typography color="text.secondary" variant="overline">
-                        Total Profit
-                      </Typography>
-                      <Typography variant="h1">$123456666</Typography>
-                    </Stack>
-                    <Avatar
-                      sx={{
-                        backgroundColor: "success.main",
-                        height: 56,
-                        width: 56,
-                      }}
-                    >
-                      <SvgIcon>
-                        <CurrencyDollarIcon />
-                      </SvgIcon>
-                    </Avatar>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid>
+          <Grid container spacing={2}>
+            <Overview heading="Total Investment" amount={overview.InvestmentAmount}   subAmount={overview.InterestAmount} />
+            <Overview heading="Total Profit" amount= {Math.round(overview.TotalProfit)}  subAmount={Math.round(overview.TodayProfit)} />
+            <Overview heading="Total Collected"amount={overview.TotalCollected} subAmount={overview.TodayCollected}  />
+            <Overview heading="Total Pending" amount={Math.round(overview.TotalPending)}  subAmount={overview.TodayPending}/>
           </Grid>
         </Container>
       </Box>

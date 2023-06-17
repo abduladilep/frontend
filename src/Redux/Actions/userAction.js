@@ -10,6 +10,7 @@ export const addUser =(reqObj)=>async dispatch => {
        const response= await axios.post('/api/user/addUser',reqObj)
        localStorage.setItem('User',JSON.stringify(response.data))
 
+
        console.log(response.data,"respoooo");
         
     } catch (error) {
@@ -33,14 +34,17 @@ export const allUsers =(reqObj) => async dispatch=>{
     }
 }
 
-// export const collectionList=(reqObj)=> async dispatch=>{
-//     try {
-//         const response= await axios.get('/api/user/collectionList',reqObj);
+export const collectionList=(reqObj)=> async dispatch=>{
+    try {
+        const response= await axios.get('/api/user/collectionList');
+        console.log("popopo",response.data);
+
+        dispatch({type:"GET_ALL_COLLECTION",payload:response.data.todayDates})
         
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // export const allUsers = () => {
 //     return axios.get('/api/user/allUsers')
@@ -55,8 +59,11 @@ export const allUsers =(reqObj) => async dispatch=>{
 export const handlePaymentRequest =(reqObj)=>async dispatch=>{
     const paymentResponse = await axios.post("/api/user/pay",reqObj)
     console.log("paymentResponse",paymentResponse);
-    message.success(paymentResponse.data);
-    message.error(paymentResponse.data);
+
+
+
+    message.success(reqObj.amount);
+    message.error(reqObj.amount);
     
 
 
