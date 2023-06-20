@@ -3,10 +3,15 @@ import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
 import moment from "moment";
+import { CustomerSearch } from "../scence/components/customerSearch";
+import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
+
 
 import {
   Box,
   Button,
+  InputAdornment, OutlinedInput,
+  Card,
   // Container,
   Stack,
   SvgIcon,
@@ -37,56 +42,125 @@ function CollectedReport() {
 
   const dispatch = useDispatch();
 
+  const [searchKey, setSearchKey] = useState("");
   const [data, setData] = useState([]);
-  
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    dispatch(allUsers());
+    if (ALLUSERS.length === 0) {
+      dispatch(allUsers());
+    }
   }, []);
+
 
   useEffect(() => {
     const Collected = [];
-    if (ALLUSERS) { 
+
+    if (ALLUSERS) {
       const collectedUsers = ALLUSERS.filter((user) => user.Collected);
       collectedUsers.forEach((user) => {
         console.log(user, "is the user...");
         user?.Collected.forEach((value) => {
           console.log(value, "is the value from mpl...");
-          const userDetails={
-            ...user,  
-            amount: value.amount,      
+          const userDetails = {
+            ...user,
+            amount: value.amount,
             date: value.date,
-          }
+          };
 
           Collected.push(userDetails);
         });
       });
     }
+
+
+   
+   
+
+
+    // const filteredData = Collected.filter(
+    //   (customer) =>
+    //   customer.Name.toLowerCase().includes(searchKey.toLowerCase()) ||
+    //   customer.MobileNo.includes(searchKey)
+    //   // Add more conditions if needed for other fields
+    //   );
+    //   console.log(filteredData,"saearccj");
+
+      // setSearchKey(Collected)
+      // setFilteredData(Collected);
+
     setData(Collected);
+    setFilteredData(Collected);
+  
   }, [ALLUSERS]);
 
+  // const handleSearchChange = (e) => {
+  //   if(e.target.value === null){
+  //     setData(filteredData)
+  //     console.log(filteredData,"fill");
+      
+  //   }else{
+  //     console.log(filteredData,"fill");
+
+  //    const filteredDat= filteredData?.filter(
+  //         (customer) =>
+  //         customer?.Name.toLowerCase().includes(e.target.value.toLowerCase()) 
+  //         // customer.MobileNo.includes(searchKey)
+  //         ) 
+  //         setData(filteredDat)
+  //     }
+  //   setFilteredData(e.target.value);
+  //   console.log(e.target.value,"targettt");
+  // };
+
+  const handleSearchChange = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+  
+    if (searchValue === "") {
+      setData(data); // Reset data to the original unfiltered data
+    } else {
+      const filteredData = data.filter(
+        (customer) => customer?.Name.toLowerCase().includes(searchValue)
+      );
+      setData(filteredData);
+    }
+  
+    setFilteredData(e.target.value);
+  };
   
 
-
+  // const handleSearchChange = (e) => {
+  //   const searchValue = e.target.value.toLowerCase();
   
+  //   if (searchValue === "") {
+  //     setData(data); // Reset to original data if search value is empty
+  //   } else {
+  //     const filteredData = data.filter((customer) =>
+  //       customer?.Name.toLowerCase().includes(searchValue)
+  //     );
+  //     setData(filteredData);
+  //   }
+  // };
+  
+
   console.log(data, "collected report");
-  
+
   const useCustomers = (page, rowsPerPage) => {
-    console.log(data,  "pageeeee");
+    console.log(data, "pageeeee");
     return useMemo(() => {
       return applyPagination(data, page, rowsPerPage);
     }, [data, page, rowsPerPage]);
   };
-  
+
   const useCustomerIds = (customers) => {
     return useMemo(() => {
       return customers.map((customer) => customer.id);
     }, [customers]);
   };
-  
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  
+
   const customers = useCustomers(page, rowsPerPage);
 
   // console.log(customers.id,"uuuuuuu");
@@ -132,6 +206,35 @@ function CollectedReport() {
           </Button>
         </Box>
       </Box>
+      {/* <CustomerSearch setSearchKey={setSearchKey} /> */}
+      
+  <Card sx={{ p: 2 }}>
+    <OutlinedInput
+      defaultValue=""
+      fullWidth
+      placeholder="Search company"
+      startAdornment={(
+        <InputAdornment position="start" 
+        >
+          <SvgIcon
+            color="action"
+            fontSize="small"
+          >
+            <MagnifyingGlassIcon />
+          </SvgIcon>
+          {/* {serachKey.trim().length > 0 && <CollectionReport searchKey={serachKey} />} */}
+
+        </InputAdornment>
+      )}
+      sx={{ maxWidth: 500 }}
+      // onChange={(e)=>{
+      //   console.log(e.target.value,'is the value fromt the onchange.')
+      // }}
+      onChange={handleSearchChange}
+      
+    />
+  </Card>
+
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>
         <Table>
@@ -164,7 +267,7 @@ function CollectedReport() {
               // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
               // const createdAt = toDate(customer.createdAt);
               // const formattedDate = format(createdAt, 'dd/MM/yyyy')
-              
+
               return (
                 <TableRow key={customer.id} hover>
                   <TableCell>
@@ -175,7 +278,6 @@ function CollectedReport() {
                       <Typography variant="subtitle2">
                         {moment(customer.date).format("DD/MM/YYYY")}{" "}
                         {/* {customer.date} */}
-                        
                       </Typography>
                     </Stack>
                   </TableCell>

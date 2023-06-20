@@ -36,6 +36,7 @@ import { collectionList } from "../Redux/Actions/userAction";
 
 function CollectionReport() {
 
+  // const { users, loading, error } = useSearchUsers(searchKey);
 
   const dispatch=useDispatch()
   const{COLLECTIONS}=useSelector((state)=>state.collection)
@@ -120,9 +121,7 @@ useEffect(() => {
     setIsModalOpen(true);
   };
   const handleOk = (values) => {
-    console.log(values, "handle  ");
     dispatch(handlePaymentRequest(values));
-    
     
     setIsModalOpen(false);
   };

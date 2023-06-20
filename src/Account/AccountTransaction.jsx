@@ -1,4 +1,5 @@
 import { useCallback, useState,useEffect } from 'react';
+import { Modal } from "antd";
 import {
   Box,
   useTheme,
@@ -12,37 +13,50 @@ import {
   Typography,
   Unstable_Grid2 as Grid
 } from '@mui/material';
+import { useDispatch, useSelector } from "react-redux";
 
+import { allUsers } from "../Redux/Actions/userAction";
+import { handleTransactionPay } from "../Redux/Actions/userAction";
 import { tokens } from "../theme";
 
 
 export const AccountTransaction = ({data}) => {
   const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    
-    const[pending,setPending] = useState()
-    const[collected,setCollected] = useState()
-    
-  //   useEffect(() => {
-  //  if(data && data.Collected) {
-  //   //  let sumOfColected =0
+    const dispatch = useDispatch();
+    const { ALLUSERS } = useSelector((state) => state.users);
 
-  //   const sumOfColected= data.Collected.reduce((sum,element) => {
-  //   console.log(element.amount);
-  //    return sum + parseFloat(element.amount)
-  //   },0)
+    console.log(data._id,"iiiiii");
     
-  //     setCollected(sumOfColected)
+    
+   
+   
+    // const [userId, setUserId] = useState("");
   
-
+  const [payObj, setPayOjb] = useState({
+    userId: "",
+    amount: "",
+  });
     
-  //  }
-   
-  // }, [data]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-   
+  const showModal = () => {
+    // setUserId(userid);
+    setIsModalOpen(true);
+  };
+  const handleOk = (values) => {
+    console.log(values, "handle  ");
+    dispatch(handleTransactionPay(values));
+    // dispatch(allUsers())
+    // setData(ALLUSERS.find(o => o._id === customerId))
+    setIsModalOpen(false);
+  };
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
+const userId=data._id
 
   return (
    
@@ -116,7 +130,7 @@ export const AccountTransaction = ({data}) => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-         total profit:{data.TotalProfit}
+         total profit:{Math.round(data.TotalProfit)}
             </Typography>
                 
               </Box>
@@ -158,10 +172,35 @@ export const AccountTransaction = ({data}) => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+          <Button variant="contained"
+         onClick={() => showModal()}>
             Save details
           </Button>
         </CardActions>
+
+
+        {isModalOpen && (
+                    <Modal
+                      title="Pay"
+                      open={isModalOpen}
+                      onOk={()=>handleOk(payObj)}
+                      onCancel={handleCancel}
+                    >
+                      <input
+                        // value={payObj.value}
+                        // id={customer.userId}
+                        // defaultValue={customer.CollectionAmount}
+                        cols="30"
+                        rows="10"
+                        onChange={(e) => {
+                          const value = { ...payObj };
+                          value.amount = e.target.value;
+                          value.userId=userId
+                          setPayOjb(value);
+                        }}
+                      ></input>
+                    </Modal>
+                  )}
       </Card>
     
   );

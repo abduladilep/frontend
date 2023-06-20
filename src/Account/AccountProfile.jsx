@@ -14,19 +14,18 @@ import {
   import { tokens } from "../theme";
 
   
-  const user = {
-    avatar: '/assets/avatars/avatar-anika-visser.png',
-    city: 'Los Angeles',
-    country: 'USA',
-    jobTitle: 'Senior Developer',
-    name: 'Anika Visser',
-    timezone: 'GTM-7'
-  };
+  // const user = {
+  //   avatar: '/assets/avatars/avatar-anika-visser.png',
+  //   city: 'Los Angeles',
+  //   country: 'USA',
+  //   jobTitle: 'Senior Developer',
+  //   name: 'Anika Visser',
+  //   timezone: 'GTM-7'
+  // };
   
   export function AccountProfile({data}){
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    console.log("sgcgzshvcghsdhgsdgh");
     
    
   return (

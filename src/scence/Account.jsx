@@ -81,7 +81,10 @@ return (
                 md={6}
                 lg={8}
               >
-                <AccountTransaction data={data}/>
+                <AccountTransaction
+                // customerId={customerId}
+                // setData={setData}
+                 data={data}/>
               </Grid>
             </Grid>
           </div>
