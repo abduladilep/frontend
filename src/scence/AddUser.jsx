@@ -62,44 +62,45 @@ const userSchema = Yup.object().shape({
   //   .required("Please Enter the amount"),
 
   Photo: Yup.mixed()
-    .test(
-      "fileType",
-      "Invalid file type, only JPG and PNG are allowed",
-      (value) => {
-        if (!value) return true; // allow empty values
-        const supportedFormats = ["image/jpeg", "image/png"];
-        return supportedFormats.includes(value.type);
-      }
-    )
-    .test(
-      "fileSize",
-      "Image size is too large, maximum size is 5MB",
-      (value) => {
-        if (!value) return true; // allow empty values
-        const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
-        return value.size <= maxFileSize;
-      }
-    ),
+    // .test(
+    //   "fileType",
+    //   "Invalid file type, only JPG and PNG are allowed",
+    //   (value) => {
+    //     if (!value) return true; // allow empty values
+    //     const supportedFormats = ["image/jpeg", "image/png"];
+    //     return supportedFormats.includes(value.type);
+    //   }
+    // )
+    // .test(
+    //   "fileSize",
+    //   "Image size is too large, maximum size is 5MB",
+    //   (value) => {
+    //     if (!value) return true; // allow empty values
+    //     const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+    //     return value.size <= maxFileSize;
+    //   }
+    // )
+    ,
   IdProof: Yup.mixed()
-    .test(
-      "fileType",
-      "Invalid file type, only JPG and PDF are allowed",
-      (value) => {
-        if (!value) return true; // allow empty values
-        const supportedFormats = ["image/jpeg", "application/pdf"];
-        return supportedFormats.includes(value.type);
-      }
-    )
-    .test(
-      "fileSize",
-      "Image size is too large, maximum size is 2MB",
-      (value) => {
-        if (!value) return true; // allow empty values
-        const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
-        return value.size <= maxFileSize;
-      }
-    )
-    .required("Please upload an ID proof image"),
+    // .test(
+    //   "fileType",
+    //   "Invalid file type, only JPG and PDF are allowed",
+    //   (value) => {
+    //     if (!value) return true; // allow empty values
+    //     const supportedFormats = ["image/jpeg", "application/pdf"];
+    //     return supportedFormats.includes(value.type);
+    //   }
+    // )
+    // .test(
+    //   "fileSize",
+    //   "Image size is too large, maximum size is 2MB",
+    //   (value) => {
+    //     if (!value) return true; // allow empty values
+    //     const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
+    //     return value.size <= maxFileSize;
+    //   }
+    // )
+    // .required("Please upload an ID proof image"),
 
   //   collectionDate: Yup.date()
   // .typeError("Please enter a valid date")

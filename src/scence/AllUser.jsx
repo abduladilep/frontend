@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
 import { Link } from 'react-router-dom'
+import { CustomerSearch } from "../scence/components/customerSearch";
+
 
 import {
   Box,
@@ -38,6 +40,8 @@ function AllUsers() {
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+
 
 
   useEffect(() => {
@@ -45,8 +49,27 @@ function AllUsers() {
   },[]);
 
   useEffect(() => {   
-    setData(ALLUSERS);
-  }, [ALLUSERS]);
+
+
+    const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+    const nameStartsWith = [];
+    const nameIncludes = [];
+    
+    ALLUSERS.forEach((customer) => {
+      const name = customer?.Name.toLowerCase();
+      
+      if (name.startsWith(searchValue)) {
+        nameStartsWith.push(customer);
+      } else if (name.includes(searchValue)) {
+        nameIncludes.push(customer);
+      }
+    });
+    
+    const filteredData = nameStartsWith.concat(nameIncludes);
+      setData(filteredData);
+
+    // setData(ALLUSERS);
+  }, [ALLUSERS,searchKey]);
 
   console.log("datas only", data);
 
@@ -67,7 +90,9 @@ function AllUsers() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const customers = useCustomers(page, rowsPerPage);
-    const customersIds = useCustomerIds(customers);
+    // const customersIds = useCustomerIds(customers);
+    // console.log(customers._id,"uuuuuuu");
+
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -111,6 +136,8 @@ function AllUsers() {
           </Button>
         </Box>
       </Box>
+      <CustomerSearch setSearchKey={setSearchKey} />
+
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>
         <Table>

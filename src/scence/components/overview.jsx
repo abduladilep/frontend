@@ -13,7 +13,7 @@ import {
 import { tokens } from "../../theme";
 import React from "react";
 
-const Overview = ({ heading ,amount,subAmount}) => {
+const Overview = ({ heading ,amount,subAmount,subHeading}) => {
     // const parsedSubAmount = parseFloat(subAmount);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -69,7 +69,7 @@ const Overview = ({ heading ,amount,subAmount}) => {
           >
             <Stack spacing={1}>
               <Typography color="text.secondary" variant="overline">
-              tota
+              {subHeading}
               </Typography>
               {/* <Stack spacing={1}  mt="50px" > */}
               <Typography variant="h1"> ${subAmount}</Typography>

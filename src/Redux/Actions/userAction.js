@@ -76,3 +76,10 @@ export const handleTransactionPay=(reqObj)=>async dispatch=>{
     console.log("transactionPayResponse: " + transactionPayResponse);
 }
 
+
+
+export const updateUser=(reqObj) => async dispatch=>{
+    const updatedUserResponse = await axios.post("/api/user/updateUser",reqObj)
+
+    console.log(updatedUserResponse.data, "resspoupdata updated");
+}

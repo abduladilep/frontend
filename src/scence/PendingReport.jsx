@@ -2,6 +2,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
+import { CustomerSearch } from "../scence/components/customerSearch";
+
 import moment from "moment";
 
 import {
@@ -32,6 +34,7 @@ import {
   TableRow,
 } from "@mui/material";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function CollectedReport() {
   const { ALLUSERS } = useSelector((state) => state.users);
@@ -39,6 +42,8 @@ function CollectedReport() {
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+
   let Collected = [];
 
   useEffect(() => {
@@ -46,13 +51,13 @@ function CollectedReport() {
   }, []);
 
   
-  useEffect(() => {
-    const collectionList = async () => {
-      const response = await axios.get("/api/user/collectionList");
-      // setData(response.data.todayDates);
-    };
-    collectionList();
-  }, []);
+  // useEffect(() => {
+  //   const collectionList = async () => {
+  //     const response = await axios.get("/api/user/collectionList");
+  //     // setData(response.data.todayDates);
+  //   };
+  //   collectionList();
+  // }, []);
 
 
   useEffect(() => {
@@ -80,8 +85,27 @@ function CollectedReport() {
         });
       });
     }
-    setData(Collected);
-  }, [ALLUSERS])
+
+    const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+    const nameStartsWith = [];
+    const nameIncludes = [];
+    
+    Collected.forEach((customer) => {
+      const name = customer?.Name.toLowerCase();
+      
+      if (name.startsWith(searchValue)) {
+        nameStartsWith.push(customer);
+      } else if (name.includes(searchValue)) {
+        nameIncludes.push(customer);
+      }
+    });
+    
+    const filteredData = nameStartsWith.concat(nameIncludes);
+      setData(filteredData);
+
+
+    // setData(Collected);
+  }, [ALLUSERS,searchKey])
   
 
   // useEffect(() => {
@@ -119,8 +143,8 @@ function CollectedReport() {
   
   const customers = useCustomers(page, rowsPerPage);
 
+  const customersIds = useCustomerIds(customers);
   console.log(customers.id,"uuuuuuu");
-  //   const customersIds = useCustomerIds(customers);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -162,6 +186,8 @@ function CollectedReport() {
           </Button>
         </Box>
       </Box>
+      <CustomerSearch setSearchKey={setSearchKey} />
+
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>
         <Table>
@@ -184,7 +210,7 @@ function CollectedReport() {
               <TableCell>Name</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell>Remaining</TableCell>
+              <TableCell></TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -196,7 +222,7 @@ function CollectedReport() {
               // const formattedDate = format(createdAt, 'dd/MM/yyyy')
               
               return (
-                <TableRow key={customer.id} hover>
+                <TableRow key={customer._id} hover>
                   <TableCell>
                     <Stack alignItems="center" direction="row" spacing={2}>
                       {/* <Avatar src={customer.avatar}> */}
@@ -216,7 +242,9 @@ function CollectedReport() {
                     // color={colors.palette.grey[200]}
                     >
                       <Button type="submit" color="secondary">
-                        More Details
+
+                        <Link to={`/account/${customer._id}`}>
+                        More Details </Link>
                       </Button>
                     </Typography>
 

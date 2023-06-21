@@ -18,13 +18,13 @@ export const CustomerSearch = ({setSearchKey}) =>{
 
     return (
 
-  <Card sx={{ p: 2 }}>
+//   <Card sx={{ p: 2 }}>
     <OutlinedInput
       defaultValue=""
       fullWidth
       placeholder="Search company"
       startAdornment={(
-        <InputAdornment position="start"  onchange={handleSearchChange}
+        <InputAdornment position="start" 
         >
           <SvgIcon
             color="action"
@@ -37,7 +37,9 @@ export const CustomerSearch = ({setSearchKey}) =>{
         </InputAdornment>
       )}
       sx={{ maxWidth: 500 }}
+      onChange={handleSearchChange}
+
       
     />
-  </Card>
+//   </Card>
 )};

@@ -60,7 +60,9 @@ const userId=data._id
 
   return (
    
-      <Card   style={{ backgroundColor: colors.primary[500]}}>
+      <Card 
+        // style={{ backgroundColor: colors.primary[300]}}
+        >
         <CardHeader
           subheader="The information can be edited"
           title="Profile"

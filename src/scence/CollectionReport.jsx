@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Modal } from "antd";
 import { handlePaymentRequest } from "../Redux/Actions/userAction";
+import { CustomerSearch } from "../scence/components/customerSearch";
+
 import {
   Box,
   Button,
@@ -41,6 +43,8 @@ function CollectionReport() {
   const dispatch=useDispatch()
   const{COLLECTIONS}=useSelector((state)=>state.collection)
   const [data, setData] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+
 
 //   useEffect(() => {
 //     const collectionList = async () => {
@@ -53,13 +57,40 @@ function CollectionReport() {
 //   }, []);
 
 useEffect(() => {
-  dispatch(collectionList())
+  // if(COLLECTIONS===0){
+  //   console.log("insidee");
+
+    dispatch(collectionList())
+  // }
 }, [])
 
 useEffect(() => {
-  setData(COLLECTIONS)
+  console.log("outsidee");
 
-}, [COLLECTIONS])
+
+  const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+  const nameStartsWith = [];
+  const nameIncludes = [];
+  
+  COLLECTIONS.forEach((customer) => {
+    const name = customer?.Name.toLowerCase();
+    
+    if (name.startsWith(searchValue)) {
+      nameStartsWith.push(customer);
+    } else if (name.includes(searchValue)) {
+      nameIncludes.push(customer);
+    }
+  });
+  
+  const filteredData = nameStartsWith.concat(nameIncludes);
+    setData(filteredData);
+  
+  
+  
+  // setData(COLLECTIONS)
+
+
+}, [COLLECTIONS,searchKey])
 
 
 
@@ -92,7 +123,6 @@ useEffect(() => {
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
-    // console.log(value, "valueee");
   }, []);
 
   const handleRowsPerPageChange = useCallback((event) => {
@@ -103,6 +133,7 @@ useEffect(() => {
   // const PaymentModal = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
+
   
   const [payObj, setPayOjb] = useState({
     userId: "",
@@ -111,8 +142,6 @@ useEffect(() => {
 
  
   
-
-  // }
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -159,8 +188,10 @@ useEffect(() => {
           </Button>
         </Box>
       </Box>
+      <CustomerSearch setSearchKey={setSearchKey} />
+
       {/* <Card > */}
-      <Box display="flex" justifyContent="space-around" p={4}>
+      <Box display="flex" justifyContent="space-around" p={2}>
         <Table>
           <TableHead>
             <TableRow>
@@ -182,7 +213,6 @@ useEffect(() => {
               <TableCell>Address</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell>Pending</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -221,6 +251,7 @@ useEffect(() => {
                       </Button>
                     </Typography>
                   </TableCell>
+                  
                   {isModalOpen && customer.userId === userId && (
                     <Modal
                       title="Pay"

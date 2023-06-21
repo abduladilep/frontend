@@ -29,7 +29,9 @@ import {
     
    
   return (
-    <Card  style={{ backgroundColor: colors.primary[500] }} >  
+    <Card 
+    //  style={{ backgroundColor: colors.primary[500] }}
+      >  
       <CardContent>
         <Box
           sx={{

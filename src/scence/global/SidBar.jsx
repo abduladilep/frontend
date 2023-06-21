@@ -194,8 +194,8 @@ function SidBar() {
               setSelected={setSelected}
             />
             <Item
-              title="Account "
-              to="/account"
+              title="Login "
+              to="/"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

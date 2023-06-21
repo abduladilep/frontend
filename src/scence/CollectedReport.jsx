@@ -5,6 +5,8 @@ import { allUsers } from "../Redux/Actions/userAction";
 import moment from "moment";
 import { CustomerSearch } from "../scence/components/customerSearch";
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 
 import {
@@ -36,6 +38,7 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import { DateRangePicker } from "react-date-range";
 
 function CollectedReport() {
   const { ALLUSERS } = useSelector((state) => state.users);
@@ -73,74 +76,42 @@ function CollectedReport() {
       });
     }
 
-
-   
-   
-
-
     // const filteredData = Collected.filter(
     //   (customer) =>
-    //   customer.Name.toLowerCase().includes(searchKey.toLowerCase()) ||
-    //   customer.MobileNo.includes(searchKey)
+    //     customer.Name.toLowerCase().includes(searchKey.toLowerCase()) ||
+    //     customer.MobileNo.includes(searchKey)
     //   // Add more conditions if needed for other fields
-    //   );
-    //   console.log(filteredData,"saearccj");
+    // );
 
-      // setSearchKey(Collected)
-      // setFilteredData(Collected);
 
-    setData(Collected);
-    setFilteredData(Collected);
+    // setData(filteredData);
+    // setFilteredData(Collected);
+    // const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+    // const filteredData = Collected.filter((customer) => {
+    //   const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
+    //   const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
+    //   return nameIncludes || mobileIncludes;
+    // });
+    const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+  const nameStartsWith = [];
+  const nameIncludes = [];
   
-  }, [ALLUSERS]);
-
-  // const handleSearchChange = (e) => {
-  //   if(e.target.value === null){
-  //     setData(filteredData)
-  //     console.log(filteredData,"fill");
-      
-  //   }else{
-  //     console.log(filteredData,"fill");
-
-  //    const filteredDat= filteredData?.filter(
-  //         (customer) =>
-  //         customer?.Name.toLowerCase().includes(e.target.value.toLowerCase()) 
-  //         // customer.MobileNo.includes(searchKey)
-  //         ) 
-  //         setData(filteredDat)
-  //     }
-  //   setFilteredData(e.target.value);
-  //   console.log(e.target.value,"targettt");
-  // };
-
-  const handleSearchChange = (e) => {
-    const searchValue = e.target.value.toLowerCase();
-  
-    if (searchValue === "") {
-      setData(data); // Reset data to the original unfiltered data
-    } else {
-      const filteredData = data.filter(
-        (customer) => customer?.Name.toLowerCase().includes(searchValue)
-      );
-      setData(filteredData);
+  Collected.forEach((customer) => {
+    const name = customer?.Name.toLowerCase();
+    
+    if (name.startsWith(searchValue)) {
+      nameStartsWith.push(customer);
+    } else if (name.includes(searchValue)) {
+      nameIncludes.push(customer);
     }
+  });
   
-    setFilteredData(e.target.value);
-  };
+  const filteredData = nameStartsWith.concat(nameIncludes);
+    setData(filteredData);
   
+  }, [ALLUSERS,searchKey]);
 
-  // const handleSearchChange = (e) => {
-  //   const searchValue = e.target.value.toLowerCase();
   
-  //   if (searchValue === "") {
-  //     setData(data); // Reset to original data if search value is empty
-  //   } else {
-  //     const filteredData = data.filter((customer) =>
-  //       customer?.Name.toLowerCase().includes(searchValue)
-  //     );
-  //     setData(filteredData);
-  //   }
-  // };
   
 
   console.log(data, "collected report");
@@ -206,9 +177,10 @@ function CollectedReport() {
           </Button>
         </Box>
       </Box>
-      {/* <CustomerSearch setSearchKey={setSearchKey} /> */}
+      <CustomerSearch setSearchKey={setSearchKey} />
+      <DateRangePicker></DateRangePicker>
       
-  <Card sx={{ p: 2 }}>
+  {/* <Card sx={{ p: 2 }}>
     <OutlinedInput
       defaultValue=""
       fullWidth
@@ -221,9 +193,9 @@ function CollectedReport() {
             fontSize="small"
           >
             <MagnifyingGlassIcon />
-          </SvgIcon>
+          </SvgIcon> */}
           {/* {serachKey.trim().length > 0 && <CollectionReport searchKey={serachKey} />} */}
-
+{/* 
         </InputAdornment>
       )}
       sx={{ maxWidth: 500 }}
@@ -233,7 +205,7 @@ function CollectedReport() {
       onChange={handleSearchChange}
       
     />
-  </Card>
+  </Card> */}
 
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>

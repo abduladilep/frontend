@@ -15,7 +15,8 @@ import CollectedReport from "./scence/CollectedReport";
 import PendingReport from "./scence/PendingReport";
 import Dashboard from "./scence/Dashboard";
 import AllUsers from "./scence/AllUser";
-import Account from "./scence/Account";
+import Login from "./scence/Login";
+// import { Login } from "../../backend/Controller/UserController";
 
 
 
@@ -39,7 +40,7 @@ function App() {
         <Route path="/collectedReport" element={<CollectedReport></CollectedReport>}/>
         <Route path="/pendingReport" element={<PendingReport></PendingReport>}/>
         <Route path="/allUsers" element={<AllUsers></AllUsers>}/>
-        <Route path="/account/:customerId" element={<Account></Account>}/>
+        <Route path="/login/" element={<Login></Login>}/>
         {/* <Route path="/addStaff" element={<AddStaff></AddStaff>}/> */}
         {/* <Route path="/form" element={<Form/>}/> */}
         </Routes>

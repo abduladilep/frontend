@@ -79,9 +79,10 @@ function Dashboard() {
           totals.sumGivenAmount += parseFloat(user.GivenAmount);
           totals.sumIntrestAmount += parseFloat(user.InterestAmount);
           totals.sumTotalAmount += parseFloat(user.TotalAmount);
-          totals.sumTotalPendingAmount += parseFloat(user.TotalPendingAmount);
 
-
+          if (user.TotalPendingAmount && !isNaN(user.TotalPendingAmount)) {
+            totals.sumTotalPendingAmount += parseFloat(user.TotalPendingAmount);
+          }
           if (user.TotalProfit && !isNaN(user.TotalProfit)) {
             totals.sumTotalProfit += parseFloat(user.TotalProfit);
           }
@@ -168,10 +169,8 @@ todaycollected.forEach((user) => {
  const todayPending =pendingSum
 
 
-console.log(collectedSum,"date"); // Log the value of 'currentDate'
-console.log(profitSum, "popopoooo"); // Log the value of 'prosum'
+console.log(todayPending,"todayPending"); // Log the value of 'currentDate'
 
-console.log(typeof tdy,"typeeeeeeeeeeeeintrest");
 
 
 
@@ -188,7 +187,7 @@ setOverview({
         
         
         
-      })
+})
       // console.log(typeof todayprofit,"tyrr");
       console.log("sumTotalAmount", sumTotalAmount);
       console.log("sumGivenAmount", sumGivenAmount);
@@ -196,6 +195,8 @@ setOverview({
 
       console.log("sumTotalCollected", sumTotalCollected);
       console.log("sumIntrestAmount", sumIntrestAmount);
+      console.log("sumTotalPendingAmount", sumTotalPendingAmount);
+      
     }
   }, [ALLUSERS]);
 
@@ -204,7 +205,7 @@ setOverview({
       <Box display="flex" justifyContent="space-between">
         {/* <Header title="Dashboard" subtitle="Dashboard"/> */}
         <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
-          Dashboard
+          Dashboad
         </Typography>
         <Box>
           <Button
@@ -230,10 +231,10 @@ setOverview({
       >
         <Container maxWidth="xl">
           <Grid container spacing={2}>
-            <Overview heading="Total Investment" amount={overview.InvestmentAmount}   subAmount={overview.InterestAmount} />
-            <Overview heading="Total Profit" amount= {Math.round(overview.TotalProfit)}  subAmount={Math.round(overview.TodayProfit)} />
-            <Overview heading="Total Collected"amount={overview.TotalCollected} subAmount={overview.TodayCollected}  />
-            <Overview heading="Total Pending" amount={Math.round(overview.TotalPending)}  subAmount={overview.TodayPending}/>
+            <Overview heading="Total Investment" subHeading="Gross Profit" amount={overview.InvestmentAmount}   subAmount={overview.InterestAmount} />
+            <Overview heading="Total Profit" subHeading="Today Profit" amount= {Math.round(overview.TotalProfit)}  subAmount={Math.round(overview.TodayProfit)} />
+            <Overview heading="Total Collected" subHeading="Today Collected" amount={overview.TotalCollected} subAmount={overview.TodayCollected}  />
+            <Overview heading="Total Pending" subHeading="Today Pending" amount={Math.round(overview.TotalPending)}  subAmount={overview.TodayPending}/>
           </Grid>
         </Container>
       </Box>
