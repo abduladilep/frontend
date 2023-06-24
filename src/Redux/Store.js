@@ -4,6 +4,7 @@ import{createStore,applyMiddleware, combineReducers} from "redux"
 
 import { usersReducer} from './Reducer/userReducer';
 import {collectionReducer} from './Reducer/collectionReducer';
+// import {alertsReducer} from './Reducer/alertsReducer';
 
 
 // import { composeWithDevTools } from 'redux-devtools-extension';
@@ -16,6 +17,7 @@ const  rootReducer =combineReducers({
     
     users:usersReducer,
     collection:collectionReducer
+    // alerts:alertsReducer
   
 })
  

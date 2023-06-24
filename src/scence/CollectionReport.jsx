@@ -46,15 +46,7 @@ function CollectionReport() {
   const [searchKey, setSearchKey] = useState("");
 
 
-//   useEffect(() => {
-//     const collectionList = async () => {
-//       const response = await axios.get("/api/user/collectionList");
-//       setData(response.data.todayDates);
-// console.log(response,"resspoooooooooooooooo");
 
-//     };
-//     collectionList();
-//   }, []);
 
 useEffect(() => {
   // if(COLLECTIONS===0){
@@ -68,26 +60,34 @@ useEffect(() => {
   console.log("outsidee");
 
 
-  const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-  const nameStartsWith = [];
-  const nameIncludes = [];
+  // const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+  // const nameStartsWith = [];
+  // const nameIncludes = [];
   
-  COLLECTIONS.forEach((customer) => {
-    const name = customer?.Name.toLowerCase();
+  // COLLECTIONS.forEach((customer) => {
+  //   const name = customer?.Name.toLowerCase();
     
-    if (name.startsWith(searchValue)) {
-      nameStartsWith.push(customer);
-    } else if (name.includes(searchValue)) {
-      nameIncludes.push(customer);
-    }
-  });
+  //   if (name.startsWith(searchValue)) {
+  //     nameStartsWith.push(customer);
+  //   } else if (name.includes(searchValue)) {
+  //     nameIncludes.push(customer);
+  //   }
+  // });
   
-  const filteredData = nameStartsWith.concat(nameIncludes);
-    setData(filteredData);
+  // const filteredData = nameStartsWith.concat(nameIncludes);
+  //   setData(filteredData);
   
   
   
   // setData(COLLECTIONS)
+
+  const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+      const filteredData = COLLECTIONS.filter((customer) => {
+        const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
+        const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
+        return nameIncludes || mobileIncludes;
+      });
+      setData(filteredData);
 
 
 }, [COLLECTIONS,searchKey])

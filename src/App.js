@@ -1,7 +1,7 @@
 
 import { colorModeContext,useMode } from "./theme";
 import { CssBaseline,ThemeProvider } from "@mui/material";
-import {Route,Routes} from "react-router-dom";
+import {Route,Routes,useLocation} from "react-router-dom";
 
 
 import TopBar from "./scence/global/TopBar";
@@ -15,22 +15,27 @@ import CollectedReport from "./scence/CollectedReport";
 import PendingReport from "./scence/PendingReport";
 import Dashboard from "./scence/Dashboard";
 import AllUsers from "./scence/AllUser";
-import Login from "./scence/Login";
-// import { Login } from "../../backend/Controller/UserController";
+import Signup from "./scence/SignupPage/Signup";
+import Login from "./scence/loginPage/Login"
+import Account from "./scence/Account";
+
 
 
 
 function App() {
   const[theme,colorMode]= useMode()
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+  const isSignupPage = location.pathname === "/signup";
   return (
     <colorModeContext.Provider value={colorMode}>
     <ThemeProvider theme={theme}>
       <CssBaseline/>
       
     <div className="app">
-      <SidBar></SidBar>
+    {!isLoginPage &&!isSignupPage&&<SidBar />}
       <main className="content">
-      <TopBar></TopBar>
+      {!isLoginPage && !isSignupPage&&<TopBar />}
 
 
       <Routes>
@@ -40,7 +45,11 @@ function App() {
         <Route path="/collectedReport" element={<CollectedReport></CollectedReport>}/>
         <Route path="/pendingReport" element={<PendingReport></PendingReport>}/>
         <Route path="/allUsers" element={<AllUsers></AllUsers>}/>
-        <Route path="/login/" element={<Login></Login>}/>
+        <Route path="/signup" element={<Signup/>}/>
+        <Route path="/account/:customerId" element={<Account></Account>}/>
+        <Route path="/login" element={<Login></Login>}/>
+
+
         {/* <Route path="/addStaff" element={<AddStaff></AddStaff>}/> */}
         {/* <Route path="/form" element={<Form/>}/> */}
         </Routes>

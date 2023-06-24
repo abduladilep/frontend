@@ -24,6 +24,7 @@ import {
   // };
   
   export function AccountProfile({data}){
+    console.log("sagsgh");
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     

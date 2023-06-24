@@ -7,6 +7,9 @@ import { CustomerSearch } from "../scence/components/customerSearch";
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DatePicker } from "antd";
+import { format } from 'date-fns';
+
 
 
 import {
@@ -30,7 +33,7 @@ import {
 
   // Card,
   // Checkbox,
-
+  
   Table,
   TableBody,
   TableCell,
@@ -40,6 +43,7 @@ import {
 } from "@mui/material";
 import { DateRangePicker } from "react-date-range";
 
+const { RangePicker } = DatePicker;
 function CollectedReport() {
   const { ALLUSERS } = useSelector((state) => state.users);
 
@@ -48,6 +52,8 @@ function CollectedReport() {
   const [searchKey, setSearchKey] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const[startDate,setStartDate] = useState(null);
+  const [endDate, setEndDate]= useState(null)
 
   useEffect(() => {
     if (ALLUSERS.length === 0) {
@@ -62,9 +68,7 @@ function CollectedReport() {
     if (ALLUSERS) {
       const collectedUsers = ALLUSERS.filter((user) => user.Collected);
       collectedUsers.forEach((user) => {
-        console.log(user, "is the user...");
         user?.Collected.forEach((value) => {
-          console.log(value, "is the value from mpl...");
           const userDetails = {
             ...user,
             amount: value.amount,
@@ -76,42 +80,37 @@ function CollectedReport() {
       });
     }
 
-    // const filteredData = Collected.filter(
-    //   (customer) =>
-    //     customer.Name.toLowerCase().includes(searchKey.toLowerCase()) ||
-    //     customer.MobileNo.includes(searchKey)
-    //   // Add more conditions if needed for other fields
-    // );
+   
 
+  
+    setFilteredData(Collected);
 
-    // setData(filteredData);
-    // setFilteredData(Collected);
-    // const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-    // const filteredData = Collected.filter((customer) => {
-    //   const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
-    //   const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
-    //   return nameIncludes || mobileIncludes;
-    // });
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-  const nameStartsWith = [];
-  const nameIncludes = [];
-  
-  Collected.forEach((customer) => {
-    const name = customer?.Name.toLowerCase();
-    
-    if (name.startsWith(searchValue)) {
-      nameStartsWith.push(customer);
-    } else if (name.includes(searchValue)) {
-      nameIncludes.push(customer);
-    }
-  });
-  
-  const filteredData = nameStartsWith.concat(nameIncludes);
+    const filteredData = Collected.filter((customer) => {
+      const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
+      const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
+
+      const dateMatches = startDate && endDate
+        ? new Date(customer.date) >= new Date(startDate) && new Date(customer.date) <= new Date(endDate)
+        : true;
+      return (nameIncludes || mobileIncludes) && dateMatches;
+    });
+
+
+
+
     setData(filteredData);
   
-  }, [ALLUSERS,searchKey]);
+  }, [ALLUSERS,searchKey,startDate,endDate]);
 
+  function selectDates(values){
+    const startDateFormatted = values[0]?.format("MM DD YYYY");
+    const endDateFormatted = values[1]?.format("MM DD YYYY");
+    setStartDate(startDateFormatted);
+    setEndDate(endDateFormatted);
+    console.log("start", startDate, "end", endDate);
   
+  }
   
 
   console.log(data, "collected report");
@@ -148,6 +147,17 @@ function CollectedReport() {
     setRowsPerPage(event.target.value);
   }, []);
 
+ const handleSelect =(date)=>{
+  console.log("loggg");
+  setStartDate(date.selection.startDate)
+  setEndDate(date.selection.endDate)
+  
+ }
+
+
+
+
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" p={4}>
@@ -178,7 +188,9 @@ function CollectedReport() {
         </Box>
       </Box>
       <CustomerSearch setSearchKey={setSearchKey} />
-      <DateRangePicker></DateRangePicker>
+      {/* <DateRangePicker ranges={[selectionRange]} onChange={handleSelect} /> */}
+      <RangePicker format="DD/MM/YYYY HH:mm"   onChange={selectDates}/>
+
       
   {/* <Card sx={{ p: 2 }}>
     <OutlinedInput

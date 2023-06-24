@@ -43,6 +43,7 @@ function CollectedReport() {
 
   const [data, setData] = useState([]);
   const [searchKey, setSearchKey] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   let Collected = [];
 
@@ -86,22 +87,20 @@ function CollectedReport() {
       });
     }
 
+    setFilteredData(Collected);
+
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-    const nameStartsWith = [];
-    const nameIncludes = [];
-    
-    Collected.forEach((customer) => {
-      const name = customer?.Name.toLowerCase();
-      
-      if (name.startsWith(searchValue)) {
-        nameStartsWith.push(customer);
-      } else if (name.includes(searchValue)) {
-        nameIncludes.push(customer);
-      }
+    const filteredData = Collected.filter((customer) => {
+      const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
+      const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
+      return nameIncludes || mobileIncludes;
     });
-    
-    const filteredData = nameStartsWith.concat(nameIncludes);
-      setData(filteredData);
+
+
+
+
+    setData(filteredData);
+  
 
 
     // setData(Collected);
