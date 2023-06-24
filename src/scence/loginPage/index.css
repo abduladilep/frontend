@@ -1,0 +1,128 @@
+
+
+.infoForm > div {
+    display: flex;
+    gap: 4rem;
+    height: 3rem;
+    width: 90%; 
+    
+    
+  }
+   .infoInput {
+    border: none;
+    outline: none;
+    background-color: var(--inputColor);
+    border-radius: 8px;
+    padding: 10px;
+    flex: 1;
+    background-color: aliceblue;
+  }
+  /* .infoButton {
+    width: 5rem;
+    height: 1.5rem;
+    align-self: flex-start;
+    
+  } */
+  
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Adjust the margin as needed */
+  }
+  
+  
+  .infoButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0e0e0e;
+    color: #fff;
+    /* border: none; */
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .infoButton:hover {
+    background-color: #b1b8c3;
+  }
+  
+  .authForm {
+    background-color: var(--cardColor);
+    padding: 1rem;
+  
+    
+  }
+  .authForm > div {
+    width: 100%;
+    align-items: center;
+    justify-content:center;
+    
+    
+  } 
+  
+  
+  .login {
+    background-color: black;
+    min-height: 100vh;
+    padding-top: 100px;
+    overflow: hidden;
+      /* border-radius: 1rem; */
+  
+  }
+  
+  .login label,
+  .login h1 {
+    color: rgb(214, 189, 189) !important;
+    opacity: 0.6;
+  }
+  
+  .login form {
+    background-color: hsl(0, 2%, 18%); 
+     border-radius: 1rem;
+     /* max-width: 60%; */
+     margin-top: 17%;
+     margin-left: 30%;
+     
+  
+    
+  
+  }
+  .responsive-image {
+    max-width: 100%;
+    height: auto;
+  }
+  @media (max-width: 480px) {
+    .imgbox {
+      display: none;
+    }
+  }
+  
+  .login form input {
+    background-color: #0c0b0b !important;
+    border: none !important;
+    color: white;
+    opacity: 0.5;
+    overflow: hidden;
+    
+    
+    
+  }
+  
+  /* .login-logo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
+    transform: translateY(-50%, -50%) !important;
+    font-size: 45px;
+    opacity: 0.5 !important; */
+  
+  /* } */
+  
+  .login a {
+    color: white !important;
+    opacity: 0.5;
+  }
+  

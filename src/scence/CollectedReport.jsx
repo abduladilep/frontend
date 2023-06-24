@@ -4,18 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
 import moment from "moment";
 import { CustomerSearch } from "../scence/components/customerSearch";
-import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import { CustomerFilter } from "./components/customerFilter";
+import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 import { DatePicker } from "antd";
-import { format } from 'date-fns';
-
-
+import { format } from "date-fns";
 
 import {
   Box,
   Button,
-  InputAdornment, OutlinedInput,
+  InputAdornment,
+  OutlinedInput,
   Card,
   // Container,
   Stack,
@@ -33,7 +33,7 @@ import {
 
   // Card,
   // Checkbox,
-  
+
   Table,
   TableBody,
   TableCell,
@@ -41,9 +41,8 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import { DateRangePicker } from "react-date-range";
 
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 function CollectedReport() {
   const { ALLUSERS } = useSelector((state) => state.users);
 
@@ -52,15 +51,14 @@ function CollectedReport() {
   const [searchKey, setSearchKey] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const[startDate,setStartDate] = useState(null);
-  const [endDate, setEndDate]= useState(null)
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     if (ALLUSERS.length === 0) {
       dispatch(allUsers());
     }
   }, []);
-
 
   useEffect(() => {
     const Collected = [];
@@ -80,38 +78,34 @@ function CollectedReport() {
       });
     }
 
-   
-
-  
     setFilteredData(Collected);
 
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
     const filteredData = Collected.filter((customer) => {
       const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
-      const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
+      const mobileIncludes =
+        customer?.MobileNo.toString().includes(searchValue);
 
-      const dateMatches = startDate && endDate
-        ? new Date(customer.date) >= new Date(startDate) && new Date(customer.date) <= new Date(endDate)
-        : true;
+      const dateMatches =
+        startDate && endDate
+          ? new Date(customer.date) >= new Date(startDate) &&
+            new Date(customer.date) <= new Date(endDate)
+          : true;
       return (nameIncludes || mobileIncludes) && dateMatches;
     });
 
-
-
-
     setData(filteredData);
-  
-  }, [ALLUSERS,searchKey,startDate,endDate]);
+  }, [ALLUSERS, searchKey, startDate, endDate]);
 
-  function selectDates(values){
-    const startDateFormatted = values[0]?.format("MM DD YYYY");
-    const endDateFormatted = values[1]?.format("MM DD YYYY");
-    setStartDate(startDateFormatted);
-    setEndDate(endDateFormatted);
-    console.log("start", startDate, "end", endDate);
-  
-  }
-  
+  // function selectDates(values){
+  //   if (values && values.length >= 2) {
+  //   const startDateFormatted = values[0]?.format("MM DD YYYY");
+  //   const endDateFormatted = values[1]?.format("MM DD YYYY");
+  //   setStartDate(startDateFormatted);
+  //   setEndDate(endDateFormatted);
+  //   console.log("start", startDate, "end", endDate);
+  //   }
+  // }
 
   console.log(data, "collected report");
 
@@ -147,79 +141,34 @@ function CollectedReport() {
     setRowsPerPage(event.target.value);
   }, []);
 
- const handleSelect =(date)=>{
-  console.log("loggg");
-  setStartDate(date.selection.startDate)
-  setEndDate(date.selection.endDate)
-  
- }
-
-
-
-
+  // const handleSelect = (date) => {
+  //   console.log("loggg");
+  //   setStartDate(date.selection.startDate);
+  //   setEndDate(date.selection.endDate);
+  // };
 
   return (
-    <Box m="20px">
+
+    <Box mx="20px">
+    <Box position="sticky" top={0} zIndex={1} sx={{ backgroundColor: theme.palette.background.default, backdropFilter: "blur(6px)" }}>
       <Box display="flex" justifyContent="space-between" p={4}>
-        <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
-          USERS
-        </Typography>
-        <Box alignItems="center" direction="row" spacing={1}>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                {/* <ArrowUpOnSquareIcon /> */}
-              </SvgIcon>
-            }
-          >
-            {/* Import */}
-          </Button>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                <ArrowDownOnSquareIcon />
-              </SvgIcon>
-            }
-          >
+        <Box>
+          <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
+            Collected Report
+          </Typography>
+          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
             Export
           </Button>
         </Box>
+        <Box >
+           <CustomerFilter setStartDate={setStartDate} setEndDate={setEndDate}/>
+        </Box>
       </Box>
-      <CustomerSearch setSearchKey={setSearchKey} />
-      {/* <DateRangePicker ranges={[selectionRange]} onChange={handleSelect} /> */}
-      <RangePicker format="DD/MM/YYYY HH:mm"   onChange={selectDates}/>
-
+      <Box position="sticky" top={0} zIndex={1} sx={{ backgroundColor: theme.palette.background.default, backdropFilter: "blur(6px)" }} p={4}>
+        <CustomerSearch setSearchKey={setSearchKey}  />
+      </Box>
+    </Box>
       
-  {/* <Card sx={{ p: 2 }}>
-    <OutlinedInput
-      defaultValue=""
-      fullWidth
-      placeholder="Search company"
-      startAdornment={(
-        <InputAdornment position="start" 
-        >
-          <SvgIcon
-            color="action"
-            fontSize="small"
-          >
-            <MagnifyingGlassIcon />
-          </SvgIcon> */}
-          {/* {serachKey.trim().length > 0 && <CollectionReport searchKey={serachKey} />} */}
-{/* 
-        </InputAdornment>
-      )}
-      sx={{ maxWidth: 500 }}
-      // onChange={(e)=>{
-      //   console.log(e.target.value,'is the value fromt the onchange.')
-      // }}
-      onChange={handleSearchChange}
-      
-    />
-  </Card> */}
-
-      {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>
         <Table>
           <TableHead>
@@ -298,7 +247,9 @@ function CollectedReport() {
           rowsPerPageOptions={[5, 10, 15]}
         ></TablePagination>
       )}
+  
     </Box>
+    
   );
 }
 

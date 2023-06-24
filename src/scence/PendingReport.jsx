@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
 import { CustomerSearch } from "../scence/components/customerSearch";
-
+import { CustomerFilter } from "./components/customerFilter";
 import moment from "moment";
 
 import {
@@ -44,6 +44,8 @@ function CollectedReport() {
   const [data, setData] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   let Collected = [];
 
@@ -89,22 +91,40 @@ function CollectedReport() {
 
     setFilteredData(Collected);
 
+    // const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+    // const filteredData = Collected.filter((customer) => {
+    //   const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
+    //   const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
+    //   return nameIncludes || mobileIncludes;
+    // });
+
+
+
+
+    // setData(filteredData);
+
+
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
     const filteredData = Collected.filter((customer) => {
       const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
-      const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
-      return nameIncludes || mobileIncludes;
+      const mobileIncludes =
+        customer?.MobileNo.toString().includes(searchValue);
+
+      const dateMatches =
+        startDate && endDate
+          ? new Date(customer.date) >= new Date(startDate) &&
+            new Date(customer.date) <= new Date(endDate)
+          : true;
+      return (nameIncludes || mobileIncludes) && dateMatches;
     });
 
-
-
-
     setData(filteredData);
+  }, [ALLUSERS, searchKey, startDate, endDate]);
   
 
 
     // setData(Collected);
-  }, [ALLUSERS,searchKey])
+
   
 
   // useEffect(() => {
@@ -157,36 +177,27 @@ function CollectedReport() {
   }, []);
 
   return (
-    <Box m="20px">
+  
+
+    <Box mx="20px">
+    <Box position="sticky" top={0} zIndex={1} sx={{ backgroundColor: theme.palette.background.default, backdropFilter: "blur(6px)" }}>
       <Box display="flex" justifyContent="space-between" p={4}>
-        <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
-          USERS
-        </Typography>
-        <Box alignItems="center" direction="row" spacing={1}>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                {/* <ArrowUpOnSquareIcon /> */}
-              </SvgIcon>
-            }
-          >
-            {/* Import */}
-          </Button>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                <ArrowDownOnSquareIcon />
-              </SvgIcon>
-            }
-          >
+        <Box>
+          <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
+           Pending Report
+          </Typography>
+          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
             Export
           </Button>
         </Box>
+        <Box >
+           <CustomerFilter setStartDate={setStartDate} setEndDate={setEndDate}/>
+        </Box>
       </Box>
-      <CustomerSearch setSearchKey={setSearchKey} />
-
+      <Box position="sticky" top={0} zIndex={1} sx={{ backgroundColor: theme.palette.background.default, backdropFilter: "blur(6px)" }} p={4}>
+        <CustomerSearch setSearchKey={setSearchKey}  />
+      </Box>
+    </Box>
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>
         <Table>
@@ -237,15 +248,13 @@ function CollectedReport() {
                   <TableCell>{customer.amount}</TableCell>
                   <TableCell>{customer.remining}</TableCell>
                   <TableCell>
-                    <Typography
-                    // color={colors.palette.grey[200]}
-                    >
-                      <Button type="submit" color="secondary">
-
+                   
+                    
                         <Link to={`/account/${customer._id}`}>
-                        More Details </Link>
-                      </Button>
-                    </Typography>
+                      <Button type="submit" color="secondary">
+                        More Details </Button>
+                         </Link>
+                   
 
                     {/* {formattedDate} */}
                   </TableCell>

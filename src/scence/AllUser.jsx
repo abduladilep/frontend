@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { CustomerSearch } from "../scence/components/customerSearch";
-
 
 import {
   Box,
@@ -42,47 +41,36 @@ function AllUsers() {
   const [data, setData] = useState([]);
   const [searchKey, setSearchKey] = useState("");
 
-
+  useEffect(() => {
+    console.log("popoo");
+    dispatch(allUsers());
+  }, []);
 
   useEffect(() => {
-    dispatch(allUsers());
-  },[]);
+    if(ALLUSERS===null){
 
-  useEffect(() => {   
+    console.log("insideee");
+      dispatch(allUsers());
 
 
-    // const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-    // const nameStartsWith = [];
-    // const nameIncludes = [];
+  }else{
+    console.log("dagdsdg");
     
-    // ALLUSERS.forEach((customer) => {
-    //   const name = customer?.Name.toLowerCase();
-      
-    //   if (name.startsWith(searchValue)) {
-    //     nameStartsWith.push(customer);
-    //   } else if (name.includes(searchValue)) {
-    //     nameIncludes.push(customer);
-    //   }
-    // });
-    
-    // const filteredData = nameStartsWith.concat(nameIncludes);
+    const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
+    const filteredData = ALLUSERS.filter((customer) => {
+      const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
+      const mobileIncludes =
+        customer?.MobileNo.toString().includes(searchValue);
+      return nameIncludes || mobileIncludes;
+    });
+    setData(filteredData);
 
-      
-      const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-      const filteredData = ALLUSERS.filter((customer) => {
-        const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
-        const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
-        return nameIncludes || mobileIncludes;
-      });
-      setData(filteredData);
+  }
+  }, [ALLUSERS, searchKey]);
 
-    // setData(ALLUSERS);
-  }, [ALLUSERS,searchKey]);
-
-  console.log("datas only", data);
+ 
 
   const useCustomers = (page, rowsPerPage) => {
-    console.log(data, "pageeeee");
     return useMemo(() => {
       return applyPagination(data, page, rowsPerPage);
     }, [data, page, rowsPerPage]);
@@ -98,9 +86,8 @@ function AllUsers() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const customers = useCustomers(page, rowsPerPage);
-    // const customersIds = useCustomerIds(customers);
-    // console.log(customers._id,"uuuuuuu");
-
+  // const customersIds = useCustomerIds(customers);
+  // console.log(customers._id,"uuuuuuu");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -116,37 +103,50 @@ function AllUsers() {
   }, []);
 
   return (
-    <Box m="20px">
-      <Box display="flex" justifyContent="space-between" p={4}>
-        <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
-          USERS
-        </Typography>
-        <Box alignItems="center" direction="row" spacing={1}>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                {/* <ArrowUpOnSquareIcon /> */}
-              </SvgIcon>
-            }
-          >
-            {/* Import */}
-          </Button>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                <ArrowDownOnSquareIcon />
-              </SvgIcon>
-            }
-          >
-            Export
-          </Button>
+    <Box mx="20px">
+      <Box
+        position="sticky"
+        top={0}
+        zIndex={1}
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          backdropFilter: "blur(6px)",
+        }}
+      >
+        <Box display="flex" justifyContent="space-between" p={4}>
+          <Box>
+            <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
+              Collected Report
+            </Typography>
+            <Button
+              color="inherit"
+              startIcon={
+                <SvgIcon fontSize="small">
+                  <ArrowDownOnSquareIcon />
+                </SvgIcon>
+              }
+            >
+              Export
+            </Button>
+          </Box>
+          <Box>
+            {/* <CustomerFilter setStartDate={setStartDate} setEndDate={setEndDate}/> */}
+          </Box>
+        </Box>
+        <Box
+          position="sticky"
+          top={0}
+          zIndex={1}
+          sx={{
+            backgroundColor: theme.palette.background.default,
+            backdropFilter: "blur(6px)",
+          }}
+          p={4}
+        >
+          <CustomerSearch setSearchKey={setSearchKey} />
         </Box>
       </Box>
-      <CustomerSearch setSearchKey={setSearchKey} />
 
-      {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>
         <Table>
           <TableHead>
@@ -177,7 +177,7 @@ function AllUsers() {
               // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
               // const createdAt = toDate(customer.createdAt);
               // const formattedDate = format(createdAt, 'dd/MM/yyyy')
-              return ( 
+              return (
                 <TableRow key={customer._id} hover>
                   <TableCell>
                     <Stack alignItems="center" direction="row" spacing={2}>
@@ -194,16 +194,14 @@ function AllUsers() {
                   <TableCell>{customer.GivenAmount}</TableCell>
 
                   <TableCell>
-                    <Typography
-                    // color={colors.palette.grey[200]}
+                    
+                    <Link
+                      to={`/account/${customer._id}`}
+                      style={{ textDecoration: "none" }}
                     >
-                      <Button type="submit" color="secondary">
-                     <Link to={`/account/${customer._id}`}>
-                        More Details</Link>
-                      </Button>
-                    </Typography>
+                      <Button color="secondary">More Details</Button>
+                    </Link>
 
-                    {/* {formattedDate} */}
                   </TableCell>
                 </TableRow>
               );

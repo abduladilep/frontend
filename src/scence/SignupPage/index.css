@@ -1,51 +1,11 @@
 
-.Auth {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  gap: 4rem;
-  position: relative;
-   background-color: rgb(197, 197, 204);
-}
-.Auth > div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.a-left {
-  gap: 2rem;
-}
-.a-left > img {
-  width: 4rem;
-  height: 4rem;
-}
-.webname > h1 {
-  font-size: 3rem;
-  background-color: #0e0c0c;
-  background-image: var(--buttonBg);
-  background-size: 100%;
-  background-repeat: repeat;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-background-clip: text;
-  -moz-text-fill-color: transparent;
-}
-.webname > h6 {
-  font-size: 0.8rem;
-}
-.infoForm {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-}
+
 .infoForm > div {
   display: flex;
-  gap: 1rem;
-  height: 2rem;
+  gap: 4rem;
+  height: 3rem;
   width: 90%; 
+  
   
 }
  .infoInput {
@@ -57,20 +17,111 @@
   flex: 1;
   background-color: aliceblue;
 }
-.infoButton {
-  width: 6rem;
-  height: 2rem;
-  align-self: flex-end;
+/* .infoButton {
+  width: 5rem;
+  height: 1.5rem;
+  align-self: flex-start;
+  
+} */
+
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* Adjust the margin as needed */
 }
+
+
+.infoButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #0e0e0e;
+  color: #fff;
+  /* border: none; */
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.infoButton:hover {
+  background-color: #b1b8c3;
+}
+
 .authForm {
   background-color: var(--cardColor);
-  border-radius: 1rem;
   padding: 1rem;
-  background-color:black
+
+  
 }
 .authForm > div {
   width: 100%;
   align-items: center;
   justify-content:center;
   
+  
 } 
+
+
+.login {
+  background-color: black;
+  min-height: 100vh;
+  padding-top: 100px;
+  overflow: hidden;
+    /* border-radius: 1rem; */
+
+}
+
+.login label,
+.login h1 {
+  color: rgb(214, 189, 189) !important;
+  opacity: 0.6;
+}
+
+.login form {
+  background-color: hsl(0, 2%, 18%); 
+   border-radius: 1rem;
+   /* max-width: 60%; */
+   margin-top: 17%;
+   margin-left: 30%;
+   
+
+  
+
+}
+.responsive-image {
+  max-width: 100%;
+  height: auto;
+}
+@media (max-width: 480px) {
+  .imgbox {
+    display: none;
+  }
+}
+
+.login form input {
+  background-color: #0c0b0b !important;
+  border: none !important;
+  color: white;
+  opacity: 0.5;
+  overflow: hidden;
+  
+  
+  
+}
+
+/* .login-logo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  bottom: 50%;
+  transform: translateY(-50%, -50%) !important;
+  font-size: 45px;
+  opacity: 0.5 !important; */
+
+/* } */
+
+.login a {
+  color: white !important;
+  opacity: 0.5;
+}

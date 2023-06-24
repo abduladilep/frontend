@@ -15,6 +15,7 @@ import { tokens } from "../theme";
 import { useMode } from "../theme";
 import moment from "moment";
 
+
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import CurrencyDollarIcon from "@heroicons/react/24/solid/CurrencyDollarIcon";
 import BanknotesIcon from "@heroicons/react/24/solid/BanknotesIcon";
@@ -199,16 +200,17 @@ setOverview({
       
     }
   }, [ALLUSERS]);
+  
 
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between">
         {/* <Header title="Dashboard" subtitle="Dashboard"/> */}
-        <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
+        {/* <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
           Dashboad
-        </Typography>
-        <Box>
-          <Button
+        </Typography> */}
+        {/* <Box> */}
+          {/* <Button
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -218,9 +220,10 @@ setOverview({
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            
             Download Reports
-          </Button>
-        </Box>
+          </Button> */}
+        {/* </Box> */}
       </Box>
       <Box
         component="main"
@@ -231,13 +234,17 @@ setOverview({
       >
         <Container maxWidth="xl">
           <Grid container spacing={2}>
-            <Overview heading="Total Investment" subHeading="Gross Profit" amount={overview.InvestmentAmount}   subAmount={overview.InterestAmount} />
+            <Overview heading="Total Investment" subHeading="Gross Profit" amount={overview.InvestmentAmount}   subAmount={overview.InterestAmount}   />
             <Overview heading="Total Profit" subHeading="Today Profit" amount= {Math.round(overview.TotalProfit)}  subAmount={Math.round(overview.TodayProfit)} />
             <Overview heading="Total Collected" subHeading="Today Collected" amount={overview.TotalCollected} subAmount={overview.TodayCollected}  />
             <Overview heading="Total Pending" subHeading="Today Pending" amount={Math.round(overview.TotalPending)}  subAmount={overview.TodayPending}/>
           </Grid>
         </Container>
       </Box>
+
+
+
+      
     </Box>
   );
 }

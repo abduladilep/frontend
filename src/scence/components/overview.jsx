@@ -13,13 +13,16 @@ import {
 import { tokens } from "../../theme";
 import React from "react";
 
-const Overview = ({ heading ,amount,subAmount,subHeading}) => {
+const Overview = ({ heading ,amount,subAmount,subHeading, avathar}) => {
     // const parsedSubAmount = parseFloat(subAmount);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Grid xs={12} sm={6} lg={3} container maxWidth="xl">
-      <Card style={{ backgroundColor: colors.primary[400] }} minWidth="lg">
+      <Card style={{ backgroundColor: colors.primary[400], width: 230, 
+      height: 120 , marginTop: '30px',}} minWidth="lg"
+      
+      >
          <CardContent maxWidth="sm">
           <Stack
             alignItems="flex-start"
@@ -54,8 +57,11 @@ const Overview = ({ heading ,amount,subAmount,subHeading}) => {
       <Card
         style={{
           backgroundColor: colors.primary[400],
-          width: 200,
-          height: 100,
+          width: 230,
+          height: 120,
+          marginLeft: "55px",
+          marginTop: '30px', 
+
         }}
         maxWidth="xl"
        

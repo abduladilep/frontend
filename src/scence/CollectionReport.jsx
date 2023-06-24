@@ -34,6 +34,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { collectionList } from "../Redux/Actions/userAction";
+import { CustomerFilter } from "./components/customerFilter";
+
 
 
 function CollectionReport() {
@@ -44,6 +46,8 @@ function CollectionReport() {
   const{COLLECTIONS}=useSelector((state)=>state.collection)
   const [data, setData] = useState([]);
   const [searchKey, setSearchKey] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
 
 
@@ -82,15 +86,21 @@ useEffect(() => {
   // setData(COLLECTIONS)
 
   const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-      const filteredData = COLLECTIONS.filter((customer) => {
-        const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
-        const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
-        return nameIncludes || mobileIncludes;
-      });
-      setData(filteredData);
+  const filteredData = COLLECTIONS.filter((customer) => {
+    const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
+    const mobileIncludes =
+      customer?.MobileNo.toString().includes(searchValue);
 
+    const dateMatches =
+      startDate && endDate
+        ? new Date(customer.date) >= new Date(startDate) &&
+          new Date(customer.date) <= new Date(endDate)
+        : true;
+    return (nameIncludes || mobileIncludes) && dateMatches;
+  });
 
-}, [COLLECTIONS,searchKey])
+  setData(filteredData);
+}, [COLLECTIONS, searchKey, startDate, endDate]);
 
 
 
@@ -160,36 +170,25 @@ useEffect(() => {
   };
 
   return (
-    <Box m="20px">
+    <Box mx="20px">
+    <Box position="sticky" top={0} zIndex={1} sx={{ backgroundColor: theme.palette.background.default, backdropFilter: "blur(6px)" }}>
       <Box display="flex" justifyContent="space-between" p={4}>
-        <Typography variant="h2" color={colors.grey[100]} fontWeight="bold">
-          USERS
-        </Typography>
-        <Box alignItems="center" direction="row" spacing={1}>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                {/* <ArrowUpOnSquareIcon /> */}
-              </SvgIcon>
-            }
-          >
-            {/* Import */}
-          </Button>
-          <Button
-            color="inherit"
-            startIcon={
-              <SvgIcon fontSize="small">
-                <ArrowDownOnSquareIcon />
-              </SvgIcon>
-            }
-          >
+        <Box>
+          <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
+           Collection Report
+          </Typography>
+          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
             Export
           </Button>
         </Box>
+        <Box >
+           <CustomerFilter setStartDate={setStartDate} setEndDate={setEndDate}/>
+        </Box>
       </Box>
-      <CustomerSearch setSearchKey={setSearchKey} />
-
+      <Box position="sticky" top={0} zIndex={1} sx={{ backgroundColor: theme.palette.background.default, backdropFilter: "blur(6px)" }} p={4}>
+        <CustomerSearch setSearchKey={setSearchKey}  />
+      </Box>
+    </Box>
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={2}>
         <Table>

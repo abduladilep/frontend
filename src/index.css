@@ -52,7 +52,13 @@ body,
   background-color: rgb(6, 6, 6);
   color: white;
 } */
-
+/* .fixed-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+} */
 
 
 

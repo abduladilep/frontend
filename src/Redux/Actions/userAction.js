@@ -9,7 +9,7 @@ export const addUser =(reqObj)=>async dispatch => {
         console.log("response",reqObj);
        const response= await axios.post('/api/user/addUser',reqObj)
        localStorage.setItem('User',JSON.stringify(response.data)
-       
+
        )
 
 
