@@ -35,6 +35,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
 
 function CollectedReport() {
   const { ALLUSERS } = useSelector((state) => state.users);
@@ -176,6 +177,27 @@ function CollectedReport() {
     setRowsPerPage(event.target.value);
   }, []);
 
+  const exportTableData= () => {
+    console.log("expoted");
+    const doc =new jsPDF({orientation:'landsacpe'})
+    
+  const columns = ["Date", "Name","Phone","Amount"];
+  const dataa = data.map((customer) => [
+    moment(customer.date).format("DD/MM/YYYY"),
+    customer.Name,
+    customer.MobileNo,
+    customer.amount,
+    // customer.TotalAmountCopy,
+  ]);
+
+  doc.autoTable({
+    columns,
+    body: dataa,
+  });
+    
+    
+doc.save("Pending.pdf")
+  }
   return (
   
 
@@ -186,7 +208,8 @@ function CollectedReport() {
           <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
            Pending Report
           </Typography>
-          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
+          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}
+           onClick={exportTableData}>
             Export
           </Button>
         </Box>
@@ -200,7 +223,7 @@ function CollectedReport() {
     </Box>
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={4}>
-        <Table>
+        <Table id="my-table">
           <TableHead>
             <TableRow>
               {/* <TableCell padding="checkbox">

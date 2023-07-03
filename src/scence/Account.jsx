@@ -22,6 +22,7 @@ import { dark } from '@mui/material/styles/createPalette';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import Modal from 'antd/lib/modal/Modal';
 import moment from 'moment';
+import jsPDF from 'jspdf';
 
 
 
@@ -150,6 +151,11 @@ const userSchema = Yup.object().shape({
 
 const Account = () =>{
   const[data,setData] = useState([])
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [photoPreview, setPhotoPreview] = useState();
+  const [idPreview, setidPreview] = useState(); // add state to preview uploaded photo
+  const [Date, setDate] = useState(); // add state to  collection date
+  const [endDate, setEndDate] = useState(); // add state to  collection date
 
   const initialValues = {
     Name: data.Name,
@@ -191,7 +197,6 @@ const Account = () =>{
 
   }, [ALLUSERS]);
   
-  console.log(data,"dattttttt================>");
 
 
 
@@ -213,17 +218,8 @@ const Account = () =>{
     setIsModalOpen(false);
   };
 
-
-
-
-
   
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const [photoPreview, setPhotoPreview] = useState();
-  const [idPreview, setidPreview] = useState(); // add state to preview uploaded photo
-  const [Date, setDate] = useState(); // add state to  collection date
-  const [endDate, setEndDate] = useState(); // add state to  collection date
-  console.log("dates",data._id);
+  
 const userId=data._id;
 
   const handleFormSubmit = async (values) => {
@@ -280,7 +276,31 @@ const userId=data._id;
       dispatch(updateUser(values));
       setIsModalOpen(false);
   };
-  
+
+
+
+
+
+  const exportTableData= () => {
+    console.log("expoted");
+    const doc =new jsPDF({orientation:'landsacpe'})
+    
+  // const columns = ["Date","Phone","Amount","Remaining"];
+  // const dataa = data.map((customer) => [
+  //   moment(customer.date).format("DD/MM/YYYY"),
+   
+  //   customer.MobileNo,
+  //   customer.amount,
+  //   customer.TotalAmountCopy,
+  // ]);
+
+  doc.autoTable({
+    html:"#my-table"
+  });
+    
+doc.save("data.pdf")
+  }
+
 
 return (
 
@@ -328,6 +348,7 @@ return (
                 <ArrowDownOnSquareIcon />
               </SvgIcon>
             }
+            onClick={exportTableData}
           >
             Export
           </Button>
@@ -350,10 +371,10 @@ return (
             >
               <Grid
                 xs={12}
-                md={6}
+                md={6}  
                 lg={4}
               >
-                <AccountProfile data={data}  />
+                <AccountProfile data={data}  id="my-table" />
               </Grid>
               <Grid
                 xs={12}
@@ -389,6 +410,8 @@ return (
   title="Update User"
   visible={isModalOpen}
   onCancel={handleCancel}
+  
+  
   
   footer={[
     <Button key="cancel" onClick={handleCancel}>

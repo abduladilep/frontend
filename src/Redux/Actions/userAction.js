@@ -85,3 +85,33 @@ export const updateUser=(reqObj) => async dispatch=>{
 
     console.log(updatedUserResponse.data, "resspoupdata updated");
 }
+
+
+// export const handleAdminDelete=(reqObj) =>async dispatch=>{
+//     try {
+//         console.log(reqObj,"req.obj");
+//         const AdminRDeleteResponse =await axios.delete("/api/user/adminDelete",reqObj)
+//        console.log("adminDelete",AdminRDeleteResponse);
+        
+//     } catch (error) {
+//         console.log(error,"eroooorrr");
+        
+//     }
+// }
+
+
+
+export const handleAdminDelete = (adminId) => async (dispatch) => {
+  try {
+    const response = await axios.delete("/api/user/adminDelete", { data: {adminId: adminId } });
+    console.log("adminDelete", response.data);
+
+    // Dispatch further actions or handle success
+
+  } catch (error) {
+    console.log("error", error);
+
+    // Handle error or dispatch further actions
+  }
+};
+

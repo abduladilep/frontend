@@ -35,6 +35,7 @@ import {
 } from "@mui/material";
 import { collectionList } from "../Redux/Actions/userAction";
 import { CustomerFilter } from "./components/customerFilter";
+import jsPDF from "jspdf";
 
 
 
@@ -168,6 +169,27 @@ useEffect(() => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const exportTableData= () => {
+    console.log("expoted");
+    const doc =new jsPDF({orientation:'landsacpe'})
+    
+  const columns = ["Date", "Name","Address","Phone","Amount"];
+  const dataa = data.map((customer) => [
+    moment(customer.date).format("DD/MM/YYYY"),
+    customer.Name,
+    customer.Address,
+    customer.MobileNo,
+    customer.amount,
+  ]);
+
+  doc.autoTable({
+    columns,
+    body: dataa,
+  });
+    
+    
+doc.save("Collection.pdf")
+  }
 
   return (
     <Box mx="20px">
@@ -177,7 +199,8 @@ useEffect(() => {
           <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
            Collection Report
           </Typography>
-          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
+          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}
+           onClick={exportTableData}>
             Export
           </Button>
         </Box>
@@ -191,7 +214,7 @@ useEffect(() => {
     </Box>
       {/* <Card > */}
       <Box display="flex" justifyContent="space-around" p={2}>
-        <Table>
+        <Table id="my-table">
           <TableHead>
             <TableRow>
               {/* <TableCell padding="checkbox">

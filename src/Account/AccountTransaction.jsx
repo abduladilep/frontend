@@ -11,13 +11,15 @@ import {
   Divider,
   TextField,
   Typography,
-  Unstable_Grid2 as Grid
+  Unstable_Grid2 as Grid,
+  Stack
 } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 
 import { allUsers } from "../Redux/Actions/userAction";
 import { handleTransactionPay } from "../Redux/Actions/userAction";
 import { tokens } from "../theme";
+import moment from 'moment';
 
 
 export const AccountTransaction = ({data}) => {
@@ -61,11 +63,14 @@ const userId=data._id
   return (
    
       <Card 
-        // style={{ backgroundColor: colors.primary[300]}}
+      style={{ backgroundColor: colors.primary[400]}
+    }
+
         >
+     
         <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
+          // subheader="The information can be edited"
+          // title="sdsd"
         />
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
@@ -73,21 +78,23 @@ const userId=data._id
               container
               spacing={4}
             >
-              <Grid
+                <Grid
                 xs={12}
                 md={6}
               >
                 <Box>
 
                <Typography
-              variant="h6"
+              variant="h5"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-             {data.TotalAmount}
+             Collection Start:{moment(data.collectionDate).format("MM-DD-YYYY")}
             </Typography>
                 
               </Box>
+              
+              <Divider />
               </Grid>
               <Grid
                 xs={12}
@@ -100,10 +107,11 @@ const userId=data._id
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-             {data.GivenAmount}
+            Collection End:{moment(data.collectionEndDate).format("MM-DD-YYYY")}
             </Typography>
                 
               </Box>
+              <Divider />
               </Grid>
               <Grid
                 xs={12}
@@ -116,10 +124,11 @@ const userId=data._id
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-           total interst: {data.InterestAmount}
+             TotalAmount:{data.TotalAmount}
             </Typography>
                 
               </Box>
+              <Divider />
               </Grid>
               <Grid
                 xs={12}
@@ -132,10 +141,11 @@ const userId=data._id
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-         total profit:{Math.round(data.TotalProfit)}
+            InvestmentAmount:{data.GivenAmount}
             </Typography>
                 
               </Box>
+              <Divider />
               </Grid>
               <Grid
                 xs={12}
@@ -148,10 +158,11 @@ const userId=data._id
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-           total collected: {data.TotalCollected}
+           Total Interst: {data.InterestAmount}
             </Typography>
                 
               </Box>
+              <Divider />
               </Grid>
               <Grid
                 xs={12}
@@ -164,19 +175,61 @@ const userId=data._id
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
               >
-             total pending:{data.TotalPendingAmount}
+         Total Profit:{Math.round(data.TotalProfit)}
+            </Typography>
+                
+              </Box>
+              <Divider />
+              </Grid>
+              
+              <Grid
+                xs={12}
+                md={6}
+              >
+                <Box>
+
+               <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+              >
+           Total Collected: {data.TotalCollected}
             </Typography>
                 
               </Box>
               </Grid>
+              {/* <Card style={{ backgroundColor: colors.primary[400], width: 230}}> */}
+
+             
+              <CardContent maxWidth="sm">
+          <Stack
+            alignItems="flex-start"
+            direction="row"
+            justifyContent="space-between"
+            spacing={-2}
+          >
+            <Stack spacing={2}>
+              <Typography color="text.secondary" variant="overline">
+                Total Amount
+              </Typography>
+              <Stack spacing={1}  mt="50px" >
+              <Typography variant="h4"> {data.TotalCollected}</Typography>
+              </Stack>
+            </Stack>
+            <Stack alignItems="flex-end">
+             
+            </Stack>
+          </Stack>
+        </CardContent>
+        {/* </Card> */}
             </Grid>
           </Box>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained"
+          <Button variant="contained" color="secondary"
          onClick={() => showModal()}>
-            Save details
+            Pay 
           </Button>
         </CardActions>
 

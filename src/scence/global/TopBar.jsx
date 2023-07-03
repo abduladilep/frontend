@@ -13,6 +13,10 @@ function TopBar() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(colorModeContext);
+
+
+
+
     return(
     
     <Box  display="flex" justifyContent="space-between" p={4} className="fixed-top-bar" 
@@ -42,7 +46,7 @@ function TopBar() {
       </Box>
       {/* /*icon/  */}
     <Box display="flex">
-        <IconButton >
+        <IconButton  >
        <SettingsOutlinedIcon/>
         </IconButton>
         

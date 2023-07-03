@@ -10,6 +10,11 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DatePicker } from "antd";
 import { format } from "date-fns";
+// import { exportCSV } from "csv-export";
+// import { saveAs } from "file-saver";
+import {jsPDF} from "jspdf"
+import 'jspdf-autotable';
+
 
 import {
   Box,
@@ -147,6 +152,56 @@ function CollectedReport() {
   //   setEndDate(date.selection.endDate);
   // };
 
+
+  // const exportTableData = () => {
+  //   const csvData = data.map((customer) => ({
+  //     Date: moment(customer.date).format("DD/MM/YYYY"),
+  //     Name: customer.Name,
+  //     Phone: customer.MobileNo,
+  //     Amount: customer.amount,
+  //     Remaining: customer.TotalAmountCopy,
+  //   }));
+
+  //   const csvHeaders = ["Date", "Name", "Phone", "Amount", "Remaining"];
+
+  //   const fileName = "collected_report.csv";
+
+  //   exportCSV({ headers: csvHeaders, data: csvData }, (err, csv) => {
+  //     if (err) {
+  //       console.error("Error exporting CSV: ", err);
+  //       return;
+  //     }
+
+  //     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  //     saveAs(blob, fileName);
+  //   });
+  // };
+
+
+  const exportTableData= () => {
+    console.log("expoted");
+    const doc =new jsPDF({orientation:'landsacpe'})
+    
+  const columns = ["Date", "Name","Phone","Amount","Remaining"];
+  const dataa = data.map((customer) => [
+    moment(customer.date).format("DD/MM/YYYY"),
+    customer.Name,
+    customer.MobileNo,
+    customer.amount,
+    customer.TotalAmountCopy,
+  ]);
+
+  doc.autoTable({
+    columns,
+    body: dataa,
+  });
+    
+  doc.save("Collected.pdf")
+    
+  }
+
+
+  
   return (
 
     <Box mx="20px">
@@ -156,7 +211,9 @@ function CollectedReport() {
           <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
             Collected Report
           </Typography>
-          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}>
+          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}
+            onClick={exportTableData}
+          >
             Export
           </Button>
         </Box>
@@ -170,7 +227,7 @@ function CollectedReport() {
     </Box>
       
       <Box display="flex" justifyContent="space-around" p={4}>
-        <Table>
+        <Table id="my-table">
           <TableHead>
             <TableRow>
               {/* <TableCell padding="checkbox">

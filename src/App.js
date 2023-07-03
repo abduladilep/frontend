@@ -18,6 +18,7 @@ import AllUsers from "./scence/AllUser";
 import Signup from "./scence/SignupPage/Signup";
 import Login from "./scence/loginPage/Login"
 import Account from "./scence/Account";
+import AdminDetails from "./scence/AdminDetails";
 
 
 
@@ -48,6 +49,7 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/account/:customerId" element={<Account></Account>}/>
         <Route path="/login" element={<Login></Login>}/>
+        <Route path="/admin" element={<AdminDetails></AdminDetails>}/>
 
 
         {/* <Route path="/addStaff" element={<AddStaff></AddStaff>}/> */}

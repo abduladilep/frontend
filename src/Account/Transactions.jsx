@@ -108,6 +108,7 @@ const useCustomers = (page, rowsPerPage) => {
   const customers = useCustomers(page, rowsPerPage);
 
   // console.log(customers.id,"uuuuuuu");
+
     const customersIds = useCustomerIds(customers);
 
 

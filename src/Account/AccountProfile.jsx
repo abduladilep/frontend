@@ -31,7 +31,7 @@ import {
    
   return (
     <Card 
-    //  style={{ backgroundColor: colors.primary[500] }}
+    style={{ backgroundColor: colors.primary[400]}}
       >  
       <CardContent>
         <Box
