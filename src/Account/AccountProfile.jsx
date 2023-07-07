@@ -8,6 +8,7 @@ import {
     CardActions,
     CardContent,
     Divider,
+    Stack,
     Typography,
     useTheme
   } from '@mui/material';
@@ -27,6 +28,24 @@ import {
     console.log("sagsgh");
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+
+    
+  const handleDownloadPhoto = () => {
+    const photoUrls = [data.IdProof, data.Photo];
+
+    photoUrls.forEach((photoUrl) => {
+      const link = document.createElement('a');
+      link.href = photoUrl;
+      link.download = 'photo.jpg';
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.click();
+    });
+  };
+    
+   
+    
     
    
   return (
@@ -40,16 +59,26 @@ import {
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'column'
-          }}
-        >
+          }}>
+          <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
+        
           <Avatar
             src={data.IdProof}
             sx={{
-              height: 100,
+              height: 120,
               mb: 2,
-              width: 80
+              width: 100,
+              borderRadius: '8%',
+              
+              // border: '2px solid #000000' // Add the desired border styles here
             }}
           />
+           <Avatar
+        src={data.Photo} // Add the source of the second photo here
+        sx={{ height: 150, mb: 2, width: 200,   borderRadius: '8%' }}
+      
+      />
+      </Stack>
           <Typography
             gutterBottom
             variant="h3"
@@ -58,15 +87,17 @@ import {
           </Typography>
           <Typography
             color="text.secondary"
-            variant="body2"
+            variant="body"
+            sx={{ textAlign: 'center', width: "70%" ,  }}
           >
             {data.Address} 
           </Typography>
           <Typography
             color="text.secondary"
             variant="body2"
+            sx={{ mt: 1 }}
           >
-            {data.MobileNo}
+           Ph: {data.MobileNo}
           </Typography>
         </Box>
       </CardContent>
@@ -75,8 +106,11 @@ import {
         <Button
           fullWidth
           variant="text"
+          color="secondary"
+          onClick={handleDownloadPhoto}
+         
         >
-          Upload picture
+          Download picture
         </Button>
       </CardActions>
     </Card>
