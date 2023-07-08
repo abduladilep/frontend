@@ -13,40 +13,47 @@ import {
     useTheme
   } from '@mui/material';
   import { tokens } from "../theme";
+  import JSZip from 'jszip';
+import FileSaver from 'file-saver';
+
 
   
-  // const user = {
-  //   avatar: '/assets/avatars/avatar-anika-visser.png',
-  //   city: 'Los Angeles',
-  //   country: 'USA',
-  //   jobTitle: 'Senior Developer',
-  //   name: 'Anika Visser',
-  //   timezone: 'GTM-7'
-  // };
   
   export function AccountProfile({data}){
     console.log("sagsgh");
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-
-    
-  const handleDownloadPhoto = () => {
-    const photoUrls = [data.IdProof, data.Photo];
-
-    photoUrls.forEach((photoUrl) => {
-      const link = document.createElement('a');
-      link.href = photoUrl;
-      link.download = 'photo.jpg';
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.click();
-    });
-  };
-    
    
+    const handleDownload = async () => {
+      const convertToBase64 = async (url) => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      };
     
+      const idProofBase64 = await convertToBase64(data.IdProof);
+      const photoBase64 = await convertToBase64(data.Photo);
+
+      const idProofFileName = `${data.Name}_IdProof.jpg`;
+      const photoFileName = `${data.Name}_Photo.jpg`;
     
+      const zip = new JSZip();
+      zip.file(idProofFileName, idProofBase64.substr(idProofBase64.indexOf(',') + 1), { base64: true });
+      zip.file(photoFileName, photoBase64.substr(photoBase64.indexOf(',') + 1), { base64: true });
+    
+      zip.generateAsync({ type: 'blob' }).then((blob) => {
+        FileSaver.saveAs(blob, 'photos.zip');
+      });
+    };
+
+
+  
    
   return (
     <Card 
@@ -107,8 +114,8 @@ import {
           fullWidth
           variant="text"
           color="secondary"
-          onClick={handleDownloadPhoto}
-         
+          onClick={handleDownload}
+          
         >
           Download picture
         </Button>

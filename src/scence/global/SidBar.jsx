@@ -70,7 +70,7 @@ function SidBar() {
         },
       }}
     >
-      <ProSidebar width="30vh" collapsed={isCollapsed}>
+      <ProSidebar width="40vh" collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -89,7 +89,7 @@ function SidBar() {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS 
+                King space finance
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -116,7 +116,7 @@ function SidBar() {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                 King space 
                 </Typography>
                 {/* <Typography variant="h5" color={colors.greenAccent[500]}>
                   VP Fancy Admin
