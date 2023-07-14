@@ -32,6 +32,8 @@ import {
   TableRow,
 } from "@mui/material";
 import axios from "axios";
+import moment from "moment";
+import jsPDF from "jspdf";
 
 function AllUsers() {
   const { ALLUSERS } = useSelector((state) => state.users);
@@ -102,6 +104,28 @@ function AllUsers() {
     // console.log(event.target.value, "valuee0000e");
   }, []);
 
+
+  const exportTableData= () => {
+    console.log("expoted");
+    const doc =new jsPDF({orientation:'landsacpe'})
+    
+  const columns = [ "Name","Phone","Address","Amount"];
+  const dataa = data.map((customer) => [
+    customer.Name,
+    customer.MobileNo,
+    customer.Address,
+    customer.TotalAmount,
+  ]);
+
+  doc.autoTable({
+    columns,
+    body: dataa,
+  });
+    
+  doc.save("All Customers.pdf")
+    
+  }
+
   return (
     <Box mx="20px">
       <Box
@@ -125,6 +149,7 @@ function AllUsers() {
                   <ArrowDownOnSquareIcon />
                 </SvgIcon>
               }
+              onClick={exportTableData}
             >
               Export
             </Button>
@@ -191,7 +216,7 @@ function AllUsers() {
                   </TableCell>
                   <TableCell>{customer.MobileNo}</TableCell>
                   <TableCell>{customer.Address}</TableCell>
-                  <TableCell>{customer.GivenAmount}</TableCell>
+                  <TableCell>{customer.TotalAmount}</TableCell>
 
                   <TableCell>
                     

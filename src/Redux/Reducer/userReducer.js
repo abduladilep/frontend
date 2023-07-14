@@ -21,3 +21,14 @@ export const usersReducer=(state=initialState,action)=>{
     }
 }
 
+export const userTokenReducer = (state = {}, action) => {
+    switch (action.type) {
+        case "SET_TOKEN":
+            return { ...state, token: action.payload };
+        case "LOGOUT":
+            return { token: null };
+        default:
+            return state;
+}
+}
+

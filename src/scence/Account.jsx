@@ -20,10 +20,13 @@ import Transactions from "../Account/Transactions";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useCallback, useEffect } from "react";
-import { allUsers, updateUser } from "../Redux/Actions/userAction";
+import { allUsers, updateUser ,handleCostomerDelete} from "../Redux/Actions/userAction";
 import { tokens } from "../theme";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+import { PencilSquareIcon } from '@heroicons/react/24/solid';
+import { TrashIcon } from "@heroicons/react/24/solid";
+
 import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
+
 
 // import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 // import { Modal } from "antd";
@@ -174,7 +177,7 @@ const Account = () => {
     IdProof: data.IdProof,
     Photo: data.Photo,
     collectionDate: moment(data.collectionDate).format("YYYY-MM-DD"),
-    collectionPeriod: 2,
+    collectionPeriod:data.collectionPeriod,
     collectionEndDate: moment(data.collectionEndDate).format("YYYY-MM-DD"),
   };
   let { customerId } = useParams();
@@ -198,16 +201,26 @@ const Account = () => {
   const colors = tokens(theme.palette.mode);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDelete, setDelete] = useState(false);
 
-  const showModal = (user_id) => {
+  
+  const showDeleteModal = (user_id) => {
     console.log(user_id, "useriiiidd");
-    setIsModalOpen(true);
+    setDelete(true);
   };
-  // const handleOk = (values) => {
-
-  //   setIsModalOpen(false);
-  // };
-
+  const cancelDelete =() => {
+    setDelete(false);
+  };
+  const handleDelete = (values) => {
+    dispatch(handleCostomerDelete(values));
+    
+    setDelete(false);
+    };
+    
+    const showModal = (user_id) => {
+      console.log(user_id, "useriiiidd");
+      setIsModalOpen(true);
+    };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -266,25 +279,25 @@ const Account = () => {
     setIsModalOpen(false);
   };
 
-  const exportTableData = () => {
-    console.log("expoted");
-    const doc = new jsPDF({ orientation: "landsacpe" });
+  // const exportTableData = () => {
+  //   console.log("expoted");
+  //   const doc = new jsPDF({ orientation: "landsacpe" });
 
-    // const columns = ["Date","Phone","Amount","Remaining"];
-    // const dataa = data.map((customer) => [
-    //   moment(customer.date).format("DD/MM/YYYY"),
+  //   // const columns = ["Date","Phone","Amount","Remaining"];
+  //   // const dataa = data.map((customer) => [
+  //   //   moment(customer.date).format("DD/MM/YYYY"),
 
-    //   customer.MobileNo,
-    //   customer.amount,
-    //   customer.TotalAmountCopy,
-    // ]);
+  //   //   customer.MobileNo,
+  //   //   customer.amount,
+  //   //   customer.TotalAmountCopy,
+  //   // ]);
 
-    doc.autoTable({
-      html: "#my-table",
-    });
+  //   doc.autoTable({
+  //     html: "#my-table",
+  //   });
 
-    doc.save("data.pdf");
-  };
+  //   doc.save("data.pdf");
+  // };
 
   return (
     <>
@@ -300,7 +313,7 @@ const Account = () => {
             flexGrow: 1,
           }}
         >
-          <Box display="flex" justifyContent="space-between" p={4}>
+          <Box display="flex" justifyContent="space-between" p={4} mx={2}>
             <Typography variant="h3" color={colors.grey[100]} fontWeight="bold">
               DETAILS
             </Typography>
@@ -309,24 +322,50 @@ const Account = () => {
                 color="inherit"
                 startIcon={
                   <SvgIcon fontSize="small">
-                    <ArrowUpOnSquareIcon />
+                    <PencilSquareIcon />
                   </SvgIcon>
                 }
                 onClick={() => showModal(data._id)}
               >
-                Edit
+                Edit CUSTOMER
               </Button>
               <Button
                 color="inherit"
                 startIcon={
                   <SvgIcon fontSize="small">
-                    <ArrowDownOnSquareIcon />
+                    <TrashIcon />
                   </SvgIcon>
                 }
-                onClick={exportTableData}
+                onClick={() => showDeleteModal(data._id)}
               >
-                Export
+               Delete CUSTOMER
               </Button>
+              
+               {/* <Button
+          variant="contained"
+          // color="secondary"
+          onClick={() => showModal(data._id)}
+        >
+          Edit Customer
+        </Button> */}
+          
+                    <Modal open={isDelete}
+                    
+                    title='Do you want to Delete this costomer?'
+                      // open={isModalOpen}
+                      onOk={()=>handleDelete(userId)}
+                      onCancel={cancelDelete}
+                      okText= 'Delete'
+                      okType= 'danger'
+                      cancelText= 'No'
+                      style={{ backgroundColor: 'black' }}
+                      bodyStyle={{ fontSize: '16px' }}
+                      // okButtonProps={{ type: 'danger', style: { backgroundColor: 'red' } }}
+                    >
+                      
+                    </Modal>
+
+            
             </Box>
           </Box>
 
@@ -356,11 +395,11 @@ const Account = () => {
             spacing={3}
           >
             <Grid xs={12} md={6} lg={4}>
-              <Transactions data={data} />
+              <Transactions  data={data} />
             </Grid>
           </Grid>
 
-          <Modal
+          {/* <Modal
             title="Update User"
             visible={isModalOpen}
             onCancel={handleCancel}
@@ -378,13 +417,20 @@ const Account = () => {
               </Button>,
             ]}
             // open={isModalOpen}
-
-            // style={{ backgroundColor: 'black' }} // Set the background color and text color
-          >
+            style={{ backgroundColor: colors.primary[400] }}
+            // style={{ backgroundColor: 'black' }}
+                      bodyStyle={{ fontSize: '16px' }}
+ 
+          > */}
+           <Modal open={isModalOpen} onCancel={handleCancel}
+            
+          
+            >
             <Box m="20px">
               {/* <Header title="CREATE USER" subtitle="Add a new user" /> */}
 
               <Formik
+              style={{ backgroundColor: colors.primary[400] }}
                 onSubmit={handleFormSubmit}
                 initialValues={initialValues}
                 validationSchema={userSchema}
@@ -403,6 +449,8 @@ const Account = () => {
                     onSubmit={handleSubmit} // Set the background color and text color
                   >
                     <Box
+                    style={{ backgroundColor: colors.primary[400] }}
+ 
                       // display="grid"
                       gap="30px"
                       gridTemplateColumns="repeat(4,minmax(0,1fr))"
@@ -411,8 +459,7 @@ const Account = () => {
                           gridColumn: isNonMobile ? undefined : "span 4",
                         },
                       }}
-                      // style={{ backgroundColor: 'black' }} // Set the background color and text color
-                      // color={colors.grey[100]} fontWeight="bold"
+                     
                     >
                       <TextField
                         fullWidth
@@ -795,11 +842,14 @@ const Account = () => {
                         )}
                       </Box>
                     </Box>
-
+                    
                     <Box display="flex" justifyContent="end" mt="20px">
-                      {/* <Button type="submit"  color="secondary" varient="contained">
+                      <Button type="submit"  color="secondary" varient="contained">
                 submit
-              </Button> */}
+              </Button>
+              <Button type="button" onClick={handleCancel}>
+            Cancel
+          </Button>
                     </Box>
                   </form>
                 )}

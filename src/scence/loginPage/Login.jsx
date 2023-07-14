@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 //   import './Login.css'
 import { toast } from "react-toastify";
 import DotSpinner from "../Dotspinner/Dotspinner";
-import { Col, Row } from "antd";
+import { Col, Row, message } from "antd";
 import "./index.css";
+import { LoginUser } from "../../Redux/Actions/userAction";
 
 const toastConfig = {
   position: "top-center",
@@ -23,7 +24,7 @@ const toastConfig = {
 
 function Login() {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   // const [isOpen,setIsOpen] = useState(false)
   const [name, setName] = useState("");
@@ -55,33 +56,38 @@ function Login() {
       return;
     }
     setLoading(true);
-    const response = await fetch(`http://localhost:5000/api/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        password,
-        mobile,
-      }),
-    });
-    console.log(mobile, password, "email+pass");
-    const data = await response.json();
-    console.log(data, "datatta");
-    if (data.admin) {
+    // const response = await fetch(`http://localhost:5000/api/user/login`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     name,
+    //     password,
+    //     mobile,
+    //   }),
+    // });
+    // console.log(mobile, password, "email+pass");
+    const token=await dispatch(LoginUser({name,password,mobile}))
+    // const data = await token.json();
+    // console.log(data, "datatta");
+    if (token) {
       setLoading(false);
       toast.success("Successfully Logged In", toastConfig);
-      localStorage.setItem("token", data.admin);
+      localStorage.setItem("token", token);
+      message.success("Successfully Logged In")
+      
       // dispatch(setToken(data.user));
       // dispatch(setUser(data.details));
       navigate("/");
-    } else if (data.status === "wrong") {
-      setLoading(false);
-      toast.error("Invalid Email or password", toastConfig);
+    // } else if (data.status === "wrong") {
+    //   setLoading(false);
+    //   toast.error("Invalid Email or password", toastConfig);
     } else {
       setLoading(false);
       toast.error("No account with this Email", toastConfig);
+      message.error("Login Failed");
+
     }
   }
 

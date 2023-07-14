@@ -265,6 +265,7 @@ doc.save("Collection.pdf")
                     <Typography color={colors.grey[100]}>
                       <Button
                         type="primary"
+                        color="secondary"
                         // onClick={(showModal)}>
                         // onClick={()=>showModal(customer.userId)}>
                         onClick={() => showModal(customer.userId)}
@@ -280,13 +281,19 @@ doc.save("Collection.pdf")
                       open={isModalOpen}
                       onOk={()=>handleOk(payObj)}
                       onCancel={handleCancel}
+                      bodyStyle={{ width: '10px', height: '5px', fontSize: '16px' }}
                     >
                       <input
-                        // value={payObj.value}
+                        // value={customer.CollectionAmount}
                         // id={customer.userId}
                         // defaultValue={customer.CollectionAmount}
+                        placeholder={customer.CollectionAmount}
+                        type="number"
                         cols="30"
                         rows="10"
+                        
+                        style={{ fontSize: '16px' , margin: '15px 20px', width: '100', height: '80', }}
+
                         onChange={(e) => {
                           const data = { ...payObj };
                           data.amount = e.target.value;

@@ -110,6 +110,8 @@ const currentDate = new Date();
 const todayprofit = ALLUSERS.filter((user) => user.TodayProfit  );
 const todaycollected =ALLUSERS.filter((user) => user.Collected );
 const todaypending =ALLUSERS.filter((user) => user.Pending );
+console.log(todaycollected,"vdvdghvdghfvdghfvdghfvg");
+console.log(ALLUSERS,"ALLUSERRRRRRRRRRRRRRRR");
 
    
 let profitSum = 0;
@@ -118,13 +120,13 @@ let pendingSum = 0;
 
 todayprofit.forEach((user) => {
   user?.TodayProfit.forEach((profit) => {
-    console.log(profit,"profittt"); // Log the value of the 'profit' array
+    // console.log(profit,"profittt"); // Log the value of the 'profit' array
   const profitDate=new Date(profit.date)
-    console.log(profitDate,"sgdashd");
+    // console.log(profitDate,"sgdashd");
     if (moment(profitDate).format("DD/MM/YYYY")===moment(currentDate).format("DD/MM/YYYY") ) {
  
       if (typeof  parseFloat(profit.Profit) === 'number') {
-        console.log("number");
+        // console.log("number");
         profitSum += parseFloat(profit.Profit);
         
       }
@@ -136,14 +138,16 @@ const todayProfit= profitSum
 
 todaycollected.forEach((user) => {
   user?.Collected.forEach((collected) => {
-    console.log(collected,"collected"); // Log the value of the 'profit' array
+    // console.log(collected,"collected"); // Log the value of the 'profit' array
   const collectedDate=new Date(collected.date)
-    console.log(collectedDate,"cooooooooooooooo");
-    if (moment(collectedDate).format("DD/MM/YYYY")===moment(currentDate).format("DD/MM/YYYY") ) {
+  if (moment(collectedDate).format("DD/MM/YYYY")===moment(currentDate).format("DD/MM/YYYY") ) {
+      console.log("cooooooooooooooo");
  
       if (typeof parseFloat(collected.amount) === 'number') {
         console.log("number");
         collectedSum += parseFloat(collected.amount);
+        console.log("collectedSum",collectedSum);
+
         
       }
     }
@@ -151,6 +155,8 @@ todaycollected.forEach((user) => {
  
 });
   const todayCollected= collectedSum
+
+  console.log(collectedSum,"todayyyyyy collecteed  sum");
 
 
 
@@ -197,6 +203,8 @@ setOverview({
       console.log("sumTotalCollected", sumTotalCollected);
       console.log("sumIntrestAmount", sumIntrestAmount);
       console.log("sumTotalPendingAmount", sumTotalPendingAmount);
+      console.log("sumTodayCollected", todayCollected);
+
       
     }
   }, [ALLUSERS]);

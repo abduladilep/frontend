@@ -173,7 +173,7 @@ const { confirm } = Modal;
                       cancelText= 'No'
                       style={{ backgroundColor: 'black' }}
                       bodyStyle={{ fontSize: '16px' }}
-                    //   okButtonProps={{ type: 'danger', style: { backgroundColor: 'red' } }}
+                      // okButtonProps={{ type: 'danger', style: { backgroundColor: 'red' } }}
                     >
                       
                     </Modal>

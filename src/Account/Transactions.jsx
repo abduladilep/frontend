@@ -22,6 +22,8 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+import jsPDF from "jspdf";
 
  function Transactions ({ data }){
   const theme = useTheme();
@@ -121,12 +123,46 @@ const useCustomers = (page, rowsPerPage) => {
   }, []);
 
 
+  
+  const exportTableData= () => {
+    console.log("expoted");
+    const doc =new jsPDF({orientation:'landsacpe'})
+    
+  const columns = ["Date", "Collected","Pending","Remaining"];
+  const dataa = collected.map((customer) => [
+    moment(customer.date).format("DD/MM/YYYY"),
+    customer.amount?customer.amount:0,
+    customer.pendingAmount?customer.pendingAmount:0,
+    customer.reming?customer.reming:0,
+  ]);
+
+  doc.autoTable({
+    columns,
+    body: dataa,
+  });
+    
+  doc.save("TranactionDetails.pdf")
+    
+  }
+
+
 
   
 
   return (
     <Box m="20px">
-      <Box display="flex" justifyContent="space-around" p={4}>
+  
+        <Box display="flex" justifyContent="space-between" ml={4}  >
+          
+          <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}
+            onClick={exportTableData}
+          >
+            Export
+          </Button>
+        </Box>
+        
+      
+      <Box display="flex" justifyContent="space-around" p={4} >
         <Table>
           <TableHead>
             <TableRow>

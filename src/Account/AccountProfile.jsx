@@ -13,48 +13,39 @@ import {
     useTheme
   } from '@mui/material';
   import { tokens } from "../theme";
-  import JSZip from 'jszip';
+
 import FileSaver from 'file-saver';
+import { useState } from 'react';
+
 
 
   
   
   export function AccountProfile({data}){
-    console.log("sagsgh");
+    const [isDownloading, setIsDownloading] = useState(false);
+   
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
    
-    const handleDownload = async () => {
-      const convertToBase64 = async (url) => {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        });
-      };
-    
-      const idProofBase64 = await convertToBase64(data.IdProof);
-      const photoBase64 = await convertToBase64(data.Photo);
-
-      const idProofFileName = `${data.Name}_IdProof.jpg`;
-      const photoFileName = `${data.Name}_Photo.jpg`;
-    
-      const zip = new JSZip();
-      zip.file(idProofFileName, idProofBase64.substr(idProofBase64.indexOf(',') + 1), { base64: true });
-      zip.file(photoFileName, photoBase64.substr(photoBase64.indexOf(',') + 1), { base64: true });
-    
-      zip.generateAsync({ type: 'blob' }).then((blob) => {
-        FileSaver.saveAs(blob, 'photos.zip');
-      });
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    const convertToBlob = async (url) => {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return blob;
     };
 
+    const idProofBlob = await convertToBlob(data.IdProof);
+    const photoBlob = await convertToBlob(data.Photo);
 
-  
+    FileSaver.saveAs(idProofBlob, `${data.Name}_IdProof.jpg`);
+    FileSaver.saveAs(photoBlob, `${data.Name}_Photo.jpg`);
+    setIsDownloading(false);
+  };
+
    
+
   return (
     <Card 
     style={{ backgroundColor: colors.primary[400]}}
@@ -66,7 +57,9 @@ import FileSaver from 'file-saver';
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'column'
-          }}>
+          }}
+         
+          >
           <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         
           <Avatar
@@ -117,10 +110,10 @@ import FileSaver from 'file-saver';
           onClick={handleDownload}
           
         >
-          Download picture
+           {isDownloading ? 'Downloading...' : 'Download picture'}
         </Button>
       </CardActions>
     </Card>
   )
-        };
+   };
   

@@ -13,6 +13,7 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
   Stack,
+  SvgIcon,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -20,6 +21,10 @@ import { allUsers } from "../Redux/Actions/userAction";
 import { handleTransactionPay } from "../Redux/Actions/userAction";
 import { tokens } from "../theme";
 import moment from "moment";
+import jsPDF from "jspdf";
+import 'jspdf-autotable';
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+import { useNavigate } from "react-router-dom";
 
 export const AccountTransaction = ({ data }) => {
   const theme = useTheme();
@@ -53,11 +58,38 @@ export const AccountTransaction = ({ data }) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
   const userId = data._id;
+  
+  const exportTableData = () => {
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+
+    // Define the content to be added to the PDF
+    const content = `
+      Account Transaction Details:
+      ---------------------------------
+      Collection Start: ${moment(data.collectionDate).format("DD-MM-YYYY")}
+      Collection End: ${moment(data.collectionEndDate).format("DD-MM-YYYY")}
+      Total Amount: ${data.TotalAmount}
+      Investment: ${data.GivenAmount}
+      Interest Amount: ${data.InterestAmount ? data.InterestAmount : 0}
+      Total Profit: ${data.TotalProfit ? Math.round(data.TotalProfit) : 0}
+      Total Collected: ${data.TotalCollected ? data.TotalCollected : 0}
+      Total Pending: ${data.TotalPendingAmount}
+    `;
+
+    // Add the content to the PDF document
+    doc.text(content, 10, 10);
+
+    // Save the PDF document
+    doc.save("account-transaction.pdf");
+  };
+  
+ 
+
 
   return (
-    <Card style={{ backgroundColor: colors.primary[400] }}>
+    <Card   id="account-transaction-card" style={{ backgroundColor: colors.primary[400] }}>
       <CardHeader
       // subheader="The information can be edited"
       // title="sdsd"
@@ -176,7 +208,7 @@ export const AccountTransaction = ({ data }) => {
                   <Stack spacing={1} mt="50px">
                     <Typography variant="h4">
                     
-                      {data.InterestAmount}
+                      {data.InterestAmount?data.InterestAmount:0}
                       
                     </Typography>
                   </Stack>
@@ -201,7 +233,7 @@ export const AccountTransaction = ({ data }) => {
                   <Stack spacing={1} mt="50px">
                     <Typography variant="h4">
                     
-                    {Math.round(data.TotalProfit)}
+                    {data.TotalProfit?Math.round(data.TotalProfit):0}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -226,7 +258,7 @@ export const AccountTransaction = ({ data }) => {
                   <Stack spacing={1} mt="50px">
                     <Typography variant="h4">
                     
-                      {data.TotalCollected}
+                      {data.TotalCollected?data.TotalCollected:0}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -260,29 +292,54 @@ export const AccountTransaction = ({ data }) => {
         </Box>
       </CardContent>
       <Divider />
-      <CardActions sx={{ justifyContent: "flex-end" }}>
+      <CardActions sx={{ display:"flex" ,justifyContent: "flex-end" , p:"4"}}>
+      {/* </CardActions> */}
+      {/* <CardActions sx={{ justifyContent: 'flex-end' }}> */}
+      <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}
+            onClick={exportTableData}
+          >
+            Export
+          </Button>
         <Button
           variant="contained"
           color="secondary"
           onClick={() => showModal()}
+        
         >
           Pay
         </Button>
-      </CardActions>
+</CardActions>
 
       {isModalOpen && (
         <Modal
-          title="Pay"
+          // title="Pay"
           open={isModalOpen}
           onOk={() => handleOk(payObj)}
           onCancel={handleCancel}
+          title='Do you want to pement this customer?'
+          okText= 'PAY'
+          okType= 'primary'
+          cancelText= 'Cancel'
+          // style={{ backgroundColor: 'black' }}
+          // bodyStyle={{ fontSize: '16px' }}
+          bodyStyle={{ width: '10px', height: '5px', fontSize: '16px' }}
         >
           <input
             // value={payObj.value}
             // id={customer.userId}
             // defaultValue={customer.CollectionAmount}
             cols="30"
-            rows="10"
+            rows="50"
+            type="text"
+            placeholder="Enter Amount.."
+            // style={{
+            //   border: 'none',
+            //   borderBottom: '1px solid ',
+            //   outline: 'none',
+            //   fontSize: '16px',
+            //   margin: '15px 20px',
+            // }}
+            style={{ fontSize: '16px' , margin: '15px 20px', width: '100', height: '80', }}
             onChange={(e) => {
               const value = { ...payObj };
               value.amount = e.target.value;

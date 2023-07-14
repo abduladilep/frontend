@@ -10,25 +10,26 @@ import { addWeeks } from "@progress/kendo-date-math";
 // import { addUser } from "../../redux/Actions/userActions";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Redux/Actions/userAction";
+import { Link } from "react-router-dom";
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const userSchema = Yup.object().shape({
-  // Name: Yup.string()
-  //   .min(3)
-  //   .max(50)
-  //   .required("Please enter your name"),
-  // MobileNo: Yup.string()
-  //   .min(10)
-  //   .max(10)
-  //   .matches(phoneRegExp, "Phone number is not valid")
-  //   .required("Mobile number is must be 10 digits"),
-  // Address: Yup.string().required(),
-  // GivenAmount: Yup.number()
-  //   .positive()
-  //   .integer()
-  //   .required("Please Enter the amount to give"),
+  Name: Yup.string()
+    .min(3)
+    .max(50)
+    .required("Please enter your name"),
+  MobileNo: Yup.string()
+    .min(10)
+    .max(10)
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("Mobile number is must be 10 digits"),
+  Address: Yup.string().required(),
+  GivenAmount: Yup.number()
+    .positive()
+    .integer()
+    .required("Please Enter the amount to give"),
 
   //   collectionPeriod: Yup.number()
   //   .positive()
@@ -36,70 +37,70 @@ const userSchema = Yup.object().shape({
   //   .required("Please Enter the Collection period")
   //   ,
 
-  // InterestAmount: Yup.number()
-  //   .positive()
-  //   .integer()
-  //   .lessThan(Yup.ref("GivenAmount"))
-  //   .required("Please Enter the amount to give"),
+  InterestAmount: Yup.number()
+    .positive()
+    .integer()
+    .lessThan(Yup.ref("GivenAmount"))
+    .required("Please Enter the amount to give"),
 
   // InterestPercentage: Yup.number()
-  //   .positive("Profit percentage must be a number")
-  //   // .integer("Profit percentage must be a integer")
-  //   .test(
-  //     "is-percentage",
-  //     "profit percentage must be between 0 and 100",
-  //     (value) => value >= 0 && value <= 100
-  //   ),
-  // TotalAmount: Yup.number()
-  //   .positive()
-  //   .integer()
-  //   .moreThan(Yup.ref("GivenAmount"))
-  //   .required("Please enter the total amount "),
+    // .positive("Profit percentage must be a number")
+    // .integer("Profit percentage must be a integer")
+    // .test(
+      // "is-percentage",
+      // "profit percentage must be between 0 and 100",
+      // (value) => value >= 0 && value <= 100
+    // ),
+  TotalAmount: Yup.number()
+    .positive()
+    .integer()
+    .moreThan(Yup.ref("GivenAmount"))
+    .required("Please enter the total amount "),
 
-  //   CollectionAmount: Yup.number()
-  //   .positive()
-  //   // .integer()
-  //   .required("Please Enter the amount"),
+    CollectionAmount: Yup.number()
+    .positive()
+    // .integer()
+    .required("Please Enter the amount"),
 
   Photo: Yup.mixed()
-    // .test(
-    //   "fileType",
-    //   "Invalid file type, only JPG and PNG are allowed",
-    //   (value) => {
-    //     if (!value) return true; // allow empty values
-    //     const supportedFormats = ["image/jpeg", "image/png"];
-    //     return supportedFormats.includes(value.type);
-    //   }
-    // )
-    // .test(
-    //   "fileSize",
-    //   "Image size is too large, maximum size is 5MB",
-    //   (value) => {
-    //     if (!value) return true; // allow empty values
-    //     const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
-    //     return value.size <= maxFileSize;
-    //   }
-    // )
+    .test(
+      "fileType",
+      "Invalid file type, only JPG and PNG are allowed",
+      (value) => {
+        if (!value) return true; // allow empty values
+        const supportedFormats = ["image/jpeg", "image/png"];
+        return supportedFormats.includes(value.type);
+      }
+    )
+    .test(
+      "fileSize",
+      "Image size is too large, maximum size is 5MB",
+      (value) => {
+        if (!value) return true; // allow empty values
+        const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+        return value.size <= maxFileSize;
+      }
+    )
     ,
   IdProof: Yup.mixed()
-    // .test(
-    //   "fileType",
-    //   "Invalid file type, only JPG and PDF are allowed",
-    //   (value) => {
-    //     if (!value) return true; // allow empty values
-    //     const supportedFormats = ["image/jpeg", "application/pdf"];
-    //     return supportedFormats.includes(value.type);
-    //   }
-    // )
-    // .test(
-    //   "fileSize",
-    //   "Image size is too large, maximum size is 2MB",
-    //   (value) => {
-    //     if (!value) return true; // allow empty values
-    //     const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
-    //     return value.size <= maxFileSize;
-    //   }
-    // )
+    .test(
+      "fileType",
+      "Invalid file type, only JPG and PDF are allowed",
+      (value) => {
+        if (!value) return true; // allow empty values
+        const supportedFormats = ["image/jpeg", "application/pdf"];
+        return supportedFormats.includes(value.type);
+      }
+    )
+    .test(
+      "fileSize",
+      "Image size is too large, maximum size is 2MB",
+      (value) => {
+        if (!value) return true; // allow empty values
+        const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
+        return value.size <= maxFileSize;
+      }
+    )
     // .required("Please upload an ID proof image"),
 
   //   collectionDate: Yup.date()
@@ -607,9 +608,12 @@ function AddUser() {
             </Box>
 
             <Box display="flex" justifyContent="end" mt="20px">
+           
+                      
               <Button type="submit" color="secondary" varient="contained">
                 submit
               </Button>
+                         
             </Box>
           </form>
         )}

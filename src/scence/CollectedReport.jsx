@@ -153,31 +153,6 @@ function CollectedReport() {
   // };
 
 
-  // const exportTableData = () => {
-  //   const csvData = data.map((customer) => ({
-  //     Date: moment(customer.date).format("DD/MM/YYYY"),
-  //     Name: customer.Name,
-  //     Phone: customer.MobileNo,
-  //     Amount: customer.amount,
-  //     Remaining: customer.TotalAmountCopy,
-  //   }));
-
-  //   const csvHeaders = ["Date", "Name", "Phone", "Amount", "Remaining"];
-
-  //   const fileName = "collected_report.csv";
-
-  //   exportCSV({ headers: csvHeaders, data: csvData }, (err, csv) => {
-  //     if (err) {
-  //       console.error("Error exporting CSV: ", err);
-  //       return;
-  //     }
-
-  //     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-  //     saveAs(blob, fileName);
-  //   });
-  // };
-
-
   const exportTableData= () => {
     console.log("expoted");
     const doc =new jsPDF({orientation:'landsacpe'})

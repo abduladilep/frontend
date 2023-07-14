@@ -14,6 +14,12 @@ function TopBar() {
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(colorModeContext);
 
+    const handleLogout = () => {
+      // dispatch(logout());
+              localStorage.removeItem('token');
+          window.location.href ='/login';
+  
+  };
 
 
 
@@ -46,7 +52,8 @@ function TopBar() {
       </Box>
       {/* /*icon/  */}
     <Box display="flex">
-        <IconButton  >
+        <IconButton 
+        onClick={(handleLogout)} >
        <SettingsOutlinedIcon/>
         </IconButton>
         

@@ -3,7 +3,6 @@ import {useState} from "react";
 // import {Menu,MenuItem,SubMenu} from "react-pro-sidebar";
 // import { Sidebar } from 'react-pro-sidebar';
 import { ProSidebar, Menu, MenuItem} from 'react-pro-sidebar';
-
 import 'react-pro-sidebar/dist/css/styles.css';
 import {Box,IconButton,Typography,useTheme} from "@mui/material"
 import{Link} from "react-router-dom"
@@ -22,6 +21,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 // import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 // import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+
 
 
 
@@ -77,7 +77,7 @@ function SidBar() {
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
-              margin: "10px 0 20px 0",
+              margin: "0px 0 0px 0",
               color: colors.grey[100],
             }}
           >
@@ -88,9 +88,9 @@ function SidBar() {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
+                {/* <Typography variant="h3" color={colors.grey[100]}>
                 King space finance
-                </Typography>
+                </Typography> */}
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
@@ -100,15 +100,15 @@ function SidBar() {
 
           {!isCollapsed && (
             <Box mb="25px" >
-              {/* <Box display="flex" justifyContent="center" alignItems="center">
+              <Box display="flex" justifyContent="center" alignItems="center" mb="25px" >
                 <img
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={`../../assets/kingspacelogo.jpg`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
-              </Box> */}
+              </Box>
               <Box textAlign="center">
                 <Typography
                   variant="h3"
@@ -116,7 +116,7 @@ function SidBar() {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                 King space 
+                 King Space  Finance
                 </Typography>
                 {/* <Typography variant="h5" color={colors.greenAccent[500]}>
                   VP Fancy Admin

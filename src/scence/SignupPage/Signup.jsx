@@ -5,13 +5,13 @@ import React, { useEffect, useState } from "react";
 // import Logo from "../../img/logo.png";
 // import { logIn, signUp } from "../../redux/actions/AuthAction.js";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
 // import { alertsReducer } from "../Redux/Actions/userAction";
 import { toast } from "react-toastify";
 import "./index.css";
 import axios from "axios";
-import { Col, Row } from "antd";
+import { Col, Row, message } from "antd";
 
 const toastConfig = {
   position: "top-center",
@@ -103,18 +103,29 @@ const Signup = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email,
+        mobile
+
       }),
     });
 
     const data = await response.json();
+   
     setLoading(false);
     if (data.status === "sended") {
+      message.success("otpsend")
       toast.success("An OTP sended, check it....", toastConfig);
       setIsActive(true);
       setMinutes(1);
       setSeconds(30);
-    } else {
+    }
+    else if(data.status==="exist"){
+      message.error("Nope ! Try with another Mobile Number !");
+      Navigate("/signup");
+
+    }
+     else {
       toast.error("Try with another email", toastConfig);
+      message.error("Signup Failed ! Try again")
     }
   }
 
@@ -153,12 +164,14 @@ const Signup = () => {
       console.log(data, "response");
       if (data.status === "ok") {
         // toast.success("Successfully registered".toastConfig)
+        message.success("successfully registered !")
         navigate("/login");
-      } else if (data.status === "fail") {
-        toast.error("Nope ! Try with another email ".toastConfig);
+       
+        toast.error("Nope ! Try with another Mobile Number ".toastConfig);
       }
     } else if (data.status === "fail") {
       toast.error("Nope ! Try with another email ".toastConfig);
+      message.error("Signup Failed ! Try again");
     }
   }
 
