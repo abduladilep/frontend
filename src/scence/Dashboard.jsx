@@ -19,6 +19,9 @@ import moment from "moment";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import CurrencyDollarIcon from "@heroicons/react/24/solid/CurrencyDollarIcon";
 import BanknotesIcon from "@heroicons/react/24/solid/BanknotesIcon";
+import  CurrencyRupeeIcon from "@heroicons/react/24/solid/CurrencyRupeeIcon";
+import  QueueListIcon from "@heroicons/react/24/solid/QueueListIcon";
+
 
 import React, { useEffect, useState } from "react";
 import Overview from "./components/overview";
@@ -208,6 +211,10 @@ setOverview({
       
     }
   }, [ALLUSERS]);
+
+  // const doller = (
+  //   <CurrencyDollarIcon sx={{ backgroundColor: "blue" }}></CurrencyDollarIcon>
+  // );
   
 
   return (
@@ -243,10 +250,10 @@ setOverview({
         
         <Container maxWidth="xl">
           <Grid container spacing={2}>
-            <Overview heading="Total Investment" subHeading="Gross Profit" amount={overview.InvestmentAmount}   subAmount={overview.InterestAmount}   />
-            <Overview heading="Total Profit" subHeading="Today Profit" amount= {Math.round(overview.TotalProfit)}  subAmount={Math.round(overview.TodayProfit)} />
-            <Overview heading="Total Collected" subHeading="Today Collected" amount={overview.TotalCollected} subAmount={overview.TodayCollected}  />
-            <Overview heading="Total Pending" subHeading="Today Pending" amount={Math.round(overview.TotalPending)}  subAmount={overview.TodayPending}/>
+            <Overview heading="Total Investment" subHeading="Gross Profit" amount={overview.InvestmentAmount}   subAmount={overview.InterestAmount}  avatar={<CurrencyDollarIcon />} />
+            <Overview heading="Total Profit" subHeading="Today Profit" amount= {Math.round(overview.TotalProfit)}  subAmount={Math.round(overview.TodayProfit)}  avatar={<CurrencyRupeeIcon/>} />
+            <Overview heading="Total Collected" subHeading="Today Collected" amount={Math.round(overview.TotalCollected)} subAmount={Math.round(overview.TodayCollected)} avatar={<BanknotesIcon/>}  />
+            <Overview heading="Total Pending" subHeading="Today Pending" amount={Math.round(overview.TotalPending)}  subAmount={Math.round(overview.TodayPending)} avatar={<QueueListIcon/>}/>
           </Grid>
         </Container>
       </Box>

@@ -11,16 +11,21 @@ import {tokens} from "../../theme"
 // import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
+import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
 // import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 // import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 // import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 // import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 // import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -29,6 +34,13 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const location = useLocation();
+
+  const isActiveLink = location.pathname === to;
+
+  const itemStyle = {
+    color: isActiveLink ? colors.greenAccent[500] : colors.grey[100],
+  };
   return (
     <MenuItem
       active={selected === title}
@@ -50,6 +62,7 @@ function SidBar() {
   const [isCollapsed,setIsCollapsed]=useState(false)
   const[selected,setSelected]=useState("Dashboard")
   return (
+    
     <Box  
       sx={{
         
@@ -66,7 +79,8 @@ function SidBar() {
           color: "#868dfb !important",
         },
         "& .pro-menu-item.active": {
-          color: "#6870fa !important",
+          color: colors.grey[500] + " !important",
+          backgroundColor: 'rgba(255, 255, 255, 0.04)'
         },
       }}
     >
@@ -83,10 +97,10 @@ function SidBar() {
           >
             {!isCollapsed && (
               <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
+                // display="flex"
+                // justifyContent="space-between"
+                // alignItems="center"
+                // ml="15px"
               >
                 {/* <Typography variant="h3" color={colors.grey[100]}>
                 King space finance
@@ -99,6 +113,8 @@ function SidBar() {
           </MenuItem>
 
           {!isCollapsed && (
+            
+            
             <Box mb="25px" >
               <Box display="flex" justifyContent="center" alignItems="center" mb="25px" >
                 <img
@@ -129,9 +145,16 @@ function SidBar() {
           <Box paddingLeft={isCollapsed ? undefined : "7%"}>
             
             <Item
-              title="Dashboard"
+              title="OVERVIEW"
               to="/"
               icon={<HomeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="ADMIN PANEL "
+              to="/admin"
+              icon={<ManageAccountsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -141,19 +164,19 @@ function SidBar() {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Data
+             Client Data
             </Typography>
              <Item
-              title="ALL USERS "
+              title="CLIENT DIRECTORY" 
               to="/allusers"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="ADD USER"
+              title="CREATE CUSTOMER"
               to="/adduser"
-              icon={<ContactsOutlinedIcon />}
+              icon={<PersonAddAltOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             /> 
@@ -170,37 +193,32 @@ function SidBar() {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Pages
+              Reports
             </Typography>
             <Item
-              title="COLLECTIONS "
+              title= "PENDING COLLECTIONS"
               to="/collectionReport "
-              icon={<PersonOutlinedIcon />}
+              icon={<PendingActionsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="COLLECTED"
+              title="RECIEVED PAYMENTS"
               to="/collectedReport "
-              icon={<CalendarTodayOutlinedIcon />}
+              icon={<CreditScoreOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="PENDING COLLECTION "
+              title="OUTSTANDING DUES"
               to="/pendingReport"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+            
            
-             <Item
-              title="Admin "
-              to="/admin"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+             
 
             {/* <Typography
               variant="h6"

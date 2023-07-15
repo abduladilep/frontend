@@ -13,10 +13,28 @@ import {
 import { tokens } from "../../theme";
 import React from "react";
 
-const Overview = ({ heading ,amount,subAmount,subHeading, avathar}) => {
+const Overview = ({ heading ,amount,subAmount,subHeading, avatar}) => {
     // const parsedSubAmount = parseFloat(subAmount);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const getAvatarBackground = () => {
+    if (heading === "Total Investment") {
+      return "warning.main";
+    } else if (heading === "Total Profit") {
+      return 'success.main';
+    } else if (heading === "Total Collected") {
+      return 'primary';
+    } else if (heading === "Total Pending") {
+      return "error.main";
+    }
+     else {
+      return colors.primary[400]; // Fallback color
+    }
+  };
+
+
+
   return (
     <Grid xs={12} sm={6} lg={3} container maxWidth="xl">
       <Card style={{ backgroundColor: colors.primary[400], width: 230, 
@@ -35,19 +53,19 @@ const Overview = ({ heading ,amount,subAmount,subHeading, avathar}) => {
                 {heading}
               </Typography>
               {/* <Stack spacing={1}  mt="50px" > */}
-              <Typography variant="h1"> ${amount}</Typography>
+              <Typography variant="h1">{amount}</Typography>
               {/* </Stack> */}
             </Stack>
             <Stack alignItems="flex-end">
               <Avatar
                 sx={{
-                  backgroundColor: "error.main",
+                  backgroundColor: getAvatarBackground(),
                   height: 56,
                   width: 56,
                 }}
               >
                 <SvgIcon>
-                  <CurrencyDollarIcon />
+                {avatar}
                 </SvgIcon>
               </Avatar>
             </Stack>
@@ -78,7 +96,7 @@ const Overview = ({ heading ,amount,subAmount,subHeading, avathar}) => {
               {subHeading}
               </Typography>
               {/* <Stack spacing={1}  mt="50px" > */}
-              <Typography variant="h1"> ${subAmount}</Typography>
+              <Typography variant="h1"> {subAmount}</Typography>
               {/* </Stack> */}
             </Stack>
             <Stack alignItems="flex-end">
