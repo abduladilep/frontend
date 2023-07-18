@@ -157,9 +157,12 @@ function AddUser() {
 
     data.append("file", Photo);
     
-    data.append("upload_preset", "evqnxnlb");
-    data.append("cloud_name", "dqsdim3vv");
-    await fetch(`https://api.cloudinary.com/v1_1/dqsdim3vv/image/upload`, {
+    // data.append("upload_preset", "evqnxnlb");
+    // data.append("cloud_name", "dqsdim3vv");
+    // await fetch(`https://api.cloudinary.com/v1_1/dqsdim3vv/image/upload`, {
+      data.append("upload_preset", "pxsh0zzx");
+    data.append("cloud_name", "dtx0rkh3i");
+    await fetch(`https://api.cloudinary.com/v1_1/dtx0rkh3i/image/upload`,{
       method: "POST",
       body: data,
     })
@@ -178,9 +181,12 @@ function AddUser() {
       const IdData = new FormData();
 
       IdData.append("file", IdProof);
-      IdData.append("upload_preset", "evqnxnlb");
-      IdData.append("cloud_name", "dqsdim3vv");
-      await fetch(`https://api.cloudinary.com/v1_1/dqsdim3vv/image/upload`, {
+      // IdData.append("upload_preset", "evqnxnlb");
+      // IdData.append("cloud_name", "dqsdim3vv");
+      // await fetch(`https://api.cloudinary.com/v1_1/dqsdim3vv/image/upload`, {
+        IdData.append("upload_preset", "pxsh0zzx");
+        IdData.append("cloud_name", "dtx0rkh3i");
+    await fetch(`https://api.cloudinary.com/v1_1/dtx0rkh3i/image/upload`,{
         method: "POST",
         body: IdData,
       })
