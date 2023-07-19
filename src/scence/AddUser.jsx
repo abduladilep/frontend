@@ -138,6 +138,7 @@ function AddUser() {
   const [idPreview, setidPreview] = useState(); // add state to preview uploaded photo
   const [Date, setDate] = useState(); // add state to  collection date
   const [endDate, setEndDate] = useState(); // add state to  collection date
+  
 
   const dispatch = useDispatch();
 
