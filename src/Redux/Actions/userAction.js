@@ -176,7 +176,7 @@ export const updateUser=(reqObj) => async dispatch=>{
 
 export const LoginUser = (reqObj) => async (dispatch) => {
   try {
-    const loginUserResponse = await axios.post(`/api/user/Login`, reqObj);
+    const loginUserResponse = await axios.post(`backend/api/user/Login`, reqObj);
     const token = loginUserResponse.data.token;
     console.log(token, "token from login");
 
