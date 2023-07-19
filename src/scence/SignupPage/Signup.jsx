@@ -132,7 +132,7 @@ const Signup = () => {
   async function registerUser(e) {
     e.preventDefault();
     setLoading(true);
-    const response = await fetch(`http://localhost:5000/api/user/verifyotp`, {
+    const response = await fetch(`https://kingspacefinance.in/backend/api/user/verifyotp`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -146,7 +146,7 @@ const Signup = () => {
     console.log(response.data, "svgsh");
     console.log(data, "respoopoitss");
     if (data.status === "success") {
-      const response = await fetch(`http://localhost:5000/api/user/signup`, {
+      const response = await fetch(`https://kingspacefinance.in/backend/api/user/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
