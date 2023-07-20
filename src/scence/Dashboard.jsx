@@ -10,7 +10,6 @@ import { useMode } from "../theme";
 import moment from "moment";
 
 
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import CurrencyDollarIcon from "@heroicons/react/24/solid/CurrencyDollarIcon";
 import BanknotesIcon from "@heroicons/react/24/solid/BanknotesIcon";
 import  CurrencyRupeeIcon from "@heroicons/react/24/solid/CurrencyRupeeIcon";
@@ -72,7 +71,7 @@ function Dashboard() {
         sumTotalAmount,
         sumIntrestAmount,
         sumTotalPendingAmount,
-      } = ALLUSERS?.reduce(
+      } = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.reduce(
         (totals, user) => {
           totals.sumGivenAmount += parseFloat(user.GivenAmount);
           totals.sumIntrestAmount += parseFloat(user.InterestAmount);
