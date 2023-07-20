@@ -72,7 +72,7 @@ function Dashboard() {
         sumTotalAmount,
         sumIntrestAmount,
         sumTotalPendingAmount,
-      } = ALLUSERS.reduce(
+      } = ALLUSERS?.reduce(
         (totals, user) => {
           totals.sumGivenAmount += parseFloat(user.GivenAmount);
           totals.sumIntrestAmount += parseFloat(user.InterestAmount);

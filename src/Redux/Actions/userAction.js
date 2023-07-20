@@ -12,7 +12,7 @@ export const addUser = (reqObj) => async (dispatch) => {
     console.log("tokenaduser", token);
 
     const response = await axios.post(
-      "/api/user/addUser",
+      "backend/api/user/addUser",
       { reqObj },
       {
         headers: {
@@ -47,7 +47,7 @@ export const collectionList = (reqObj) => async (dispatch) => {
     console.log("gsdsghdfsdg");
   try {
     console.log("collectionList");
-    const response = await axios.get("/api/user/collectionList");
+    const response = await axios.get("backend/api/user/collectionList");
     console.log("popopo", response.data.todayDates);
 
     dispatch({ type: "GET_ALL_COLLECTION", payload: response.data.todayDates });
@@ -74,7 +74,7 @@ export const handlePaymentRequest = (reqObj) => async (dispatch) => {
     try {
   const token = localStorage.getItem("token");
   const paymentResponse = await axios.post(
-    "/api/user/pay",
+    "backend/api/user/pay",
     { reqObj },
     {
       headers: {
@@ -111,7 +111,7 @@ export const handleTransactionPay = (reqObj) => async dispatch => {
     const token = localStorage.getItem('token');
 
     try {
-      const transactionPayResponse = await axios.post("/api/user/transactionPay", { reqObj }, {
+      const transactionPayResponse = await axios.post("backend/api/user/transactionPay", { reqObj }, {
         headers: {
             'Content-Type': 'application/json',
             "X-Custom-Header": token,
@@ -139,7 +139,7 @@ export const handleTransactionPay = (reqObj) => async dispatch => {
 
 
 export const updateUser=(reqObj) => async dispatch=>{
-    const updatedUserResponse = await axios.post("/api/user/updateUser",reqObj)
+    const updatedUserResponse = await axios.post("backend/api/user/updateUser",reqObj)
   
 
     console.log(updatedUserResponse.data, "resspoupdata updated");
@@ -191,7 +191,7 @@ export const LoginUser = (reqObj) => async (dispatch) => {
 
 export const handleAdminDelete = (adminId) => async (dispatch) => {
   try {
-    const response = await axios.delete("/api/user/adminDelete", { data: { adminId: adminId },});
+    const response = await axios.delete("backend/api/user/adminDelete", { data: { adminId: adminId },});
 
     message.success(response.data)
     console.log("adminDelete", response.data);
@@ -212,7 +212,7 @@ export const handleAdminDelete = (adminId) => async (dispatch) => {
 
   export const handleCostomerDelete=(userId)=>async (dispatch) => {
     try {
-      const response = await axios.delete("/api/user/deleteUser", { data: { userId: userId },} );
+      const response = await axios.delete("backend/api/user/deleteUser", { data: { userId: userId },} );
       console.log(userId,"vcvxcb");
       console.log(response);
       message.success(response.data);
