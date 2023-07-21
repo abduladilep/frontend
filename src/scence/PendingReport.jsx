@@ -70,7 +70,7 @@ function CollectedReport() {
 
     const Collected = [];
     if (ALLUSERS) { 
-      const collectedUsers = ALLUSERS.filter((user) => user.Pending);
+      const collectedUsers = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.filter((user) => user.Pending);
       collectedUsers.forEach((user) => {
         console.log(user, "is the user...");
         user?.Pending.forEach((value) => {

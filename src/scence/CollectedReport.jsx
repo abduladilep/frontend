@@ -70,7 +70,7 @@ function CollectedReport() {
     const Collected = [];
 
     if (ALLUSERS) {
-      const collectedUsers = ALLUSERS.filter((user) => user.Collected);
+      const collectedUsers = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.filter((user) => user.Collected);
       collectedUsers.forEach((user) => {
         user?.Collected.forEach((value) => {
           const userDetails = {

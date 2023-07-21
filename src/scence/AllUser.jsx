@@ -59,7 +59,7 @@ function AllUsers() {
     console.log("dagdsdg");
     
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-    const filteredData = ALLUSERS.filter((customer) => {
+    const filteredData = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.filter((customer) => {
       const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
       const mobileIncludes =
         customer?.MobileNo.toString().includes(searchValue);
