@@ -71,7 +71,6 @@ function CollectedReport() {
     const Collected = [];
     if (Array.isArray(ALLUSERS)) { 
       const collectedUsers = ALLUSERS && ALLUSERS.length > 0 && ALLUSERS.filter((user) => user.Pending);
-      if (Array.isArray(collectedUsers)) {
       collectedUsers.forEach((user) => {
         console.log(user, "is the user...");
         user?.Pending.forEach((value) => {
@@ -89,7 +88,7 @@ function CollectedReport() {
 
         });
       });
-    }
+    
     }
   
 

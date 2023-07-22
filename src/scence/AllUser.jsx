@@ -57,9 +57,11 @@ function AllUsers() {
 
   }else{
     console.log("dagdsdg");
+    if (Array.isArray(ALLUSERS)) {
+
     
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-    const filteredData = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.filter((customer) => {
+    const filteredData = ALLUSERS.filter((customer) => {
       const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
       const mobileIncludes =
         customer?.MobileNo.toString().includes(searchValue);
@@ -68,6 +70,8 @@ function AllUsers() {
     setData(filteredData);
 
   }
+}
+  
   }, [ALLUSERS, searchKey]);
 
  

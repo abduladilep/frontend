@@ -63,7 +63,7 @@ function Dashboard() {
 
 
   useEffect(() => {
-    if (ALLUSERS) {
+    if (Array.isArray(ALLUSERS)) {
       const {
         sumGivenAmount,
         sumTotalProfit,
@@ -71,7 +71,7 @@ function Dashboard() {
         sumTotalAmount,
         sumIntrestAmount,
         sumTotalPendingAmount,
-      } = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.reduce(
+      } = ALLUSERS.reduce(
         (totals, user) => {
           totals.sumGivenAmount += parseFloat(user.GivenAmount);
           totals.sumIntrestAmount += parseFloat(user.InterestAmount);
