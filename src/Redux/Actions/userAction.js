@@ -35,7 +35,7 @@ export const addUser = (reqObj) => async (dispatch) => {
 
 export const allUsers = (reqObj) => async (dispatch) => {
   try {
-    const response = await axios.get("/api/user/allUsers");
+    const response = await axios.get("backend/api/user/allUsers");
 
     dispatch({ type: "GET_ALL_USERS", payload: response.data });
   } catch (error) {
