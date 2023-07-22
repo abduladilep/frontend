@@ -69,8 +69,8 @@ function CollectedReport() {
   useEffect(() => {
     const Collected = [];
 
-    if (ALLUSERS) {
-      const collectedUsers = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.filter((user) => user.Collected);
+    if (Array.isArray(ALLUSERS)) {
+      const collectedUsers = ALLUSERS.filter((user) => user.Collected);
       collectedUsers.forEach((user) => {
         user?.Collected.forEach((value) => {
           const userDetails = {
@@ -89,8 +89,7 @@ function CollectedReport() {
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
     const filteredData = Collected.filter((customer) => {
       const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
-      const mobileIncludes =
-        customer?.MobileNo.toString().includes(searchValue);
+      const mobileIncludes = customer?.MobileNo.toString().includes(searchValue);
 
       const dateMatches =
         startDate && endDate

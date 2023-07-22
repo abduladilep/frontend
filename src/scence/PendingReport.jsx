@@ -69,8 +69,9 @@ function CollectedReport() {
 
 
     const Collected = [];
-    if (ALLUSERS) { 
-      const collectedUsers = ALLUSERS && ALLUSERS.length>0 && ALLUSERS.filter((user) => user.Pending);
+    if (Array.isArray(ALLUSERS)) { 
+      const collectedUsers = ALLUSERS && ALLUSERS.length > 0 && ALLUSERS.filter((user) => user.Pending);
+      if (Array.isArray(collectedUsers)) {
       collectedUsers.forEach((user) => {
         console.log(user, "is the user...");
         user?.Pending.forEach((value) => {
@@ -89,6 +90,8 @@ function CollectedReport() {
         });
       });
     }
+    }
+  
 
     setFilteredData(Collected);
 

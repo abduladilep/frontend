@@ -99,6 +99,7 @@ const Signup = () => {
     }
     setLoading(true);
     const response = await fetch("https://kingspacefinance.in/backend/api/user/otpsend", {
+      
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -213,8 +214,6 @@ const Signup = () => {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                {/* {isSignUp && ( */}
-
                 <div>
                   <input
                     required
@@ -226,8 +225,6 @@ const Signup = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                {/* )} */}
-
                 <div>
                   <input
                     required
@@ -251,7 +248,6 @@ const Signup = () => {
                   />
                 </div>
                 <div>
-                  {/* {isSignUp && ( */}
                   <input
                     required
                     type="password"
@@ -260,7 +256,6 @@ const Signup = () => {
                     placeholder="Confirm Password"
                     onChange={(e) => setconfirmPassword(e.target.value)}
                   />
-                  {/* )} */}
                 </div>
 {/* 
                  <span
@@ -291,9 +286,6 @@ const Signup = () => {
                : "Don't have an account Sign up"}
               </span>  */}
 
- 
-
-
 
               <div className="d-flex justify-content-center">
                 <button
@@ -304,8 +296,8 @@ const Signup = () => {
                   
                   // disabled={loading}
                   >
-                  SIGNUP
-                  {/* {loading ? "Loading..." : isActive ? "SignUp" : "Confirm"} */}
+                
+                  {loading ? "Loading..." : isActive ?"Confirm":"SignUp" }
                 </button>
                   </div>
                   <Link to="/login" className="linkword">
@@ -313,7 +305,7 @@ const Signup = () => {
               </Link>
                
               </form>
-              <div style={{ dispaly: isActive ? "block" : "none" }}>
+              <div style={{ display: isActive ? "block" : "none" }}>
                 <input
                   value={otp}
                   type="password"
@@ -329,7 +321,8 @@ const Signup = () => {
                   type="Submit"
                   // disabled={loading}
                 >
-                  {loading ? "Loading..." : isActive ? "SignUp" : "Confirm"}
+                  Confirm
+                  {/* {loading ? "Loading..." : isActive ? "Confirm" : "sign"} */}
                 </button>
               </div>
             </div>

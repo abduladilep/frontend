@@ -100,7 +100,6 @@ function Login() {
             <img
               data-aos="slide-left"
               data-aos-duration="1500"
-              // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8Vqurm4gw0UwCA2CgHO1-3NkPi6vWnfcFhA&usqp=CAU"
               src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
               alt=""
               className="responsive-image"
