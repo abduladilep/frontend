@@ -190,12 +190,13 @@ const Account = () => {
   console.log(initialValues.IdProof, "its user");
 
   useEffect(() => {
-    if (ALLUSERS.length === 0) {
-      dispatch(allUsers());
-    } else {
+    if (Array.isArray(ALLUSERS) && ALLUSERS.length > 0) {
       setData(ALLUSERS.find((o) => o._id === customerId));
+    } else {
+      // Assuming `allUsers` is an action that fetches users from the server and updates the Redux store
+      dispatch(allUsers());
     }
-  }, [ALLUSERS]);
+  }, [ALLUSERS,customerId]);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -279,33 +280,8 @@ const Account = () => {
     setIsModalOpen(false);
   };
 
-  // const exportTableData = () => {
-  //   console.log("expoted");
-  //   const doc = new jsPDF({ orientation: "landsacpe" });
-
-  //   // const columns = ["Date","Phone","Amount","Remaining"];
-  //   // const dataa = data.map((customer) => [
-  //   //   moment(customer.date).format("DD/MM/YYYY"),
-
-  //   //   customer.MobileNo,
-  //   //   customer.amount,
-  //   //   customer.TotalAmountCopy,
-  //   // ]);
-
-  //   doc.autoTable({
-  //     html: "#my-table",
-  //   });
-
-  //   doc.save("data.pdf");
-  // };
-
   return (
     <>
-      {/* <Head>
-      <title>
-        Account | Devias Kit
-      </title>
-    </Head> */}
       <Box>
         <Box
           component="main"
@@ -341,14 +317,6 @@ const Account = () => {
                Delete CUSTOMER
               </Button>
               
-               {/* <Button
-          variant="contained"
-          // color="secondary"
-          onClick={() => showModal(data._id)}
-        >
-          Edit Customer
-        </Button> */}
-          
                     <Modal open={isDelete}
                     
                     title='Do you want to Delete this costomer?'
@@ -362,13 +330,9 @@ const Account = () => {
                       bodyStyle={{ fontSize: '16px' }}
                       // okButtonProps={{ type: 'danger', style: { backgroundColor: 'red' } }}
                     >
-                      
                     </Modal>
-
-            
             </Box>
           </Box>
-
           <Container maxWidth="lg">
             <Stack spacing={5}>
               <div></div>
@@ -379,8 +343,6 @@ const Account = () => {
                   </Grid>
                   <Grid xs={12} md={6} lg={8}>
                     <AccountTransaction
-                      // customerId={customerId}
-                      // setData={setData}
                       data={data}
                     />
                   </Grid>
@@ -391,7 +353,6 @@ const Account = () => {
         </Box>
         <Box>
           <Grid
-            // container
             spacing={3}
           >
             <Grid xs={12} md={6} lg={4}>
@@ -399,36 +360,9 @@ const Account = () => {
             </Grid>
           </Grid>
 
-          {/* <Modal
-            title="Update User"
-            visible={isModalOpen}
-            onCancel={handleCancel}
-            footer={[
-              <Button key="cancel" onClick={handleCancel}>
-                Cancel
-              </Button>,
-              <Button
-                key="submit"
-                type="submit"
-                form="updateForm"
-                onClick={handleFormSubmit}
-              >
-                Submit
-              </Button>,
-            ]}
-            // open={isModalOpen}
-            style={{ backgroundColor: colors.primary[400] }}
-            // style={{ backgroundColor: 'black' }}
-                      bodyStyle={{ fontSize: '16px' }}
- 
-          > */}
            <Modal open={isModalOpen} onCancel={handleCancel}
-            
-          
             >
             <Box m="20px">
-              {/* <Header title="CREATE USER" subtitle="Add a new user" /> */}
-
               <Formik
               style={{ backgroundColor: colors.primary[400] }}
                 onSubmit={handleFormSubmit}
@@ -629,36 +563,6 @@ const Account = () => {
                           />
                         )}
                       </Field>
-
-                      {/* <Field name="collectionDate">
-    {({ field, form }) => (
-      <TextField
-        {...field}
-        fullWidth
-        name="collectionDate"
-        variant="filled"
-        type="date"
-        label="COLLECTION STARTING DATE"
-        value={Date}
-        onBlur={field.onBlur}
-        onChange={(event) => {
-          const formattedDate = moment(event.target.value).format("yyyy-MM-DD");
-          console.log(formattedDate,"formattedDate");
-          form.setFieldValue("collectionDate", formattedDate);
-          console.log(typeof formattedDate,"formtated date");
-  
-          handleDateChange(
-            {...form.values, collectionDate: formattedDate},
-            form.setFieldValue
-          );
-          setDate(event.target.value);
-        }}
-        error={form.touched.collectionDate && !!form.errors.collectionDate}
-        helperText={form.touched.collectionDate && form.errors.collectionDate}
-      />
-    )}
-  </Field> */}
-
                       <Field name="CollectionPeriod">
                         {({ field }) => (
                           <TextField
@@ -680,10 +584,6 @@ const Account = () => {
                                 "collectionPeriod",
                                 event.target.value
                               );
-                              // handleDateChange(
-                              //   { ...values, collectionPeriod: event.target.value },
-                              //   setFieldValue
-                              // );
                             }}
                           />
                         )}
@@ -700,19 +600,12 @@ const Account = () => {
                             label="Collection End Date"
                             value={values.collectionEndDate}
                             onBlur={handleBlur}
-                            //   onChange={field.onChange}
                             onChange={(event) => {
                               setFieldValue(
                                 "collectionEndDate",
                                 event.target.value
                               );
-                              // handleDateChange(
-                              //   { ...values, collectionPeriod: event.target.value },
-                              //   setFieldValue
-                              // );
-
-                              //   const adWeeks=addWeeks((values.collectionDate,values.CollectionPeriod))
-
+                            
                               setEndDate(event.target.value);
                             }}
                             error={
@@ -723,7 +616,6 @@ const Account = () => {
                               touched.collectionEndDate &&
                               errors.collectionEndDate
                             }
-                            //  sx={{ gridColumn: "span 2" }}
                           />
                         )}
                       </Field>
@@ -861,11 +753,5 @@ const Account = () => {
     </>
   );
 };
-
-// Page.getLayout = (page) => (
-//   <DashboardLayout>
-//     {page}
-//   </DashboardLayout>
-// );
 
 export default Account;

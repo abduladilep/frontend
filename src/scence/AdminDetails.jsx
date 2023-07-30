@@ -47,7 +47,6 @@ function AdminDetails() {
     async function admin() {
       try {
         const response = await axios.get("backend/api/user/adminDetails");
-        //   console.log(response, "ressssssssss");
         setAdmin(response.data);
         
       } catch (error) {
@@ -57,17 +56,6 @@ function AdminDetails() {
     admin();
   }, []);
 
-  // useEffect(() => {
-
-  //   const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-  //       const filteredData = ALLADMINS.filter((admin) => {
-  //         const nameIncludes = admin?.Name.toLowerCase().includes(searchValue);
-  //         const mobileIncludes = admin?.MobileNo.toString().includes(searchValue);
-  //         return nameIncludes || mobileIncludes;
-  //       });
-  //       setData(filteredData);
-
-  // }, [ALLADMINS,searchKey])
 
   const { confirm } = Modal;
 
@@ -121,8 +109,6 @@ function AdminDetails() {
         </Box>
       </Box>
       <CustomerSearch setSearchKey={setSearchKey} />
-
-      {/* <Card  style={{ backgroundColor: colors.primary[400]}}> */}
       <Box display="flex" justifyContent="center" p={2}>
       {admin && admin.length > 0 ? (
 
@@ -163,7 +149,6 @@ function AdminDetails() {
                       cancelText="No"
                       style={{ backgroundColor: "black" }}
                       bodyStyle={{ fontSize: "16px" }}
-                      // okButtonProps={{ type: 'danger', style: { backgroundColor: 'red' } }}
                     ></Modal>
                   )}
                 </TableRow>
@@ -176,7 +161,6 @@ function AdminDetails() {
 
       )}
       </Box>
-      {/* </Card> */}
     </Box>
   );
 }

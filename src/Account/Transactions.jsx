@@ -1,8 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { Modal } from "antd";
 import {
   Box,
   Button,
@@ -28,7 +25,6 @@ import jsPDF from "jspdf";
  function Transactions ({ data }){
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const dispatch = useDispatch();
 
   const [collected, setCollected] = useState([]);
 
@@ -44,7 +40,6 @@ import jsPDF from "jspdf";
         const matchingCollected = data.Collected.find((collected) =>
           moment(pending.date).isSame(collected.date, "day")
         );
-
 
         if (matchingCollected) {
           if (trans.some((detail) => detail.pendingdate === pending.date)) {
@@ -83,21 +78,14 @@ const combinedData = match.map((element, index) => ({
   reming: data.TotalAmountHistory[index % data.TotalAmountHistory.length],
 }));
 
-console.log("combinedData", combinedData);
-
 setCollected(combinedData);
 }, [data]);
 
-
-
-
 const useCustomers = (page, rowsPerPage) => {
-    console.log(data,  "pageeeee");
     return useMemo(() => {
       return applyPagination(collected, page, rowsPerPage);
     }, [collected, page, rowsPerPage]);
   };
-  
   const useCustomerIds = (customers) => {
     return useMemo(() => {
       return customers.map((customer) => customer.id);
@@ -106,13 +94,8 @@ const useCustomers = (page, rowsPerPage) => {
   
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
-  
   const customers = useCustomers(page, rowsPerPage);
-
-  // console.log(customers.id,"uuuuuuu");
-
     const customersIds = useCustomerIds(customers);
-
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -125,9 +108,7 @@ const useCustomers = (page, rowsPerPage) => {
 
   
   const exportTableData= () => {
-    console.log("expoted");
     const doc =new jsPDF({orientation:'landsacpe'})
-    
   const columns = ["Date", "Collected","Pending","Remaining"];
   const dataa = collected.map((customer) => [
     moment(customer.date).format("DD/MM/YYYY"),
@@ -140,14 +121,8 @@ const useCustomers = (page, rowsPerPage) => {
     columns,
     body: dataa,
   });
-    
   doc.save("TranactionDetails.pdf")
-    
   }
-
-
-
-  
 
   return (
     <Box m="20px">

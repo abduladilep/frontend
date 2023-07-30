@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useState} from "react";
 import { Modal } from "antd";
 import {
   Box,
@@ -9,32 +9,22 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  TextField,
   Typography,
   Unstable_Grid2 as Grid,
   Stack,
   SvgIcon,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-
-import { allUsers } from "../Redux/Actions/userAction";
 import { handleTransactionPay } from "../Redux/Actions/userAction";
 import { tokens } from "../theme";
 import moment from "moment";
 import jsPDF from "jspdf";
 import 'jspdf-autotable';
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
-import { useNavigate } from "react-router-dom";
-
 export const AccountTransaction = ({ data }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
-  const { ALLUSERS } = useSelector((state) => state.users);
-
-  console.log(data, "iiiiii");
-
-  // const [userId, setUserId] = useState("");
 
   const [payObj, setPayOjb] = useState({
     userId: "",
@@ -44,14 +34,11 @@ export const AccountTransaction = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
-    // setUserId(userid);
     setIsModalOpen(true);
   };
   const handleOk = (values) => {
     console.log(values, "handle  ");
     dispatch(handleTransactionPay(values));
-    // dispatch(allUsers())
-    // setData(ALLUSERS.find(o => o._id === customerId))
     setIsModalOpen(false);
   };
 
@@ -63,7 +50,6 @@ export const AccountTransaction = ({ data }) => {
   const exportTableData = () => {
     // Create a new jsPDF instance
     const doc = new jsPDF();
-
     // Define the content to be added to the PDF
     const content = `
       Account Transaction Details:
@@ -85,14 +71,11 @@ export const AccountTransaction = ({ data }) => {
     doc.save("account-transaction.pdf");
   };
   
- 
 
 
   return (
     <Card   id="account-transaction-card" style={{ backgroundColor: colors.primary[400] }}>
       <CardHeader
-      // subheader="The information can be edited"
-      // title="sdsd"
       />
       <CardContent sx={{ pt: 0 }}>
         <Box  sx={{ m: -1.5 }}>
@@ -293,8 +276,6 @@ export const AccountTransaction = ({ data }) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ display:"flex" ,justifyContent: "flex-end" , p:"4"}}>
-      {/* </CardActions> */}
-      {/* <CardActions sx={{ justifyContent: 'flex-end' }}> */}
       <Button color="inherit" startIcon={<SvgIcon fontSize="small"><ArrowDownOnSquareIcon /></SvgIcon>}
             onClick={exportTableData}
           >
@@ -312,7 +293,6 @@ export const AccountTransaction = ({ data }) => {
 
       {isModalOpen && (
         <Modal
-          // title="Pay"
           open={isModalOpen}
           onOk={() => handleOk(payObj)}
           onCancel={handleCancel}
@@ -320,25 +300,14 @@ export const AccountTransaction = ({ data }) => {
           okText= 'PAY'
           okType= 'primary'
           cancelText= 'Cancel'
-          // style={{ backgroundColor: 'black' }}
-          // bodyStyle={{ fontSize: '16px' }}
+          
           bodyStyle={{ width: '10px', height: '5px', fontSize: '16px' }}
         >
           <input
-            // value={payObj.value}
-            // id={customer.userId}
-            // defaultValue={customer.CollectionAmount}
             cols="30"
             rows="50"
             type="text"
             placeholder="Enter Amount.."
-            // style={{
-            //   border: 'none',
-            //   borderBottom: '1px solid ',
-            //   outline: 'none',
-            //   fontSize: '16px',
-            //   margin: '15px 20px',
-            // }}
             style={{ fontSize: '16px' , margin: '15px 20px', width: '100', height: '80', }}
             onChange={(e) => {
               const value = { ...payObj };

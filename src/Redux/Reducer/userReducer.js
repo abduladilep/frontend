@@ -8,8 +8,6 @@ export const usersReducer=(state=initialState,action)=>{
 
         case'GET_ALL_USERS' :
 
-    // console.log("stte",state);
-
             return{
                 ...state,
 

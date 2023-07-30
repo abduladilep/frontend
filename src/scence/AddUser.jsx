@@ -2,19 +2,13 @@ import React from "react";
 import { Box, Button, TextField, useMediaQuery } from "@mui/material";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
-// import UseMediaQuery from "@mui/material/useMediaQuery";
-// import Header from "../components/Header";
 import { useState } from "react";
 import { addWeeks } from "@progress/kendo-date-math";
-// import moment from 'moment';
-// import { addUser } from "../../redux/Actions/userActions";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Redux/Actions/userAction";
-import { Link } from "react-router-dom";
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
 const userSchema = Yup.object().shape({
   Name: Yup.string()
     .min(3)
@@ -36,7 +30,6 @@ const userSchema = Yup.object().shape({
   //   .integer()
   //   .required("Please Enter the Collection period")
   //   ,
-
   InterestAmount: Yup.number()
     .positive()
     .integer()
@@ -100,17 +93,15 @@ const userSchema = Yup.object().shape({
         const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
         return value.size <= maxFileSize;
       }
-    )
-    // .required("Please upload an ID proof image"),
+    ),
+    collectionDate: Yup.date()
+  .typeError("Please enter a valid date")
+  .required("Please enter a collection date")
+  ,
 
-  //   collectionDate: Yup.date()
-  // .typeError("Please enter a valid date")
-  // .required("Please enter a collection date")
-  // ,
-
-  // collectionEndDate: Yup.date()
-  // .typeError("Please enter a valid date")
-  // .required("Please enter a collection date"),
+  collectionEndDate: Yup.date()
+  .typeError("Please enter a valid date")
+  .required("Please enter a collection date"),
 });
 
 const initialValues = {
@@ -131,8 +122,6 @@ const initialValues = {
 };
 
 function AddUser() {
-  // let url1,url2;
-
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [photoPreview, setPhotoPreview] = useState();
   const [idPreview, setidPreview] = useState(); // add state to preview uploaded photo
@@ -145,22 +134,8 @@ function AddUser() {
   const handleFormSubmit = async (values) => {
     const { Photo } = values;
     const { IdProof } = values;
-
-    // console.log(Photo, "pooopopopooo");
-    // console.log(IdProof, "iiiidddddddoo");
-
-    // console.log("onn work avbvvvvv mone", values);
-    // values.preventDefault();
-
     const data = new FormData();
-    // data.append("data",values)
-  // data.append("filee",IdProof)
-
     data.append("file", Photo);
-    
-    // data.append("upload_preset", "evqnxnlb");
-    // data.append("cloud_name", "dqsdim3vv");
-    // await fetch(`https://api.cloudinary.com/v1_1/dqsdim3vv/image/upload`, {
       data.append("upload_preset", "pxsh0zzx");
     data.append("cloud_name", "dtx0rkh3i");
     await fetch(`https://api.cloudinary.com/v1_1/dtx0rkh3i/image/upload`,{
@@ -169,22 +144,15 @@ function AddUser() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "data");
         values.Photo = data.url;
-        
-        console.log(values, "Photodeetall");
       })
       .catch((err) => {
         console.log(err);
       });
 
-    
       const IdData = new FormData();
 
       IdData.append("file", IdProof);
-      // IdData.append("upload_preset", "evqnxnlb");
-      // IdData.append("cloud_name", "dqsdim3vv");
-      // await fetch(`https://api.cloudinary.com/v1_1/dqsdim3vv/image/upload`, {
         IdData.append("upload_preset", "pxsh0zzx");
         IdData.append("cloud_name", "dtx0rkh3i");
     await fetch(`https://api.cloudinary.com/v1_1/dtx0rkh3i/image/upload`,{
@@ -193,65 +161,18 @@ function AddUser() {
       })
         .then((res) => res.json())
         .then((IdData) => {
-          console.log(IdData, "Idddddddata");
           values.IdProof = IdData.url;
-          
-          console.log(values, "Photodeetaleeel");
         })
         .catch((err) => {
           console.log(err);
         });
-      
 
-      
-      console.log("onn work ", values);
       dispatch(addUser(values));
   };
 
-  //  const handleDate = (evnt) => {
-
-  // const date = new Date("2000-10-1");
-  // const newDate = addWeeks(date, 10); // Returns a new Date instance.
-
-  // console.log("newwwd dta",newDate);
-  //  console.log("hello");
-  //  const enddate=values.collectionDate+(values.collectionPeriod*7*24*60*60*1000)
-  //  console.log(enddate,"eeedddddd");
-
-  //  }
-  //  console.log(endDate,"eeedddddd");
-
-  //   // update formik field value
-
-  // }
-
-  // const handleDateChange = (values, setFieldValue) => {
-  //       const { collectionDate, collectionPeriod } = values;
-  //       console.log("cvghvsghv",values);
-
-  //       console.log(typeof collectionDate,"tuuuuuuuyyyyypppeee");
-
-  //       // Check that collectionDate is not null or undefined
-  //       if (!collectionDate) {
-  //         console.log("cvghvsghv");
-  //         return;
-
-  //       }
-
-  //       // const endDate = addWeeks(collectionDate, collectionPeriod);
-  //       // const newEndDate= moment(endDate).format('YYYY-MM-DD');
-  //       // setFieldValue('collectionEndDate', newEndDate);
-  //       // console.log(newEndDate,"endddddddd");
-
-  //       const endDate = addWeeks(collectionDate, collectionPeriod);
-  //       setFieldValue('collectionEndDate', endDate);
-  //       console.log(endDate,"endddddddd");
-  //     };
-
+ 
   return (
     <Box m="20px">
-      {/* <Header title="CREATE USER" subtitle="Add a new user" /> */}
-
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -354,7 +275,6 @@ function AddUser() {
                 name="InterestAmount"
                 error={!!touched.InterestAmount && !!errors.InterestAmount}
                 helperText={touched.InterestAmount && errors.InterestAmount}
-                // sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
@@ -374,7 +294,6 @@ function AddUser() {
                 helperText={
                   touched.InterestPercentage && errors.InterestPercentage
                 }
-                // sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
@@ -409,11 +328,6 @@ function AddUser() {
                     // onChange={handleDate}
                     onChange={(event) => {
                       setFieldValue("collectionDate", event.target.value);
-
-                      //     handleDateChange(
-                      //       {...values,collectionDate:moment(event.target.value).format("yyyy,MM,dd")},
-                      //       setFieldValue
-                      //       );
                       setDate(event.target.value);
                     }}
                     error={!!touched.collectionDate && !!errors.collectionDate}
@@ -422,36 +336,6 @@ function AddUser() {
                   />
                 )}
               </Field>
-
-              {/* <Field name="collectionDate">
-    {({ field, form }) => (
-      <TextField
-        {...field}
-        fullWidth
-        name="collectionDate"
-        variant="filled"
-        type="date"
-        label="COLLECTION STARTING DATE"
-        value={Date}
-        onBlur={field.onBlur}
-        onChange={(event) => {
-          const formattedDate = moment(event.target.value).format("yyyy-MM-DD");
-          console.log(formattedDate,"formattedDate");
-          form.setFieldValue("collectionDate", formattedDate);
-          console.log(typeof formattedDate,"formtated date");
-  
-          handleDateChange(
-            {...form.values, collectionDate: formattedDate},
-            form.setFieldValue
-          );
-          setDate(event.target.value);
-        }}
-        error={form.touched.collectionDate && !!form.errors.collectionDate}
-        helperText={form.touched.collectionDate && form.errors.collectionDate}
-      />
-    )}
-  </Field> */}
-
               <Field name="CollectionPeriod">
                 {({ field }) => (
                   <TextField
@@ -465,9 +349,6 @@ function AddUser() {
 
                     value={values.collectionPeriod}
                     name="collectionPeriod"
-                    // error={!!touched.Period && !!errors.Period}
-                    // helperText={touched.Period && errors.Period}
-                    // sx={{ gridColumn: "span 1" }}
                     onChange={(event) => {
                       setFieldValue("collectionPeriod", event.target.value);
                       // handleDateChange(
@@ -497,7 +378,6 @@ function AddUser() {
                       //   { ...values, collectionPeriod: event.target.value },
                       //   setFieldValue
                       // );
-
                       //   const adWeeks=addWeeks((values.collectionDate,values.CollectionPeriod))
 
                       setEndDate(event.target.value);
@@ -508,7 +388,6 @@ function AddUser() {
                     helperText={
                       touched.collectionEndDate && errors.collectionEndDate
                     }
-                    //  sx={{ gridColumn: "span 2" }}
                   />
                 )}
               </Field>
@@ -528,7 +407,6 @@ function AddUser() {
                 ) : (
                   <Box
                     component="img"
-                    // src="/default-avatar.jpg"
                     sx={{ width: 100, height: 100 }}
                   />
                 )}
@@ -578,7 +456,6 @@ function AddUser() {
                 ) : (
                   <Box
                     component="img"
-                    // src="/default-avatar.jpg"
                     sx={{ width: 100, height: 100 }}
                   />
                 )}

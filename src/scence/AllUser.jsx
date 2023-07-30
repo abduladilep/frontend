@@ -3,27 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { allUsers } from "../Redux/Actions/userAction";
 import { Link } from "react-router-dom";
 import { CustomerSearch } from "../scence/components/customerSearch";
-
 import {
   Box,
   Button,
-  // Container,
   Stack,
   SvgIcon,
   Typography,
   useTheme,
 } from "@mui/material";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
-// import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
 import { tokens } from "../theme";
-// import { format, toDate } from "date-fns";
 import { applyPagination } from "../utils/applayPagination";
 import {
-  // Avatar,
-
-  // Card,
-  // Checkbox,
-
   Table,
   TableBody,
   TableCell,
@@ -31,8 +22,6 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import axios from "axios";
-import moment from "moment";
 import jsPDF from "jspdf";
 
 function AllUsers() {
@@ -44,22 +33,15 @@ function AllUsers() {
   const [searchKey, setSearchKey] = useState("");
 
   useEffect(() => {
-    console.log("popoo");
     dispatch(allUsers());
   }, []);
 
   useEffect(() => {
     if(ALLUSERS===null){
-
-    console.log("insideee");
       dispatch(allUsers());
-
-
   }else{
-    console.log("dagdsdg");
-    if (Array.isArray(ALLUSERS)) {
-
     
+    if (Array.isArray(ALLUSERS)) {
     const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
     const filteredData = ALLUSERS.filter((customer) => {
       const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
@@ -92,25 +74,19 @@ function AllUsers() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const customers = useCustomers(page, rowsPerPage);
-  // const customersIds = useCustomerIds(customers);
-  // console.log(customers._id,"uuuuuuu");
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
-    // console.log(value, "valueee");
   }, []);
 
   const handleRowsPerPageChange = useCallback((event) => {
     setRowsPerPage(event.target.value);
-    // console.log(event.target.value, "valuee0000e");
   }, []);
 
 
   const exportTableData= () => {
-    console.log("expoted");
     const doc =new jsPDF({orientation:'landsacpe'})
     
   const columns = [ "Name","Phone","Address","Amount"];
@@ -159,7 +135,6 @@ function AllUsers() {
             </Button>
           </Box>
           <Box>
-            {/* <CustomerFilter setStartDate={setStartDate} setEndDate={setEndDate}/> */}
           </Box>
         </Box>
         <Box
@@ -180,19 +155,6 @@ function AllUsers() {
         <Table>
           <TableHead>
             <TableRow>
-              {/* <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAll}
-                    indeterminate={selectedSome}
-                    onChange={(event) => {
-                      if (event.target.checked) {
-                        onSelectAll?.();
-                      } else {
-                        onDeselectAll?.();
-                      }
-                    }}
-                  />
-                  </TableCell> */}
               <TableCell>Name</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Address</TableCell>
@@ -202,17 +164,10 @@ function AllUsers() {
           </TableHead>
           <TableBody>
             {customers.map((customer) => {
-              // const isSelected = selected.includes(customer.id);
-              // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
-              // const createdAt = toDate(customer.createdAt);
-              // const formattedDate = format(createdAt, 'dd/MM/yyyy')
               return (
                 <TableRow key={customer._id} hover>
                   <TableCell>
                     <Stack alignItems="center" direction="row" spacing={2}>
-                      {/* <Avatar src={customer.avatar}> */}
-                      {/* {getInitials(customer.name)} */}
-                      {/* </Avatar> */}
                       <Typography variant="subtitle2">
                         {customer.Name}
                       </Typography>

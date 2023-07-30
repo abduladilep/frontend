@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { Modal } from "antd";
 import { handlePaymentRequest } from "../Redux/Actions/userAction";
 import { CustomerSearch } from "../scence/components/customerSearch";
@@ -9,23 +8,15 @@ import { CustomerSearch } from "../scence/components/customerSearch";
 import {
   Box,
   Button,
-  // Container,
   Stack,
   SvgIcon,
   Typography,
   useTheme,
 } from "@mui/material";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
-// import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
 import { tokens } from "../theme";
-// import { format, toDate } from "date-fns";
 import { applyPagination } from "../utils/applayPagination";
 import {
-  // Avatar,
-
-  // Card,
-  // Checkbox,
-
   Table,
   TableBody,
   TableCell,
@@ -41,51 +32,27 @@ import jsPDF from "jspdf";
 
 function CollectionReport() {
 
-  // const { users, loading, error } = useSearchUsers(searchKey);
-
   const dispatch=useDispatch()
   const{COLLECTIONS}=useSelector((state)=>state.collection)
   const [data, setData] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
-
+  const [userId, setUserId] = useState("");
+  const [payObj, setPayOjb] = useState({
+    userId: "",
+    amount: "",
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
 useEffect(() => {
   // if(COLLECTIONS===0){
-  //   console.log("insidee");
-
     dispatch(collectionList())
   // }
 }, [])
 
 useEffect(() => {
-  console.log("outsidee");
-
-
-  // const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
-  // const nameStartsWith = [];
-  // const nameIncludes = [];
-  
-  // COLLECTIONS.forEach((customer) => {
-  //   const name = customer?.Name.toLowerCase();
-    
-  //   if (name.startsWith(searchValue)) {
-  //     nameStartsWith.push(customer);
-  //   } else if (name.includes(searchValue)) {
-  //     nameIncludes.push(customer);
-  //   }
-  // });
-  
-  // const filteredData = nameStartsWith.concat(nameIncludes);
-  //   setData(filteredData);
-  
-  
-  
-  // setData(COLLECTIONS)
-
   const searchValue = searchKey.toLowerCase(); // Define searchValue based on searchKey
   const filteredData = COLLECTIONS.filter((customer) => {
     const nameIncludes = customer?.Name.toLowerCase().includes(searchValue);
@@ -104,12 +71,7 @@ useEffect(() => {
 }, [COLLECTIONS, searchKey, startDate, endDate]);
 
 
-
-
-  console.log(data, "collecbbbbtion");
-
   const useCustomers = (page, rowsPerPage) => {
-    console.log(data, "pageeeee");
     return useMemo(() => {
       return applyPagination(data, page, rowsPerPage);
     }, [data, page, rowsPerPage]);
@@ -127,7 +89,6 @@ useEffect(() => {
   const customers = useCustomers(page, rowsPerPage);
 
   const customersIds = useCustomerIds(customers);
-  console.log(customersIds, "sgdsghvgiiis");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -138,23 +99,8 @@ useEffect(() => {
 
   const handleRowsPerPageChange = useCallback((event) => {
     setRowsPerPage(event.target.value);
-    // console.log(event.target.value, "valuee0000e");
   }, []);
 
-  // const PaymentModal = () => {
-  // const [isOpen, setIsOpen] = useState(false);
-  const [userId, setUserId] = useState("");
-
-  
-  const [payObj, setPayOjb] = useState({
-    userId: "",
-    amount: "",
-  });
-
- 
-  
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = (user_id) => {
     setUserId(user_id);
@@ -165,12 +111,12 @@ useEffect(() => {
     
     setIsModalOpen(false);
   };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+
   const exportTableData= () => {
-    console.log("expoted");
     const doc =new jsPDF({orientation:'landsacpe'})
     
   const columns = ["Date", "Name","Address","Phone","Amount"];
@@ -187,9 +133,9 @@ useEffect(() => {
     body: dataa,
   });
     
-    
 doc.save("Collection.pdf")
   }
+
 
   return (
     <Box mx="20px">
@@ -212,24 +158,11 @@ doc.save("Collection.pdf")
         <CustomerSearch setSearchKey={setSearchKey}  />
       </Box>
     </Box>
-      {/* <Card > */}
+      
       <Box display="flex" justifyContent="space-around" p={2}>
         <Table id="my-table">
           <TableHead>
             <TableRow>
-              {/* <TableCell padding="checkbox">
-                <Checkbox
-                  checked={selectedAll}
-                  indeterminate={selectedSome}
-                  onChange={(event) => {
-                    if (event.target.checked) {
-                      onSelectAll?.();
-                    } else {
-                      onDeselectAll?.();
-                    }
-                  }}
-                />
-                </TableCell> */}
               <TableCell>Date</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Address</TableCell>
@@ -240,17 +173,10 @@ doc.save("Collection.pdf")
           </TableHead>
           <TableBody>
             {customers.map((customer) => {
-              // const isSelected = selected.includes(customer.id);
-              // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
-              // const createdAt = toDate(customer.createdAt);
-              // const formattedDate = format(createdAt, 'dd/MM/yyyy')
               return (
                 <TableRow key={customer.userId} hover>
                   <TableCell>
                     <Stack alignItems="center" direction="row" spacing={2}>
-                      {/* <Avatar src={customer.avatar}> */}
-                      {/* {getInitials(customer.name)} */}
-                      {/* </Avatar> */}
                       <Typography variant="subtitle2">
                         {moment(customer.date).format("DD/MM/YYYY")}
                       </Typography>
@@ -260,14 +186,11 @@ doc.save("Collection.pdf")
                   <TableCell>{customer.Address}</TableCell>
                   <TableCell>{customer.MobileNo}</TableCell>
                   <TableCell>{customer.CollectionAmount}</TableCell>
-                  {/* <TableCell>{customer.CollectionAmount}</TableCell> */}
                   <TableCell>
                     <Typography color={colors.grey[100]}>
                       <Button
                         type="primary"
                         color="secondary"
-                        // onClick={(showModal)}>
-                        // onClick={()=>showModal(customer.userId)}>
                         onClick={() => showModal(customer.userId)}
                       >
                         Pay
@@ -284,9 +207,6 @@ doc.save("Collection.pdf")
                       bodyStyle={{ width: '10px', height: '5px', fontSize: '16px' }}
                     >
                       <input
-                        // value={customer.CollectionAmount}
-                        // id={customer.userId}
-                        // defaultValue={customer.CollectionAmount}
                         placeholder={customer.CollectionAmount}
                         type="number"
                         cols="30"
@@ -325,6 +245,6 @@ doc.save("Collection.pdf")
     </Box>
   );
 }
-// }
+
 
 export default CollectionReport;
